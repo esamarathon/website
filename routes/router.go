@@ -13,6 +13,7 @@ func GetRouter() *mux.Router {
 
 	router.PathPrefix("/static").Handler(handleStatic("public", "/static"))
 	router.HandleFunc("/", handlers.Index).Methods("GET", "OPTIONS")
+	router.HandleFunc("/test", handlers.Test).Methods("GET", "OPTIONS")
 	// router.Handle().Methods("GET", "OPTIONS")
 
 	return router

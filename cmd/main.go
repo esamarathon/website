@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/olenedr/esamarathon/db"
 	"github.com/olenedr/esamarathon/routes"
 )
 
@@ -19,6 +20,8 @@ func main() {
 	if port == "" {
 		port = "3000"
 	}
+
+	db.Connect()
 
 	router := routes.GetRouter()
 	fmt.Println("Listening to localhost on port " + port)

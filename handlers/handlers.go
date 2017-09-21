@@ -44,3 +44,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 	renderer.HTML(w, http.StatusOK, "index.html", p)
 }
+
+func Test(w http.ResponseWriter, r *http.Request) {
+
+}
