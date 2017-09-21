@@ -6,19 +6,25 @@ import "fmt"
 const (
 	host       = "localhost:27017"
 	database   = "esamarathon"
-	username   = "root"
-	password   = "root"
 	collection = "articles"
 )
 
-var Db *mgo.Database
+// Connection
+var Connection *mgo.Database
 
 // Connect initializes the database connection
 func Connect() {
-	s, err := mgo.Dial(host)
-	if err != nil {
-		fmt.Println("Failed to connect to DB")
+
+	i := mgo.DialInfo{
+		Addrs:    []string{host},
+		Database: database,
 	}
 
-	Db = s.DB(database)
+	s, err := mgo.DialWithInfo(&i)
+	if err != nil {
+		fmt.Println("Failed to connect to DB")
+		fmt.Printf("Error: %v \n", err)
+	}
+
+	Connection = s.DB(database)
 }
