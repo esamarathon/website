@@ -1,7 +1,10 @@
 package db
 
-import "labix.org/v2/mgo"
-import "fmt"
+import (
+	"fmt"
+
+	"labix.org/v2/mgo"
+)
 
 const (
 	host       = "localhost:27017"

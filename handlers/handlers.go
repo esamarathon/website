@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/dannyvankooten/grender"
+	"github.com/olenedr/esamarathon"
 	"github.com/olenedr/esamarathon/db"
 )
 
@@ -68,9 +69,11 @@ func Test(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Failed to insert document to DB")
 	}
 
-	count, _ := db.Connection.C("articles").Count()
+	// count, _ := db.Connection.C("articles").Count()
+	a := esamarathon.Article{}
 
-	fmt.Printf("%v articles in the DB \n", count)
+	articles, _ := a.All()
+	fmt.Printf("Articles in the DB: %v\n", articles)
 
 	renderer.HTML(w, http.StatusOK, "index.html", p)
 }
