@@ -25,9 +25,15 @@
   revision = "a79fa1e548e2c689c241d10173efd51e5d689d5b"
   version = "v1.2.0"
 
+[[projects]]
+  branch = "(default)"
+  name = "labix.org/v2/mgo"
+  packages = [".","bson","sasl"]
+  revision = "gustavo@niemeyer.net-20140701140051-90be2tvk93pcczzi"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "09a0f105427b34dfa7c968c4a266e75485dd7c4ce826fecf6edd8bc1b31ec64a"
+  inputs-digest = "023e632026436aa402e84dd18563bf142e195a38a3b0a4d73b7e58a0016247ce"
   solver-name = "gps-cdcl"
   solver-version = 1
