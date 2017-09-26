@@ -3,31 +3,31 @@ package db
 import (
 	"fmt"
 
+	"github.com/olenedr/esamarathon/config"
 	"labix.org/v2/mgo"
 )
 
-const (
-	host       = "localhost:27017"
-	database   = "esamarathon"
-	collection = "articles"
-)
-
-// Connection
+// Connection is the live database connection
 var Connection *mgo.Database
 
 // Connect initializes the database connection
 func Connect() {
 
 	i := mgo.DialInfo{
-		Addrs:    []string{host},
-		Database: database,
+		Addrs:    []string{config.Config.DatabaseHost},
+		Database: config.Config.Database,
+		Username: config.Config.DatabaseUser,
+		Password: config.Config.DatabasePassword,
 	}
+	fmt.Println("%v", i)
 
 	s, err := mgo.DialWithInfo(&i)
 	if err != nil {
 		fmt.Println("Failed to connect to DB")
 		fmt.Printf("Error: %v \n", err)
+	} else {
+		fmt.Println("Connected to the DB!")
 	}
 
-	Connection = s.DB(database)
+	Connection = s.DB(config.Config.Database)
 }
