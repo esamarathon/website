@@ -1,22 +1,21 @@
 package user
 
 import (
-	"github.com/olenedr/esamarathon/config"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/github"
+	"net/http"
 )
 
-var (
-	twitchOauthConfig *oauth2.Config
-)
+// HandleAuthRedirect redirects to the Twitch auth url
+func HandleAuthRedirect(w http.ResponseWriter, r *http.Request) {
 
-// BuildTwitchAuthConfig sets up the oauth config for authetication with Twitch.tv
-func BuildTwitchAuthConfig() {
-	twitchOauthConfig = &oauth2.Config{
-		ClientID:     config.Config.GithubClientID,
-		ClientSecret: config.Config.GithubClientSecret,
-		Scopes:       []string{"user"},
-		RedirectURL:  config.Config.GithubRedirectURL,
-		Endpoint:     github.Endpoint,
-	}
+}
+
+// HandleLogout deletes the session and redirects to root
+func HandleLogout(w http.ResponseWriter, r *http.Request) {
+	SessionStore.MaxAge(-1)
+	http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
+}
+
+// HandleAuthCallback handles the callback from the signin on Twitch
+func HandleAuthCallback(w http.ResponseWriter, r *http.Request) {
+
 }
