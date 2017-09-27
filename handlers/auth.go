@@ -33,6 +33,8 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("TOKEN GET:", token.AccessToken)
 
+	user.RequestTwitchUser(token)
+
 	// user, _ := getGithubUser(token)
 	// user.Organizations, _ = getGithubOrgs(token)
 

@@ -22,6 +22,7 @@ type config struct {
 	TwitchClientSecret string
 	TwitchRedirectURL  string
 	TwitchTokenURL     string
+	TwitchAPIRootURL   string
 }
 
 // Config describes the env of the application
@@ -50,6 +51,7 @@ func init() {
 		TwitchClientSecret: os.Getenv("TWITCH_CLIENT_SECRET"),
 		TwitchRedirectURL:  os.Getenv("TWITCH_REDIRECT_URL"),
 		TwitchTokenURL:     os.Getenv("TWITCH_TOKEN_URL"),
+		TwitchAPIRootURL:   os.Getenv("TWITCH_API_ROOT_URL"),
 	}
 
 	buildTwitchAuthConfig()
