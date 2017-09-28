@@ -62,7 +62,7 @@ func buildTwitchAuthConfig() {
 	TwitchOauthConfig = &oauth2.Config{
 		ClientID:     Config.TwitchClientID,
 		ClientSecret: Config.TwitchClientSecret,
-		Scopes:       []string{"viewing_activity_read"},
+		Scopes:       []string{"user_read"},
 		RedirectURL:  Config.TwitchRedirectURL,
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  Config.TwitchAuthURL,

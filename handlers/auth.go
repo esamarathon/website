@@ -18,7 +18,7 @@ func AuthRedirect(w http.ResponseWriter, r *http.Request) {
 func AuthCallback(w http.ResponseWriter, r *http.Request) {
 	state := r.FormValue("state")
 	if state != config.OauthStateString {
-		fmt.Printf("invalid oauth state, expected '%s', got '%s'\n", config.OauthStateString, state)
+		fmt.Printf("Invalid oauth state, expected '%s', got '%s'\n", config.OauthStateString, state)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
