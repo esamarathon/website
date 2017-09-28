@@ -1,15 +1,25 @@
 package user
 
 import (
+	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/olenedr/esamarathon/config"
 	"golang.org/x/oauth2"
 )
 
-func RequestTwitchUser(token *oauth2.Token) {
+type User struct {
+	ID       string `json:"id,omitempty"`
+	Username string `json:"user_name,omitempty"`
+}
+
+type TwitchResponse struct {
+	User       User `json:"token,omitempty"`
+	Identified bool `json:"identified,omitempty"`
+}
+
+func RequestTwitchUser(token *oauth2.Token) (User, error) {
 	c := &http.Client{}
 	req, err := http.NewRequest("GET", config.Config.TwitchAPIRootURL, nil)
 	if err != nil {
@@ -22,10 +32,20 @@ func RequestTwitchUser(token *oauth2.Token) {
 	req.Header.Add("Client-ID", config.Config.TwitchClientID)
 	resp, err := c.Do(req)
 	if err != nil {
-		// handle
+		fmt.Printf("%v", err)
 	}
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	fmt.Printf("%v", string(body))
+
+	var response TwitchResponse
+	var user User
+	err = json.NewDecoder(resp.Body).Decode(&response)
+	if err != nil {
+		fmt.Printf("%v", err)
+		return user, err
+	}
+
+	fmt.Printf("%v", response.User)
+
+	return user, nil
 
 }
