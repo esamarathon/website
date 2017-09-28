@@ -22,10 +22,10 @@ type TwitchResponse struct {
 func RequestTwitchUser(token *oauth2.Token) (User, error) {
 	c := &http.Client{}
 	var res TwitchResponse
-	var u User
+
 	req, err := http.NewRequest("GET", config.Config.TwitchAPIRootURL, nil)
 	if err != nil {
-		return u, err
+		return User{}, err
 	}
 
 	req.Header.Add("Accept", "application/vnd.twitchtv.v5+json")
@@ -33,7 +33,7 @@ func RequestTwitchUser(token *oauth2.Token) (User, error) {
 	req.Header.Add("Client-ID", config.Config.TwitchClientID)
 	resp, err := c.Do(req)
 	if err != nil {
-		return u, err
+		return User{}, err
 	}
 	defer resp.Body.Close()
 
@@ -42,9 +42,9 @@ func RequestTwitchUser(token *oauth2.Token) (User, error) {
 	// Check for err or empty struct
 	if err != nil || res.User == (User{}) {
 		fmt.Printf("%v", err)
-		return u, err
+		return User{}, err
 	}
 
-	return u, nil
+	return res.User, nil
 
 }

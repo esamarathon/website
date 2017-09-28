@@ -33,11 +33,16 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("TOKEN GET:", token.AccessToken)
 
-	u, _ := user.RequestTwitchUser(token)
+	u, err := user.RequestTwitchUser(token)
+	if err != nil {
+		fmt.Printf("Failed to get the user '%s'\n", err)
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
 
 	// Store the session
 	user.UserToSession(w, r, u)
 
-	fmt.Println("User authenticated", u)
+	fmt.Println("User authenticated", u.Username)
 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 }
