@@ -21,31 +21,30 @@ type TwitchResponse struct {
 
 func RequestTwitchUser(token *oauth2.Token) (User, error) {
 	c := &http.Client{}
+	var res TwitchResponse
+	var u User
 	req, err := http.NewRequest("GET", config.Config.TwitchAPIRootURL, nil)
 	if err != nil {
-		// handle
+		return u, err
 	}
-	fmt.Println("HELLO TOKEN HERE YES", token.AccessToken)
 
 	req.Header.Add("Accept", "application/vnd.twitchtv.v5+json")
 	req.Header.Add("Authorization", "OAuth "+token.AccessToken)
 	req.Header.Add("Client-ID", config.Config.TwitchClientID)
 	resp, err := c.Do(req)
 	if err != nil {
-		fmt.Printf("%v", err)
+		return u, err
 	}
 	defer resp.Body.Close()
 
-	var response TwitchResponse
-	var user User
-	err = json.NewDecoder(resp.Body).Decode(&response)
-	if err != nil {
+	err = json.NewDecoder(resp.Body).Decode(&res)
+
+	// Check for err or empty struct
+	if err != nil || res.User == (User{}) {
 		fmt.Printf("%v", err)
-		return user, err
+		return u, err
 	}
 
-	fmt.Printf("%v", response.User)
-
-	return user, nil
+	return u, nil
 
 }

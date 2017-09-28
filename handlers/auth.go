@@ -33,14 +33,11 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("TOKEN GET:", token.AccessToken)
 
-	user.RequestTwitchUser(token)
+	u, _ := user.RequestTwitchUser(token)
 
-	// user, _ := getGithubUser(token)
-	// user.Organizations, _ = getGithubOrgs(token)
+	// Store the session
+	user.UserToSession(w, r, u)
 
-	// // Store the session
-	// userToSession(w, r, user)
-
-	fmt.Println("User authenticated")
+	fmt.Println("User authenticated", u)
 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 }
