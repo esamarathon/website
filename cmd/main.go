@@ -21,7 +21,7 @@ func main() {
 		port = "3000"
 	}
 
-	db.Connect()
+	go db.Connect()
 
 	router := routes.GetRouter()
 	fmt.Println("Listening to localhost on port " + port)
