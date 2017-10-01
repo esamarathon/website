@@ -5,8 +5,9 @@ import (
 	"net/http"
 
 	"github.com/dannyvankooten/grender"
-	"github.com/olenedr/esamarathon"
+	"github.com/olenedr/esamarathon/article"
 	"github.com/olenedr/esamarathon/db"
+	"github.com/olenedr/esamarathon/str"
 )
 
 type page struct {
@@ -29,8 +30,9 @@ var renderer = grender.New(grender.Options{
 	TemplatesGlob: "templates/*.html",
 })
 
-// Returns index view
+// Index returns index view
 func Index(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("%v", str.RandStringRunes(10))
 	m := meta{
 		"ESA Marathon",
 		"Welcome to European Speedrunner Assembly!",
@@ -70,7 +72,7 @@ func Test(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// count, _ := db.Connection.C("articles").Count()
-	a := esamarathon.Article{}
+	a := article.Article{}
 
 	articles, _ := a.All()
 	fmt.Printf("Articles in the DB: %v\n", articles)

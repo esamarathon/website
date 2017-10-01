@@ -1,6 +1,11 @@
 mdb:
-  image: mongo
+  image: tutum/mongodb
   ports:
     - "27017:27017"
+    - "28017:28017"
   volumes:
     - "./tmp/db:/data/db"
+  environment:
+    MONGODB_USER: "root"
+    MONGODB_PASS: "root"
+    MONGODB_DATABASE: "esamarathon"
