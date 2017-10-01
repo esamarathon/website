@@ -1,5 +1,5 @@
 {
-  "name": "ESA Marathon",
+  "name": "esa_marathon",
   "scripts":{
     "gulp": "gulp css",
     "watch": "gulp watch"
