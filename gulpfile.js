@@ -26,7 +26,7 @@ gulp.task('css', function () {
 })
 
 gulp.task('watch', function () {
-    gulp.watch(paths.src.style, )
+    gulp.watch(paths.src.style, ['css'])
 })
 
 gulp.task('default', ['css'])
