@@ -1,3 +1,6 @@
 node_modules/
 tmp/
 .env
+yarn-error.log
+
+public/style/*.css
