@@ -1,6 +1,6 @@
 {
   "name": "esa_marathon",
-  "scripts":{
+  "scripts": {
     "gulp": "gulp css",
     "watch": "gulp watch"
   },
