@@ -1,17 +1,17 @@
 package handlers
 
 type page struct {
-	Meta    *meta
-	Content *content
+	Meta    meta    `json:"meta,omitempty"`
+	Content content `json:"content,omitempty"`
 }
 
 type content struct {
-	Title string
-	Body  string
+	Title string `json:"title,omitempty"`
+	Body  string `json:"body,omitempty"`
 }
 
 type meta struct {
-	Title       string
-	Description string
-	Image       string
+	Title       string `json:"title,omitempty"`
+	Description string `json:"description,omitempty"`
+	Image       string `json:"image,omitempty"`
 }

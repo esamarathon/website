@@ -45,5 +45,5 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 	user.UserToSession(w, r, u)
 
 	fmt.Println("User authenticated", u.Username)
-	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }

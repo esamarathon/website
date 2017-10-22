@@ -18,7 +18,9 @@ func GetRouter() *mux.Router {
 	router.HandleFunc("/test", handlers.Test).Methods("GET", "OPTIONS")
 	router.HandleFunc("/auth", handlers.AuthRedirect).Methods("GET")
 	router.HandleFunc("/auth/callback", handlers.AuthCallback).Methods("GET")
-	// http://localhost:3001/auth/callback
+
+	//Admin routes
+	router.HandleFunc("/admin", handlers.AdminIndex).Methods("GET")
 
 	return router
 }

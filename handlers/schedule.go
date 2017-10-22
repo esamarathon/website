@@ -9,7 +9,7 @@ import (
 )
 
 type scheduleResponse struct {
-	Schedule schedule `json:"data,omitempty"`
+	Schedule *schedule `json:"data,omitempty"`
 }
 type schedule struct {
 	Name        string          `json:"name,omitempty"`
@@ -17,6 +17,7 @@ type schedule struct {
 	Updated     string          `json:"updated,omitempty"`
 	Link        string          `json:"link,omitempty"`
 	Entries     []scheduleEntry `json:"items,omitempty"`
+	Meta        meta            `json:"data,omitempty"`
 }
 
 type scheduleEntry struct {
@@ -33,22 +34,27 @@ type scheduleEntry struct {
 func Schedule(w http.ResponseWriter, r *http.Request) {
 	var s scheduleResponse
 
-	resp, _ := http.Get("https://horaro.org/-/api/v1/schedules/4311u8b52b04si7a1e")
+	resp, err := http.Get("https://horaro.org/-/api/v1/schedules/4311u8b52b04si7a1e")
+	if err != nil {
+		fmt.Printf("%v", err)
+		renderer.HTML(w, http.StatusOK, "500.html", page{m, content{}})
+	}
 
 	defer resp.Body.Close()
 
-	_ = json.NewDecoder(resp.Body).Decode(&s)
+	if err = json.NewDecoder(resp.Body).Decode(&s); err != nil {
+		fmt.Printf("%v", err)
+		renderer.HTML(w, http.StatusOK, "500.html", page{m, content{}})
+	}
 
-	for _, e := range s.Schedule.Entries {
+	for i, e := range s.Schedule.Entries {
 		o := blackfriday.Run([]byte(e.Data[0]))
 		e.Game = string(o)
 		o = blackfriday.Run([]byte(e.Data[1]))
 		e.Players = string(o)
 
-		// fmt.Printf("Game: %v\n", e.Data[0])
-
-		// fmt.Printf("Runner: %v\n", e.Data[1])
+		s.Schedule.Entries[i] = e
 	}
-	fmt.Println(s.Schedule.Name)
-	renderer.HTML(w, http.StatusOK, "schedule.html", s)
+	s.Schedule.Meta = m
+	renderer.HTML(w, http.StatusOK, "schedule.html", s.Schedule)
 }
