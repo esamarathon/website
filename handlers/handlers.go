@@ -7,24 +7,7 @@ import (
 	"github.com/dannyvankooten/grender"
 	"github.com/olenedr/esamarathon/article"
 	"github.com/olenedr/esamarathon/db"
-	"github.com/olenedr/esamarathon/str"
 )
-
-type page struct {
-	Meta    *meta
-	Content *content
-}
-
-type content struct {
-	Title string
-	Body  string
-}
-
-type meta struct {
-	Title       string
-	Description string
-	Image       string
-}
 
 var renderer = grender.New(grender.Options{
 	TemplatesGlob: "templates/*.html",
@@ -32,7 +15,6 @@ var renderer = grender.New(grender.Options{
 
 // Index returns index view
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("%v", str.RandStringRunes(10))
 	m := meta{
 		"ESA Marathon",
 		"Welcome to European Speedrunner Assembly!",

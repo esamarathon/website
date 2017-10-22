@@ -1,0 +1,13 @@
+{{/* extends "layout.html" */}}
+{{define "content"}}
+    <h2>Hello world</h2>
+    <h1>{{ .Shedule.Name }}</h1>
+    <main>
+        {{ range .Entries }}
+            {{ .Game }}
+
+            {{ .Players }}
+        {{ end }}
+    </main>
+
+{{end}}
