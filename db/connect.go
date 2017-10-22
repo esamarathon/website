@@ -19,7 +19,7 @@ func Connect() error {
 		Username: config.Config.DatabaseUser,
 		Password: config.Config.DatabasePassword,
 	}
-	fmt.Println("%v", i)
+	fmt.Printf("Credentials: %v", i)
 
 	s, err := mgo.DialWithInfo(&i)
 	if err != nil {
