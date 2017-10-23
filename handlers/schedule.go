@@ -60,7 +60,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 		e.Players = getPlayers(e.Data[1])
 		e.Platform = e.Data[2]
 		e.Note = e.Data[3]
-		e.Estimate = getEstimate(e.Length)
+		// e.Estimate = getEstimate(e.Length)
 
 		s.Schedule.Entries[i] = e
 	}
@@ -106,4 +106,8 @@ func getAnchorLink(str string) string {
 		return match[1]
 	}
 	return str
+}
+
+func getEstimate(length int) string {
+
 }
