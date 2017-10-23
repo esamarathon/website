@@ -10,7 +10,14 @@
         </span>
         <span>
         {{ if .Players }}
-            Runner: {{ .Players }}
+            Player(s): 
+            {{ range .Players }}
+                {{ if .ProfileURL }}
+                    <a target="_blank" href="{{ .ProfileURL }}">{{ .Name }}</a> 
+                {{ else }}
+                    {{ .Name }}
+                {{ end }}
+            {{ end }}
         {{ end }}
         </span>
     </p>

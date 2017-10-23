@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
-	blackfriday "gopkg.in/russross/blackfriday.v2"
+	"regexp"
+	"strings"
 )
 
 type scheduleResponse struct {
@@ -21,14 +21,21 @@ type schedule struct {
 }
 
 type scheduleEntry struct {
-	Scheduled string   `json:"scheduled,omitempty"`
-	Game      string   `json:"game,omitempty"`
-	Estimage  string   `json:"estimage,omitempty"`
-	Players   string   `json:"players,omitempty"`
-	Platform  string   `json:"platform,omitempty"`
-	Category  string   `json:"category,omitempty"`
-	Note      string   `json:"note,omitempty"`
-	Data      []string `json:"data,omitempty"`
+	Scheduled string           `json:"scheduled,omitempty"`
+	Game      string           `json:"game,omitempty"`
+	GameLink  string           `json:"game_link,omitempty"`
+	Estimate  string           `json:"estimate,omitempty"`
+	Players   []schedulePlayer `json:"players,omitempty"`
+	Platform  string           `json:"platform,omitempty"`
+	Category  string           `json:"category,omitempty"`
+	Note      string           `json:"note,omitempty"`
+	Data      []string         `json:"data,omitempty"`
+	Length    int              `json:"length_t,omitempty"`
+}
+
+type schedulePlayer struct {
+	Name       string `json:"name,omitempty"`
+	ProfileURL string `json:"profile_url,omitempty"`
 }
 
 func Schedule(w http.ResponseWriter, r *http.Request) {
@@ -48,13 +55,55 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for i, e := range s.Schedule.Entries {
-		o := blackfriday.Run([]byte(e.Data[0]))
-		e.Game = string(o)
-		o = blackfriday.Run([]byte(e.Data[1]))
-		e.Players = string(o)
+		fmt.Println("Original: " + e.Data[1])
+		e.Game = getAnchorText(e.Data[0])
+		e.Players = getPlayers(e.Data[1])
+		e.Platform = e.Data[2]
+		e.Note = e.Data[3]
+		e.Estimate = getEstimate(e.Length)
 
 		s.Schedule.Entries[i] = e
 	}
 	s.Schedule.Meta = m
 	renderer.HTML(w, http.StatusOK, "schedule.html", s.Schedule)
+}
+
+func getPlayers(str string) []schedulePlayer {
+	nameRE := regexp.MustCompile("\\[([^]]+)\\]")
+	names := nameRE.FindAllString(str, -1)
+
+	linkRE := regexp.MustCompile("\\(([^]]+)\\)")
+	links := linkRE.FindAllString(str, -1)
+
+	players := make([]schedulePlayer, len(names))
+	for i, name := range names {
+		name = strings.Replace(name, "[", "", -1)
+		name = strings.Replace(name, "]", "", -1)
+		players[i].Name = name
+	}
+
+	for i, link := range links {
+		link = strings.Replace(link, "(", "", -1)
+		link = strings.Replace(link, ")", "", -1)
+		players[i].ProfileURL = link
+	}
+	return players
+}
+
+func getAnchorText(str string) string {
+	re := regexp.MustCompile("\\[([^]]+)\\]")
+	match := re.FindStringSubmatch(str)
+	if len(match) >= 1 {
+		return match[1]
+	}
+	return str
+}
+
+func getAnchorLink(str string) string {
+	re := regexp.MustCompile("\\(([^]]+)\\)")
+	match := re.FindStringSubmatch(str)
+	if len(match) >= 1 {
+		return match[1]
+	}
+	return str
 }
