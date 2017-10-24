@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 
 	"github.com/olenedr/esamarathon/config"
@@ -46,4 +47,15 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("User authenticated", u.Username)
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+}
+
+func HandleAuth(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("templates/login.html")
+	if err != nil {
+		//@TODO: Some better error handeling needed
+		fmt.Fprint(w, err)
+		return
+	}
+
+	t.Execute(w, nil)
 }

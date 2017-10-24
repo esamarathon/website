@@ -109,5 +109,5 @@ func getAnchorLink(str string) string {
 }
 
 func getEstimate(length int) string {
-
+	return ""
 }
