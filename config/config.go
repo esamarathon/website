@@ -7,6 +7,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/olenedr/esamarathon/str"
 	"golang.org/x/oauth2"
+	rDB "gopkg.in/gorethink/gorethink.v3"
 )
 
 type config struct {
@@ -70,4 +71,15 @@ func buildTwitchAuthConfig() {
 		},
 	}
 	OauthStateString = str.RandStringRunes(10)
+}
+
+func DBConfig() rDB.ConnectOpts {
+	return rDB.ConnectOpts{
+		Address:    Config.DatabaseHost,
+		Database:   Config.Database,
+		Username:   Config.DatabaseUser,
+		Password:   Config.DatabasePassword,
+		InitialCap: 10,
+		MaxOpen:    10,
+	}
 }

@@ -6,20 +6,16 @@ import (
 	rDB "gopkg.in/gorethink/gorethink.v3"
 )
 
+var DB *rDB.Session
+
 func Connect() error {
-	dbConf := config.Config
-	_, err := rDB.Connect(rDB.ConnectOpts{
-		Address:    dbConf.DatabaseHost,
-		Database:   dbConf.Database,
-		Username:   dbConf.DatabaseUser,
-		Password:   dbConf.DatabasePassword,
-		InitialCap: 10,
-		MaxOpen:    10,
-	})
+	session, err := rDB.Connect(config.DBConfig())
 
 	if err != nil {
 		return errors.Wrap(err, "db.Connect")
 	}
+
+	DB = session
 
 	return nil
 }
