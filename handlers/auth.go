@@ -19,6 +19,7 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 	state := r.FormValue("state")
 	if state != config.OauthStateString {
 		fmt.Printf("Invalid oauth state, expected '%s', got '%s'\n", config.OauthStateString, state)
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -44,5 +45,5 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 	user.UserToSession(w, r, u)
 
 	fmt.Println("User authenticated", u.Username)
-	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }

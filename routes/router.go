@@ -13,10 +13,14 @@ func GetRouter() *mux.Router {
 
 	router.PathPrefix("/static").Handler(handleStatic("public", "/static"))
 	router.HandleFunc("/", handlers.Index).Methods("GET", "OPTIONS")
+	router.HandleFunc("/schedule", handlers.Schedule).Methods("GET", "OPTIONS")
+	router.HandleFunc("/news", handlers.News).Methods("GET", "OPTIONS")
 	router.HandleFunc("/test", handlers.Test).Methods("GET", "OPTIONS")
 	router.HandleFunc("/auth", handlers.AuthRedirect).Methods("GET")
 	router.HandleFunc("/auth/callback", handlers.AuthCallback).Methods("GET")
-	// http://localhost:3001/auth/callback
+
+	//Admin routes
+	router.HandleFunc("/admin", handlers.AdminIndex).Methods("GET")
 
 	return router
 }

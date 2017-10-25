@@ -1,0 +1,25 @@
+{{/* extends "layout.html" */}}
+{{define "content"}}
+    <h2>{{ .Name }}</h2>
+    {{ range .Entries }}
+    <p>
+        <span>
+        {{ if .Game }}
+            Game: {{ .Game }}
+        {{ end }}
+        </span>
+        <span>
+        {{ if .Players }}
+            Player(s): 
+            {{ range .Players }}
+                {{ if .ProfileURL }}
+                    <a target="_blank" href="{{ .ProfileURL }}">{{ .Name }}</a> 
+                {{ else }}
+                    {{ .Name }}
+                {{ end }}
+            {{ end }}
+        {{ end }}
+        </span>
+    </p>
+    {{ end }}
+{{end}}
