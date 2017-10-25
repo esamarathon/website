@@ -27,7 +27,8 @@ func main() {
 		log.Println("Successfully connected to the database")
 	}
 
-	router := routes.GetRouter()
+	router := routes.Router("0.1")
+
 	fmt.Println("Listening to localhost on port " + port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
 }

@@ -3,17 +3,16 @@ package routes
 import (
 	"net/http"
 
+	"github.com/olenedr/esamarathon/routes/admin"
+	"github.com/rs/cors"
+
 	"github.com/gorilla/mux"
 	"github.com/olenedr/esamarathon/handlers"
-	"github.com/olenedr/esamarathon/middleware"
 )
 
-// GetRouter returns an instance of the Mux router
-func GetRouter() *mux.Router {
-	router := mux.NewRouter()
+var router = mux.NewRouter()
 
-	requiresAuth := middleware.AuthMiddleware
-
+func init() {
 	router.PathPrefix("/static").Handler(handleStatic("public", "/static"))
 	router.HandleFunc("/", handlers.Index).Methods("GET", "OPTIONS")
 	router.HandleFunc("/schedule", handlers.Schedule).Methods("GET", "OPTIONS")
@@ -24,10 +23,7 @@ func GetRouter() *mux.Router {
 	router.HandleFunc("/login", handlers.HandleAuth).Methods("GET")
 	router.HandleFunc("/logout", handlers.HandleLogout).Methods("GET")
 
-	//Admin routes
-	router.HandleFunc("/admin", requiresAuth(handlers.AdminIndex))
-
-	return router
+	admin.Routes("/admin", router)
 }
 
 func handleStatic(dir, prefix string) http.HandlerFunc {
@@ -36,4 +32,15 @@ func handleStatic(dir, prefix string) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		realHandler(w, req)
 	}
+}
+
+func Router(version string) http.Handler {
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"*"},
+		AllowedHeaders:   []string{"*"},
+		AllowCredentials: true,
+	})
+
+	return c.Handler(router)
 }

@@ -31,15 +31,5 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 // Test is a test handler for Ole to debug stuff
 func Test(w http.ResponseWriter, r *http.Request) {
-	// if err := db.Connection.C("articles").Insert(p); err != nil {
-	// 	fmt.Println("Failed to insert document to DB")
-	// }
 
-	// // count, _ := db.Connection.C("articles").Count()
-	// a := article.Article{}
-
-	// articles, _ := a.All()
-	// fmt.Printf("Articles in the DB: %v\n", articles)
-
-	// renderer.HTML(w, http.StatusOK, "index.html", p)
 }
