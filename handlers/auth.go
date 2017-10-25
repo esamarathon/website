@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 
 	"github.com/olenedr/esamarathon/config"
@@ -32,18 +33,33 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("TOKEN GET:", token.AccessToken)
-
 	u, err := user.RequestTwitchUser(token)
 	if err != nil {
-		fmt.Printf("Failed to get the user '%s'\n", err)
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
 
 	// Store the session
-	user.UserToSession(w, r, u)
+	if err := user.UserToSession(w, r, u); err != nil {
+		http.Redirect(w, r, "500.html", http.StatusTemporaryRedirect)
+		return
+	}
 
-	fmt.Println("User authenticated", u.Username)
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+}
+
+func HandleAuth(w http.ResponseWriter, r *http.Request) {
+	t, err := template.ParseFiles("templates/login.html")
+	if err != nil {
+		//@TODO: Some better error handeling needed
+		fmt.Fprint(w, err)
+		return
+	}
+
+	t.Execute(w, nil)
+}
+
+func HandleLogout(w http.ResponseWriter, r *http.Request) {
+	user.SessionStore.MaxAge(-1)
+	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 }

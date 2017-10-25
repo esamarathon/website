@@ -5,11 +5,14 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/olenedr/esamarathon/handlers"
+	"github.com/olenedr/esamarathon/middleware"
 )
 
 // GetRouter returns an instance of the Mux router
 func GetRouter() *mux.Router {
 	router := mux.NewRouter()
+
+	requiresAuth := middleware.AuthMiddleware
 
 	router.PathPrefix("/static").Handler(handleStatic("public", "/static"))
 	router.HandleFunc("/", handlers.Index).Methods("GET", "OPTIONS")
@@ -18,9 +21,11 @@ func GetRouter() *mux.Router {
 	router.HandleFunc("/test", handlers.Test).Methods("GET", "OPTIONS")
 	router.HandleFunc("/auth", handlers.AuthRedirect).Methods("GET")
 	router.HandleFunc("/auth/callback", handlers.AuthCallback).Methods("GET")
+	router.HandleFunc("/login", handlers.HandleAuth).Methods("GET")
+	router.HandleFunc("/logout", handlers.HandleLogout).Methods("GET")
 
 	//Admin routes
-	router.HandleFunc("/admin", handlers.AdminIndex).Methods("GET")
+	router.HandleFunc("/admin", requiresAuth(handlers.AdminIndex))
 
 	return router
 }
