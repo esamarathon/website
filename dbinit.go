@@ -1,13 +1,19 @@
 package main
 
 import (
+	"flag"
 	"log"
 
 	"github.com/joho/godotenv"
 	"github.com/olenedr/esamarathon/db"
 )
 
+var (
+	seedPtr = flag.Bool("seed", false, "Will run seeds")
+)
+
 func main() {
+	flag.Parse()
 	if err := godotenv.Load(); err != nil {
 		log.Println("Error loading .env file")
 		return
@@ -25,7 +31,11 @@ func main() {
 	}
 	log.Println("Successfully migrated database")
 
-	// @TODO: Add flag to determine whether to seed or not
+	// If `--seed` is present
+	if !*seedPtr {
+		return
+	}
+
 	if err := db.Seed(); err != nil {
 		log.Println("Error while seeding:", err)
 		return
