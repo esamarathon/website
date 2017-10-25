@@ -59,3 +59,8 @@ func HandleAuth(w http.ResponseWriter, r *http.Request) {
 
 	t.Execute(w, nil)
 }
+
+func HandleLogout(w http.ResponseWriter, r *http.Request) {
+	middleware.SessionStore.MaxAge(-1)
+	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+}

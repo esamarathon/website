@@ -48,3 +48,7 @@ func UserFromSession(r *http.Request) (User, error) {
 
 	return u, nil
 }
+
+func (age int) {
+	SessionStore.MaxAge(age)
+}

@@ -1,5 +1,5 @@
 mdb:
-  image: tutum/mongodb
+  image: sameersbn/mongodb:latest
   ports:
     - "27017:27017"
     - "28017:28017"

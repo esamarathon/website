@@ -11,7 +11,7 @@ var renderer = grender.New(grender.Options{
 	TemplatesGlob: "templates/*.html",
 })
 
-func AuthMiddleware(h http.HandlerFunc) http.Handler {
+func AuthMiddleware(h http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_, err := user.UserFromSession(r)
 		if err != nil {
@@ -19,7 +19,7 @@ func AuthMiddleware(h http.HandlerFunc) http.Handler {
 			return
 		}
 
-		h(w, r)
-
+		h.ServeHTTP(w, r)
+		return
 	})
 }
