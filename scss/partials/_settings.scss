@@ -1,0 +1,38 @@
+$condensed: 'Roboto Condensed', sans-serif;
+$serif: 'Open Sans', sans-serif;
+
+$grid-columns: 12;
+$gutter: 1rem;
+$max-width: 67.5rem;
+$medium-up-width: 48rem;
+@mixin medium-up {
+   @media (min-width: #{$medium-up-width}) {
+      @content;
+   }
+}
+*,
+*:after,
+*:before {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; 
+}
+
+
+html, body {
+   font-size: 14px;
+   font-family: 'Roboto', sans-serif;
+   background: $background;
+   @include medium-up() {
+      font-size: 16px;
+   }
+   
+}
+h1, h2, h3 , h4, span, p, a {
+   text-rendering: optimizeLegibility;
+}
+article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {
+   display: block
+}

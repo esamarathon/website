@@ -1,5 +1,5 @@
-@import "./_layout.scss";
+@import 'partials/colors';
+@import 'partials/settings';
+@import 'partials/grid';
 
-.hello_world {
-    background: blue
-}
+@import 'partials/header';
