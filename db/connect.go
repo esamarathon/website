@@ -1,35 +1,25 @@
 package db
 
 import (
-	"fmt"
-
 	"github.com/olenedr/esamarathon/config"
-	"labix.org/v2/mgo"
+	"github.com/pkg/errors"
+	rDB "gopkg.in/gorethink/gorethink.v3"
 )
 
-// Connection is the live database connection
-var Connection *mgo.Database
-
-// Connect initializes the database connection
 func Connect() error {
+	dbConf := config.Config
+	_, err := rDB.Connect(rDB.ConnectOpts{
+		Address:    dbConf.DatabaseHost,
+		Database:   dbConf.Database,
+		Username:   dbConf.DatabaseUser,
+		Password:   dbConf.DatabasePassword,
+		InitialCap: 10,
+		MaxOpen:    10,
+	})
 
-	i := mgo.DialInfo{
-		Addrs:    []string{config.Config.DatabaseHost},
-		Database: config.Config.Database,
-		Username: config.Config.DatabaseUser,
-		Password: config.Config.DatabasePassword,
-	}
-	fmt.Printf("Credentials: %v", i)
-
-	s, err := mgo.DialWithInfo(&i)
 	if err != nil {
-		fmt.Println("Failed to connect to DB")
-		fmt.Printf("Error: %v \n", err)
-		return err
+		return errors.Wrap(err, "db.Connect")
 	}
 
-	fmt.Println("Connected to the DB!")
-
-	Connection = s.DB(config.Config.Database)
 	return nil
 }

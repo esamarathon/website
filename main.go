@@ -22,7 +22,9 @@ func main() {
 	}
 
 	if err := db.Connect(); err != nil {
-		log.Println("db.Connect", err)
+		log.Println("Could not connect to the database:", err)
+	} else {
+		log.Println("Successfully connected to the database")
 	}
 
 	router := routes.GetRouter()
