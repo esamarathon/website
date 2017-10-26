@@ -35,3 +35,16 @@
       }
    }
 }
+
+.hide-medium {
+    display: block;
+    @include medium-up {
+        display: none;
+    }
+}
+.show-medium {
+    display: none;
+    @include medium-up {
+        display: block;
+    }
+}
