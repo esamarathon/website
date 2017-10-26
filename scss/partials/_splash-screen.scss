@@ -1,5 +1,45 @@
-section.splash {
+.splash {
+   position: absolute;
+   background: $background-gradient;
+   min-height: 80vh;
+   width: 100%;
+   top: 0;
+   left: 0;
+   padding: $gutter;
+   @include medium-up {
+      padding: $gutter * 10 $gutter * 3 $gutter * 3;
+   }
    &-logo {
-      max-width: 10rem;
+      max-width: 5rem;
+      @include medium-up {
+         max-width: 10rem;
+      }
+      margin: auto;
+      
+      img {
+         width: 100%;
+      }
+   }
+   &-slogan {
+      padding: $gutter 0;
+      img {
+         width: 50%;
+         max-width: 15rem;
+         margin: 0  auto $gutter;
+         @include medium-up {
+            margin: $gutter * 2 0;
+            max-width: 25%;
+         }
+      }
+      p {
+         color: white;
+         line-height: 1.6;
+         letter-spacing: .5px;
+         font-weight: 300;
+         @include medium-up {
+            font-size: 1.125rem;
+            max-width: 50%;
+         }
+      }
    }
 }
