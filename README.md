@@ -1,4 +1,4 @@
-# ESA Marathon
+# <img src="public/assets/favicon.png" width="40"> ESA Marathon
 The greatest speedrunning event Europe has ever seen
 
 ## Requirements
