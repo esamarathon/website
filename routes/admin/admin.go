@@ -28,7 +28,7 @@ func create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
+	http.Redirect(w, r, "/admin", http.StatusCreated)
 }
 
 func get(w http.ResponseWriter, r *http.Request) {

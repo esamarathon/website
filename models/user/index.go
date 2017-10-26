@@ -10,6 +10,10 @@ type User struct {
 	Name string `gorethink:"name" json:"name,omitempty"`
 }
 
+type List struct {
+	Users []User
+}
+
 const Table = "users"
 
 func Insert(name string) error {
@@ -20,16 +24,18 @@ func Insert(name string) error {
 	return db.Insert(Table, data)
 }
 
-func Get() ([]User, error) {
+func Get() (List, error) {
 	rows, err := db.GetAll(Table)
+	var userList List
 	var users []User
 	if err != nil {
-		return users, errors.Wrap(err, "user.Get")
+		return userList, errors.Wrap(err, "user.Get")
 	}
 
 	if err = rows.All(&users); err != nil {
-		return users, errors.Wrap(err, "user.Get")
+		return userList, errors.Wrap(err, "user.Get")
 	}
 
-	return users, nil
+	userList.Users = users
+	return userList, nil
 }

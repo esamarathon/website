@@ -43,14 +43,12 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 	resp, err := http.Get("https://horaro.org/-/api/v1/schedules/4311u8b52b04si7a1e")
 	if err != nil {
-		fmt.Printf("%v", err)
 		renderer.HTML(w, http.StatusOK, "500.html", page{m, content{}})
 	}
 
 	defer resp.Body.Close()
 
 	if err = json.NewDecoder(resp.Body).Decode(&s); err != nil {
-		fmt.Printf("%v", err)
 		renderer.HTML(w, http.StatusOK, "500.html", page{m, content{}})
 	}
 
