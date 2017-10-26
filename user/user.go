@@ -9,6 +9,8 @@ import (
 	"golang.org/x/oauth2"
 )
 
+var table = "users"
+
 type User struct {
 	ID       string `json:"id,omitempty"`
 	Username string `json:"user_name,omitempty"`
