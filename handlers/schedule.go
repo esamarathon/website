@@ -2,10 +2,12 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 	"regexp"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 type scheduleResponse struct {
@@ -43,17 +45,19 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 	resp, err := http.Get("https://horaro.org/-/api/v1/schedules/4311u8b52b04si7a1e")
 	if err != nil {
-		renderer.HTML(w, http.StatusOK, "500.html", page{m, content{}})
+		log.Println(errors.Wrap(err, "handlers.Schedule"))
+		renderer.HTML(w, http.StatusOK, "500.html", page{Meta, content{}})
 	}
 
 	defer resp.Body.Close()
 
 	if err = json.NewDecoder(resp.Body).Decode(&s); err != nil {
-		renderer.HTML(w, http.StatusOK, "500.html", page{m, content{}})
+		log.Println(errors.Wrap(err, "handlers.Schedule"))
+		renderer.HTML(w, http.StatusOK, "500.html", page{Meta, content{}})
 	}
 
 	for i, e := range s.Schedule.Entries {
-		fmt.Println("Original: " + e.Data[1])
+		log.Println("Original: " + e.Data[1])
 		e.Game = getAnchorText(e.Data[0])
 		e.Players = getPlayers(e.Data[1])
 		e.Platform = e.Data[2]
@@ -62,7 +66,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 		s.Schedule.Entries[i] = e
 	}
-	s.Schedule.Meta = m
+	s.Schedule.Meta = Meta
 	renderer.HTML(w, http.StatusOK, "schedule.html", s.Schedule)
 }
 
@@ -107,5 +111,6 @@ func getAnchorLink(str string) string {
 }
 
 func getEstimate(length int) string {
+	// TODO:implement this function
 	return ""
 }

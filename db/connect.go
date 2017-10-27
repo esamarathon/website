@@ -8,7 +8,7 @@ import (
 	rDB "gopkg.in/gorethink/gorethink.v3"
 )
 
-var DB *rDB.Session
+var Session *rDB.Session
 
 func Connect() error {
 	session, err := rDB.Connect(config.DBConfig())
@@ -17,13 +17,13 @@ func Connect() error {
 		return errors.Wrap(err, "db.Connect")
 	}
 
-	DB = session
+	Session = session
 
 	return nil
 }
 
 func Insert(table string, data map[string]interface{}) error {
-	result, err := rDB.Table(table).Insert(data).RunWrite(DB)
+	result, err := rDB.Table(table).Insert(data).RunWrite(Session)
 	if err != nil {
 		return errors.Wrap(err, "db.Insert")
 	}
@@ -33,7 +33,7 @@ func Insert(table string, data map[string]interface{}) error {
 }
 
 func GetAll(table string) (*rDB.Cursor, error) {
-	rows, err := rDB.Table(table).Run(DB)
+	rows, err := rDB.Table(table).Run(Session)
 	if err != nil {
 		return nil, errors.Wrap(err, "db.GetAll")
 	}

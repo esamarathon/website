@@ -10,26 +10,21 @@ var renderer = grender.New(grender.Options{
 	TemplatesGlob: "templates/*.html",
 })
 
-var m = meta{
+var Meta = meta{
 	"ESA Marathon",
 	"Welcome to European Speedrunner Assembly!",
 	"http://www.esamarathon.com/images/esa/europeanspeedrunnerassembly.png",
 }
-var c = content{
+var Content = content{
 	"Welcome to European Speedrunner Assembly!",
 	"",
 }
-var p = page{
-	m,
-	c,
+var Page = page{
+	Meta,
+	Content,
 }
 
 // Index returns index view
 func Index(w http.ResponseWriter, r *http.Request) {
-	renderer.HTML(w, http.StatusOK, "index.html", p)
-}
-
-// Test is a test handler for Ole to debug stuff
-func Test(w http.ResponseWriter, r *http.Request) {
-
+	renderer.HTML(w, http.StatusOK, "index.html", Page)
 }
