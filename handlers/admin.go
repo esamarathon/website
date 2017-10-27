@@ -1,26 +1,45 @@
 package handlers
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/dannyvankooten/grender"
-	"github.com/olenedr/esamarathon/article"
+	"github.com/pkg/errors"
+
+	"github.com/olenedr/esamarathon/models/article"
 	"github.com/olenedr/esamarathon/models/setting"
-	"github.com/olenedr/esamarathon/user"
+	"github.com/olenedr/esamarathon/models/user"
+
+	"github.com/gorilla/mux"
+	"github.com/olenedr/esamarathon/middleware"
 )
+
+func AdminRoutes(base string, router *mux.Router) {
+	requireAuth := middleware.AuthMiddleware
+	router.HandleFunc(base, requireAuth(index)).Methods("GET")
+	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
+	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
+	router.HandleFunc(base+"/user", requireAuth(userCreate)).Methods("POST")
+	router.HandleFunc(base+"/article", requireAuth(articleIndex)).Methods("GET")
+}
 
 var adminRenderer = grender.New(grender.Options{
 	TemplatesGlob: "templates_admin/*.html",
 	PartialsGlob:  "templates_admin/partials/*.html",
 })
 
-func AdminIndex(w http.ResponseWriter, r *http.Request) {
+func index(w http.ResponseWriter, r *http.Request) {
 	// Change with actual status from DB
 	u, userErr := user.UserFromSession(r)
 	s, settingErr := setting.GetLiveMode().AsBool()
-	if userErr != nil || settingErr != nil {
-		http.Redirect(w, r, "500.html", http.StatusTemporaryRedirect)
+	if settingErr != nil {
+		log.Println(errors.Wrap(settingErr, "admin.index"))
+	}
+	if userErr != nil {
+		log.Println(errors.Wrap(userErr, "admin.index"))
 	}
 	v := map[string]interface{}{
 		"User":   u,
@@ -30,17 +49,15 @@ func AdminIndex(w http.ResponseWriter, r *http.Request) {
 	adminRenderer.HTML(w, http.StatusOK, "index.html", v)
 }
 
-func AdminUserIndex(w http.ResponseWriter, r *http.Request) {
-	// Change with actual userdata
-	users := []user.User{
-		{
-			Username: "Korkn",
-		},
-		{
-			Username: "egreb__",
-		},
+func userIndex(w http.ResponseWriter, r *http.Request) {
+	users, err := user.All()
+	if err != nil {
+		log.Println(errors.Wrap(err, "admin.user.index"))
 	}
-	u, _ := user.UserFromSession(r)
+	u, err := user.UserFromSession(r)
+	if err != nil {
+		log.Println(errors.Wrap(err, "admin.user.index"))
+	}
 	v := map[string]interface{}{
 		"User":  u,
 		"Users": users,
@@ -49,7 +66,7 @@ func AdminUserIndex(w http.ResponseWriter, r *http.Request) {
 	adminRenderer.HTML(w, http.StatusOK, "user.html", v)
 }
 
-func AdminArticleIndex(w http.ResponseWriter, r *http.Request) {
+func articleIndex(w http.ResponseWriter, r *http.Request) {
 	// Change with actual articledata
 	timestamp := time.Now()
 	body := "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
@@ -78,8 +95,22 @@ func AdminArticleIndex(w http.ResponseWriter, r *http.Request) {
 	adminRenderer.HTML(w, http.StatusOK, "article.html", v)
 }
 
-func AdminToggleLive(w http.ResponseWriter, r *http.Request) {
+func toggleLivemode(w http.ResponseWriter, r *http.Request) {
 	setting.GetLiveMode().Toggle()
 
+	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+}
+
+func userCreate(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	userName := r.Form.Get("username")
+
+	if err := user.Insert(userName); err != nil || userName == "" {
+		// TODO:Handle error better
+		fmt.Fprint(w, err)
+		return
+	}
+
+	log.Println("redirect")
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }

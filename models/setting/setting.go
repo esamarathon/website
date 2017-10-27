@@ -22,7 +22,7 @@ type Setting struct {
 func GetLiveMode() *Setting {
 	res, err := rt.Table(Table).Filter(map[string]interface{}{
 		"key": "livemode",
-	}).Run(db.DB)
+	}).Run(db.Session)
 
 	var s Setting
 	err = res.One(&s)
@@ -52,7 +52,7 @@ func (s *Setting) Toggle() error {
 	} else {
 		s.Value = "true"
 	}
-	_, err = rt.Table(Table).Get(s.ID).Update(s).Run(db.DB)
+	_, err = rt.Table(Table).Get(s.ID).Update(s).Run(db.Session)
 	if err != nil {
 		return err
 	}

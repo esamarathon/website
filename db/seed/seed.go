@@ -8,7 +8,7 @@ package seed
 import (
 	"github.com/olenedr/esamarathon/db"
 	"github.com/olenedr/esamarathon/models/setting"
-	"github.com/olenedr/esamarathon/user"
+	"github.com/olenedr/esamarathon/models/user"
 
 	"github.com/pkg/errors"
 	rt "gopkg.in/gorethink/gorethink.v3"
@@ -40,7 +40,7 @@ func users() error {
 		},
 	}
 
-	res, err := rt.Table(t).Insert(users).Run(db.DB)
+	res, err := rt.Table(t).Insert(users).Run(db.Session)
 	if err != nil {
 		return err
 	}
@@ -62,7 +62,7 @@ func settings() error {
 		},
 	}
 
-	res, err := rt.Table(t).Insert(settings).Run(db.DB)
+	res, err := rt.Table(t).Insert(settings).Run(db.Session)
 	if err != nil {
 		return err
 	}

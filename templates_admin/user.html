@@ -9,11 +9,11 @@
                 Add a new user to the admin-panel.
             </p>
             <p>Remember to use their exact Twitch user to allow authorization through the Twitch API</p>
-            <form action="/admin/user">
+            <form action="/admin/user" method="POST">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Twitch Username">
+                    <input type="text" class="form-control" placeholder="Twitch Username" name="username">
                     <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button">Add user</button>
+                        <input class="btn btn-primary" type="submit">Add user</input>
                     </span>
                 </div>
             </form>
