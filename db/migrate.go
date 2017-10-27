@@ -27,7 +27,7 @@ func Migrate() error {
 }
 
 func ensureDBExists() error {
-	res, err := rt.DBList().Contains(config.Config.Database).Run(DB)
+	res, err := rt.DBList().Contains(config.Config.Database).Run(Session)
 	if err != nil {
 		return err
 	}
@@ -38,13 +38,13 @@ func ensureDBExists() error {
 			return nil
 		}
 	}
-	rt.DBCreate(config.Config.Database).Run(DB)
+	rt.DBCreate(config.Config.Database).Run(Session)
 
 	return nil
 }
 
 func ensureTableExists(t string) error {
-	res, err := rt.TableList().Contains(t).Run(DB)
+	res, err := rt.TableList().Contains(t).Run(Session)
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func ensureTableExists(t string) error {
 		}
 	}
 
-	if _, err = rt.TableCreate(t).Run(DB); err != nil {
+	if _, err = rt.TableCreate(t).Run(Session); err != nil {
 		return err
 	}
 	return nil

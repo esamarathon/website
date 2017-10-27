@@ -1,0 +1,31 @@
+{{define "menu"}}
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <img src="/static/assets/favicon.png" alt="ESA Marathon logo">
+            <a class="navbar-brand" href="/admin">ESA Marathon</a>
+        </div>
+
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/admin">Home</a></li>
+                <li><a href="/admin/article">News</a></li>
+                <li><a href="/admin/user">Users</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Logged in as {{ .User.Username }}</a></li>
+                <li><a href="/logout">Log out</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{{end}}

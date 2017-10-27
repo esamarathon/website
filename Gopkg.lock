@@ -62,6 +62,12 @@
   version = "v0.8.0"
 
 [[projects]]
+  name = "github.com/rs/cors"
+  packages = ["."]
+  revision = "7af7a1e09ba336d2ea14b1ce73bf693c6837dbf6"
+  version = "v1.2"
+
+[[projects]]
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   revision = "f006c2ac4710855cf0f916dd6b77acf6b048dc6e"
@@ -109,15 +115,9 @@
   revision = "7f5bdfd858bb064d80559b2a32b86669c5de5d3b"
   version = "v3.0.5"
 
-[[projects]]
-  branch = "(default)"
-  name = "labix.org/v2/mgo"
-  packages = ["bson"]
-  revision = "gustavo@niemeyer.net-20140701140051-90be2tvk93pcczzi"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c8e907095057a76b72b904d06eb915edb400b02633bcbbc91c8262d8fb8f1203"
+  inputs-digest = "25ae0b7106c745bae4e9412063d664d18bb1fd2e7633d63f22ba7d898a4980ea"
   solver-name = "gps-cdcl"
   solver-version = 1

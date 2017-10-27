@@ -1,0 +1,19 @@
+{{/* extends "layout.html" */}}
+{{ define "content" }}
+<div class="row">
+    <div class="col-sm-12">
+        <h1>
+            Articles
+            <a href="/admin/article/create" class="btn pull-right btn-primary">New</a>
+        </h1>
+    </div>
+</div>
+<div class="list-group">
+    {{ range .Articles }}
+        <a href="/admin/article/{{ .ID }}" class="list-group-item">
+            <h4 class="list-group-item-heading">{{ .Title }}</h4>
+            <p class="list-group-item-text">{{ .Body }}</p>
+        </a>
+    {{ end }}
+</div>
+{{ end }}

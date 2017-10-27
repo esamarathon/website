@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/olenedr/esamarathon/config"
-	"github.com/olenedr/esamarathon/user"
+	"github.com/olenedr/esamarathon/models/user"
 	"golang.org/x/oauth2"
 )
 

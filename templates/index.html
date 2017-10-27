@@ -13,6 +13,10 @@
             </div>
         </div>
         
+
+    {{ if .Livemode}}
+        <div id="twitch-embed"></div>
+    {{ end }}
     </section>
     <h1>{{ .Content.Title }}</h1>
     <main>
