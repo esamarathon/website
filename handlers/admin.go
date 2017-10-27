@@ -66,6 +66,20 @@ func userIndex(w http.ResponseWriter, r *http.Request) {
 	adminRenderer.HTML(w, http.StatusOK, "user.html", v)
 }
 
+func userCreate(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	userName := r.Form.Get("username")
+
+	if err := user.Insert(userName); err != nil || userName == "" {
+		// TODO:Handle error better
+		fmt.Fprint(w, err)
+		return
+	}
+
+	log.Println("redirect")
+	http.Redirect(w, r, "/admin/user", http.StatusSeeOther)
+}
+
 func articleIndex(w http.ResponseWriter, r *http.Request) {
 	// Change with actual articledata
 	timestamp := time.Now()
@@ -98,19 +112,5 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 func toggleLivemode(w http.ResponseWriter, r *http.Request) {
 	setting.GetLiveMode().Toggle()
 
-	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
-}
-
-func userCreate(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
-	userName := r.Form.Get("username")
-
-	if err := user.Insert(userName); err != nil || userName == "" {
-		// TODO:Handle error better
-		fmt.Fprint(w, err)
-		return
-	}
-
-	log.Println("redirect")
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }

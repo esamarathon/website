@@ -23,10 +23,6 @@ type TwitchResponse struct {
 	Identified bool `json:"identified,omitempty"`
 }
 
-type List struct {
-	Users []User
-}
-
 func Insert(username string) error {
 	var data = map[string]interface{}{
 		"username": username,
@@ -35,20 +31,18 @@ func Insert(username string) error {
 	return db.Insert(Table, data)
 }
 
-func All() (List, error) {
+func All() ([]User, error) {
 	rows, err := db.GetAll(Table)
-	var userList List
 	var users []User
 	if err != nil {
-		return userList, errors.Wrap(err, "user.All")
+		return users, errors.Wrap(err, "user.All")
 	}
 
 	if err = rows.All(&users); err != nil {
-		return userList, errors.Wrap(err, "user.All")
+		return users, errors.Wrap(err, "user.All")
 	}
 
-	userList.Users = users
-	return userList, nil
+	return users, nil
 }
 
 func RequestTwitchUser(token *oauth2.Token) (User, error) {
