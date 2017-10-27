@@ -20,7 +20,7 @@ func init() {
 	router.HandleFunc("/login", HandleAuth).Methods("GET")
 	router.HandleFunc("/logout", HandleLogout).Methods("GET")
 
-	Routes("/admin", router)
+	AdminRoutes("/admin", router)
 }
 
 func handleStatic(dir, prefix string) http.HandlerFunc {

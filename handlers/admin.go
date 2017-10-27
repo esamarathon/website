@@ -14,11 +14,10 @@ import (
 	"github.com/olenedr/esamarathon/middleware"
 )
 
-func Routes(base string, router *mux.Router) {
+func AdminRoutes(base string, router *mux.Router) {
 	requireAuth := middleware.AuthMiddleware
-	router.HandleFunc(base+"/user", requireAuth(get)).Methods("GET")
 	router.HandleFunc(base+"/user/create", requireAuth(create)).Methods("POST")
-	router.HandleFunc(base, requireAuth(index)).Methods("GET")
+	router.HandleFunc(base, requireAuth(index)).Methods("GET", "POST")
 }
 
 var adminRenderer = grender.New(grender.Options{
@@ -32,7 +31,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, err)
 		return
 	}
-	fmt.Printf("%#v\n", userList)
+
 	adminRenderer.HTML(w, http.StatusOK, "index.html", userList)
 }
 
@@ -41,23 +40,11 @@ func create(w http.ResponseWriter, r *http.Request) {
 	userName := r.Form.Get("username")
 
 	if err := user.Insert(userName); err != nil || userName == "" {
-		// @TODO: Handle error better
+		// TODO:Handle error better
 		fmt.Fprint(w, err)
 		return
 	}
 
-	http.Redirect(w, r, "/admin", http.StatusCreated)
-}
-
-func get(w http.ResponseWriter, r *http.Request) {
-	users, err := user.All()
-	if err != nil {
-		// @TODO: Handle error better
-		fmt.Fprint(w, err)
-		return
-	}
-
-	fmt.Printf("%#v\n", users)
-
-	w.WriteHeader(http.StatusOK)
+	log.Println("redirect")
+	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }
