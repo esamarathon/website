@@ -40,3 +40,12 @@ func GetAll(table string) (*r.Cursor, error) {
 
 	return rows, nil
 }
+
+func GetOneById(table, id string) (*r.Cursor, error) {
+	cursor, err := r.Table(table).Get(id).Run(Session)
+	if err != nil {
+		return nil, errors.Wrap(err, "db.GetOneByID")
+	}
+
+	return cursor, err
+}

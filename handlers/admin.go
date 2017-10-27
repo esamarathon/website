@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/olenedr/esamarathon/models/article"
+
 	"github.com/dannyvankooten/grender"
 	"github.com/pkg/errors"
 
@@ -19,17 +21,37 @@ import (
 
 func AdminRoutes(base string, router *mux.Router) {
 	requireAuth := middleware.AuthMiddleware
+<<<<<<< Updated upstream
 	router.HandleFunc(base, requireAuth(index)).Methods("GET")
 	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
 	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
 	router.HandleFunc(base+"/user", requireAuth(userCreate)).Methods("POST")
 	router.HandleFunc(base+"/article", requireAuth(articleIndex)).Methods("GET")
+=======
+	router.HandleFunc(base+"/user/create", requireAuth(createUser)).Methods("POST")
+	router.HandleFunc(base+"/article/create", requireAuth(createArticle)).Methods("POST")
+	router.HandleFunc(base+"/article/create", requireAuth(createArticleIndex)).Methods("GET")
+	router.HandleFunc(base+"/article/edit/{id}", requireAuth(editArticleIndex)).Methods("GET")
+	router.HandleFunc(base, requireAuth(index)).Methods("GET", "POST")
+>>>>>>> Stashed changes
 }
 
 var adminRenderer = grender.New(grender.Options{
 	TemplatesGlob: "templates_admin/*.html",
 	PartialsGlob:  "templates_admin/partials/*.html",
 })
+
+func editArticleIndex(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+	a, err := article.Get(id)
+	if err != nil {
+		adminRenderer.HTML(w, http.StatusInternalServerError, "index.html", nil)
+		return
+	}
+
+	Page["article"] = a
+	adminRenderer.HTML(w, http.StatusOK, "edit_article.html", Page)
+}
 
 func index(w http.ResponseWriter, r *http.Request) {
 	// Change with actual status from DB
@@ -66,7 +88,11 @@ func userIndex(w http.ResponseWriter, r *http.Request) {
 	adminRenderer.HTML(w, http.StatusOK, "user.html", data)
 }
 
+<<<<<<< Updated upstream
 func userCreate(w http.ResponseWriter, r *http.Request) {
+=======
+func createUser(w http.ResponseWriter, r *http.Request) {
+>>>>>>> Stashed changes
 	r.ParseForm()
 	userName := r.Form.Get("username")
 
@@ -76,6 +102,7 @@ func userCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+<<<<<<< Updated upstream
 	log.Println("redirect")
 	http.Redirect(w, r, "/admin/user", http.StatusSeeOther)
 }
@@ -114,6 +141,30 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 
 func toggleLivemode(w http.ResponseWriter, r *http.Request) {
 	setting.GetLiveMode().Toggle()
+=======
+	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+}
+
+func createArticleIndex(w http.ResponseWriter, r *http.Request) {
+	adminRenderer.HTML(w, http.StatusOK, "article.html", nil)
+}
+
+func createArticle(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	fmt.Println("title", r.Form.Get("title"))
+	a := article.Article{
+		Title: r.Form.Get("title"),
+		Body:  r.Form.Get("body"),
+	}
+
+	//TODO: if something needs to verified, this should be done here
+	if err := a.Create(); err != nil {
+		// TODO: Handle failure better
+		log.Println(errors.Wrap(err, "handlers.createArticle"))
+		fmt.Fprint(w, err)
+		return
+	}
+>>>>>>> Stashed changes
 
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }
