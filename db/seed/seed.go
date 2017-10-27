@@ -1,4 +1,4 @@
-package db
+package seed
 
 /**
 *	This file could probably be improved by the use of reflection(?)
@@ -6,12 +6,15 @@ package db
  */
 
 import (
+	"github.com/olenedr/esamarathon/db"
 	"github.com/olenedr/esamarathon/models/setting"
 	"github.com/olenedr/esamarathon/user"
 
 	"github.com/pkg/errors"
 	rt "gopkg.in/gorethink/gorethink.v3"
 )
+
+var row interface{}
 
 // Seed initiates the seeding of default data into the DB
 func Seed() error {
@@ -37,7 +40,7 @@ func users() error {
 		},
 	}
 
-	res, err := rt.Table(t).Insert(users).Run(DB)
+	res, err := rt.Table(t).Insert(users).Run(db.DB)
 	if err != nil {
 		return err
 	}
@@ -51,7 +54,7 @@ func users() error {
 }
 
 func settings() error {
-	t := setting.Table
+	t := "settings"
 	var settings = []setting.Setting{
 		{
 			Key:   "livemode",
@@ -59,7 +62,7 @@ func settings() error {
 		},
 	}
 
-	res, err := rt.Table(t).Insert(settings).Run(DB)
+	res, err := rt.Table(t).Insert(settings).Run(db.DB)
 	if err != nil {
 		return err
 	}

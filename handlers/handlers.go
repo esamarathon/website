@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/dannyvankooten/grender"
+	"github.com/olenedr/esamarathon/models/setting"
 )
 
 var renderer = grender.New(grender.Options{
@@ -19,13 +20,17 @@ var c = content{
 	"Welcome to European Speedrunner Assembly!",
 	"",
 }
-var p = page{
-	m,
-	c,
+var p = map[string]interface{}{
+	"Meta":    m,
+	"Content": c,
 }
 
 // Index returns index view
 func Index(w http.ResponseWriter, r *http.Request) {
+	s, err := setting.GetLiveMode().AsBool()
+	if err == nil {
+		p["Livemode"] = s
+	}
 	renderer.HTML(w, http.StatusOK, "index.html", p)
 }
 
