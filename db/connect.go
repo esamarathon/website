@@ -5,13 +5,13 @@ import (
 
 	"github.com/olenedr/esamarathon/config"
 	"github.com/pkg/errors"
-	rDB "gopkg.in/gorethink/gorethink.v3"
+	r "gopkg.in/gorethink/gorethink.v3"
 )
 
-var Session *rDB.Session
+var Session *r.Session
 
 func Connect() error {
-	session, err := rDB.Connect(config.DBConfig())
+	session, err := r.Connect(config.DBConfig())
 
 	if err != nil {
 		return errors.Wrap(err, "db.Connect")
@@ -23,7 +23,7 @@ func Connect() error {
 }
 
 func Insert(table string, data map[string]interface{}) error {
-	result, err := rDB.Table(table).Insert(data).RunWrite(Session)
+	result, err := r.Table(table).Insert(data).RunWrite(Session)
 	if err != nil {
 		return errors.Wrap(err, "db.Insert")
 	}
@@ -32,8 +32,8 @@ func Insert(table string, data map[string]interface{}) error {
 	return nil
 }
 
-func GetAll(table string) (*rDB.Cursor, error) {
-	rows, err := rDB.Table(table).Run(Session)
+func GetAll(table string) (*r.Cursor, error) {
+	rows, err := r.Table(table).Run(Session)
 	if err != nil {
 		return nil, errors.Wrap(err, "db.GetAll")
 	}
