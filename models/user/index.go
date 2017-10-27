@@ -16,7 +16,7 @@ const Table = "users"
 
 type User struct {
 	ID       string `gorethink:"id,omitempty" json:"id,omitempty"`
-	Username string `gorethink:"username" json:"username,omitempty"`
+	Username string `gorethink:"username" json:"user_name,omitempty"`
 }
 
 type TwitchResponse struct {
