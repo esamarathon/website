@@ -14,17 +14,13 @@ import (
 const Table = "users"
 
 type User struct {
-	ID       string `gorethink:"id" json:"id,omitempty"`
-	Username string `gorethink:"username" json:"user_name,omitempty"`
+	ID       string `gorethink:"id,omitempty" json:"id,omitempty"`
+	Username string `gorethink:"username" json:"username,omitempty"`
 }
 
 type TwitchResponse struct {
 	User       User `json:"token,omitempty"`
 	Identified bool `json:"identified,omitempty"`
-}
-
-type List struct {
-	Users []User
 }
 
 func Insert(username string) error {
@@ -35,20 +31,18 @@ func Insert(username string) error {
 	return db.Insert(Table, data)
 }
 
-func All() (List, error) {
+func All() ([]User, error) {
 	rows, err := db.GetAll(Table)
-	var userList List
 	var users []User
 	if err != nil {
-		return userList, errors.Wrap(err, "user.All")
+		return users, errors.Wrap(err, "user.All")
 	}
 
 	if err = rows.All(&users); err != nil {
-		return userList, errors.Wrap(err, "user.All")
+		return users, errors.Wrap(err, "user.All")
 	}
 
-	userList.Users = users
-	return userList, nil
+	return users, nil
 }
 
 func RequestTwitchUser(token *oauth2.Token) (User, error) {

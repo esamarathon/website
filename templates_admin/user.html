@@ -1,0 +1,31 @@
+{{/* extends "layout.html" */}}
+{{ define "content" }}
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><strong>Users</strong></div>
+    <div class="panel-body">
+        <div class="form-group">
+            <p class="lead">
+                Add a new user to the admin-panel.
+            </p>
+            <p>Remember to use their exact Twitch user to allow authorization through the Twitch API</p>
+            <form action="/admin/user" method="POST">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Twitch Username" name="username">
+                    <span class="input-group-btn">
+                        <input class="btn btn-primary" type="submit">Add user</input>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel-heading">List of registered users</div>
+    
+    <ul class="list-group">
+        {{ range .Users }}
+            <li class="list-group-item">{{ .Username }} <a href="/user/{ .ID }/delete" class="btn btn-danger btn-xs pull-right">Delete</a></li>
+        {{ end }}
+    </ul>
+</div>
+{{ end }}

@@ -1,20 +1,30 @@
 {{/* extends "layout.html" */}}
 {{define "content"}}
-    <h2>Welcome to the admin page</h2>
-
-    <h3>Add new user:</h3>
-    <form action="/admin/user/create" method="POST">
-        <label for="username">Username</label>
-        <input type="text" name="username" />
-        <input type="submit" value="Submit" />
-    </form>
-
-    <h3>Registered users:</h3>
-    <ul>
-        {{ if .Users }}
-            {{ range .Users }}
-                <li>{{ .Username }}</li>
-            {{ end }}
+    <h1>Toggle Live-Mode</h1>
+    <p class="lead">Toggling "Live-mode" will embed the Stream on the frontpage.</p>
+    <div class="row">
+        {{ if .Status }}
+            <div class="col-sm-4 col-md-2">
+                <p><strong>Current status is <i>enabled</i></strong></p>
+            </div>
+            <div class="col-sm-4">
+                <p><a
+                    href="/admin/toggle"
+                    class="confirmable btn btn-warning btn-xs"
+                    data-message="Are you sure you want to disable Live-mode?">Disable</a>
+                </p>
+            </div>
+        {{ else }}
+            <div class="col-sm-4 col-md-2">
+                <p><strong>Current status is <i>disabled</i></strong></p>
+            </div>
+            <div class="col-sm-4">
+                <p><a
+                    href="/admin/toggle"
+                    class="confirmable btn btn-primary btn-xs"
+                    data-message="Are you sure you want to enable Live-mode?">Enable</a>
+                </p>
+            </div>
         {{ end }}
-    </ul>
+    </div>
 {{end}}
