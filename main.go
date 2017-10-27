@@ -6,9 +6,10 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/olenedr/esamarathon/handlers"
+
 	"github.com/joho/godotenv"
 	"github.com/olenedr/esamarathon/db"
-	"github.com/olenedr/esamarathon/routes"
 )
 
 func main() {
@@ -27,7 +28,8 @@ func main() {
 		log.Println("Successfully connected to the database")
 	}
 
-	router := routes.GetRouter()
+	router := handlers.Router("0.1")
+
 	fmt.Println("Listening to localhost on port " + port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
 }

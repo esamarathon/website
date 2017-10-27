@@ -6,17 +6,49 @@ import (
 	"net/http"
 
 	"github.com/olenedr/esamarathon/config"
+	"github.com/olenedr/esamarathon/db"
+	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
 )
 
+const Table = "users"
+
 type User struct {
-	ID       string `json:"id,omitempty"`
-	Username string `json:"user_name,omitempty"`
+	ID       string `gorethink:"id" json:"id,omitempty"`
+	Username string `gorethink:"username" json:"user_name,omitempty"`
 }
 
 type TwitchResponse struct {
 	User       User `json:"token,omitempty"`
 	Identified bool `json:"identified,omitempty"`
+}
+
+type List struct {
+	Users []User
+}
+
+func Insert(username string) error {
+	var data = map[string]interface{}{
+		"username": username,
+	}
+
+	return db.Insert(Table, data)
+}
+
+func All() (List, error) {
+	rows, err := db.GetAll(Table)
+	var userList List
+	var users []User
+	if err != nil {
+		return userList, errors.Wrap(err, "user.All")
+	}
+
+	if err = rows.All(&users); err != nil {
+		return userList, errors.Wrap(err, "user.All")
+	}
+
+	userList.Users = users
+	return userList, nil
 }
 
 func RequestTwitchUser(token *oauth2.Token) (User, error) {
