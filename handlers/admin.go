@@ -6,6 +6,7 @@ import (
 
 	"github.com/dannyvankooten/grender"
 	"github.com/olenedr/esamarathon/article"
+	"github.com/olenedr/esamarathon/models/setting"
 	"github.com/olenedr/esamarathon/user"
 )
 
@@ -16,10 +17,14 @@ var adminRenderer = grender.New(grender.Options{
 
 func AdminIndex(w http.ResponseWriter, r *http.Request) {
 	// Change with actual status from DB
-	u, _ := user.UserFromSession(r)
+	u, userErr := user.UserFromSession(r)
+	s, settingErr := setting.GetLiveMode().AsBool()
+	if userErr != nil || settingErr != nil {
+		http.Redirect(w, r, "500.html", http.StatusTemporaryRedirect)
+	}
 	v := map[string]interface{}{
 		"User":   u,
-		"Status": false,
+		"Status": s,
 	}
 
 	adminRenderer.HTML(w, http.StatusOK, "index.html", v)
@@ -73,6 +78,8 @@ func AdminArticleIndex(w http.ResponseWriter, r *http.Request) {
 	adminRenderer.HTML(w, http.StatusOK, "article.html", v)
 }
 
-// func AdminToggleLive(w http.ResponseWriter, r *http.Request) {
+func AdminToggleLive(w http.ResponseWriter, r *http.Request) {
+	setting.GetLiveMode().Toggle()
 
-// }
+	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+}
