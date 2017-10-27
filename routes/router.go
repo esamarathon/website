@@ -26,6 +26,8 @@ func GetRouter() *mux.Router {
 
 	//Admin routes
 	router.HandleFunc("/admin", requiresAuth(handlers.AdminIndex))
+	router.HandleFunc("/admin/user", requiresAuth(handlers.AdminUserIndex))
+	router.HandleFunc("/admin/article", requiresAuth(handlers.AdminArticleIndex))
 
 	return router
 }

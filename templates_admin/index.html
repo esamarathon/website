@@ -1,7 +1,30 @@
 {{/* extends "layout.html" */}}
 {{define "content"}}
-
-    {{template "menu" .}}
-    <h2>Welcome to the admin page</h2>
-    
+    <h1>Toggle Live-Mode</h1>
+    <p class="lead">Toggling "Live-mode" will embed the Stream on the frontpage.</p>
+    <div class="row">
+        {{ if .Status }}
+            <div class="col-sm-4 col-md-2">
+                <p><strong>Current status is <i>enabled</i></strong></p>
+            </div>
+            <div class="col-sm-4">
+                <p><a
+                    href="/admin/toggle"
+                    class="confirmable btn btn-alert btn-xs"
+                    data-message="Are you sure you want to disable Live-mode?">Disable</a>
+                </p>
+            </div>
+        {{ else }}
+            <div class="col-sm-4 col-md-2">
+                <p><strong>Current status is <i>disabled</i></strong></p>
+            </div>
+            <div class="col-sm-4">
+                <p><a
+                    href="/admin/toggle"
+                    class="confirmable btn btn-primary btn-xs"
+                    data-message="Are you sure you want to enable Live-mode?">Enable</a>
+                </p>
+            </div>
+        {{ end }}
+    </div>
 {{end}}
