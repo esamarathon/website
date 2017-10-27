@@ -1,32 +1,11 @@
 .splash {
-   position: absolute;
-   background: $background-gradient;
    width: 100%;
    top: 0;
    left: 0;
    padding: $gutter;
-   &:after {
-      content: '';
-      height: 25rem;
-      max-width: 25rem;
-      width: 70%;
-      position: absolute;
-      right: 0;
-      background-image: url('../img/slogan-bg.png');
-      background-size: 100%;
-      background-position: right bottom;
-      background-repeat: no-repeat;
-      display: block;
-      opacity: 0;
-      bottom: 0;
-      z-index: 2;
-      pointer-events: none;
-      @include medium-up {
-         opacity: 1;
-      }
-   }
+   
    @include medium-up {
-      padding: $gutter * 10 $gutter * 3 $gutter * 3;
+      padding: $gutter * 3;
    }
    &-logo {
       max-width: 5rem;

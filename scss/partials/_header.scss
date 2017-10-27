@@ -1,17 +1,21 @@
 header {
-    position: relative;
+    position: absolute;
     z-index: 200;
     padding: $gutter;
+    height: 100%;
+    width: 100%;
+    @include medium-up {
+        display: flex;
+        padding: $gutter * 3;
+        justify-content: center;
+        position: relative;
+        height: auto;
+    }
     &.active {
         height: 100vh;
         @include medium-up {
             height: auto;
         }
-    }
-    @include medium-up {
-        display: flex;
-        padding: $gutter * 3;
-        justify-content: center;
     }
     h1.logo img {
         height: 3rem;
@@ -30,8 +34,11 @@ header {
         width: 80%;
         height: 100%;
         z-index: 200;
-        margin-left: -100vw;
+        //margin-left: -180vw;
+        flex-direction: column;
+        display: flex;
         @include medium-up {
+            flex-direction: row;
             position: static;
             width: auto;
             height: auto;
@@ -62,9 +69,11 @@ header {
             margin: 0 $gutter / 2.5;
             transition: .2s color;
             color: $white;
-            display: block;
+            display: inline-flex;
             margin-bottom: $gutter;
+            width: 100%;
             @include medium-up {
+                
                 display: inline-flex;
                 margin-bottom: 0;
             }
@@ -77,9 +86,15 @@ header {
                 }
             }
         }
-        img.medium-up {
-            display: none;
+        img.logo {
+            width: 2rem;
+            order: -99;
+            display: inline-flex;
+            margin: $gutter / -2 $gutter / 2.5 $gutter * 2;
             @include medium-up {
+                order: initial;
+                width: auto;
+                -webkit-filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
                 height: 4rem;
                 margin: 0 $gutter;
                 display: inline-flex;
