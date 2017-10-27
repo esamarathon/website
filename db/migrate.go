@@ -1,0 +1,63 @@
+package db
+
+import (
+	"github.com/olenedr/esamarathon/config"
+	rt "gopkg.in/gorethink/gorethink.v3"
+)
+
+var tables = []string{
+	"users",
+	"articles",
+	"settings",
+}
+
+var row interface{}
+
+func Migrate() error {
+	if err := ensureDBExists(); err != nil {
+		return err
+	}
+
+	for _, t := range tables {
+		if err := ensureTableExists(t); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func ensureDBExists() error {
+	res, err := rt.DBList().Contains(config.Config.Database).Run(DB)
+	if err != nil {
+		return err
+	}
+	defer res.Close()
+
+	for res.Next(&row) {
+		if row.(bool) {
+			return nil
+		}
+	}
+	rt.DBCreate(config.Config.Database).Run(DB)
+
+	return nil
+}
+
+func ensureTableExists(t string) error {
+	res, err := rt.TableList().Contains(t).Run(DB)
+	if err != nil {
+		return err
+	}
+	defer res.Close()
+
+	for res.Next(&row) {
+		if row.(bool) {
+			return nil
+		}
+	}
+
+	if _, err = rt.TableCreate(t).Run(DB); err != nil {
+		return err
+	}
+	return nil
+}
