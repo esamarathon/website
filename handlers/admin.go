@@ -41,12 +41,12 @@ func index(w http.ResponseWriter, r *http.Request) {
 	if userErr != nil {
 		log.Println(errors.Wrap(userErr, "admin.index"))
 	}
-	v := map[string]interface{}{
+	data := map[string]interface{}{
 		"User":   u,
 		"Status": s,
 	}
 
-	adminRenderer.HTML(w, http.StatusOK, "index.html", v)
+	adminRenderer.HTML(w, http.StatusOK, "index.html", data)
 }
 
 func userIndex(w http.ResponseWriter, r *http.Request) {
@@ -58,12 +58,12 @@ func userIndex(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(errors.Wrap(err, "admin.user.index"))
 	}
-	v := map[string]interface{}{
+	data := map[string]interface{}{
 		"User":  u,
 		"Users": users,
 	}
 
-	adminRenderer.HTML(w, http.StatusOK, "user.html", v)
+	adminRenderer.HTML(w, http.StatusOK, "user.html", data)
 }
 
 func userCreate(w http.ResponseWriter, r *http.Request) {
@@ -100,13 +100,16 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 			UpdatedAt: timestamp,
 		},
 	}
-	u, _ := user.UserFromSession(r)
-	v := map[string]interface{}{
+	u, err := user.UserFromSession(r)
+	if err != nil {
+		log.Println(errors.Wrap(err, "admin.article.index"))
+	}
+	data := map[string]interface{}{
 		"User":     u,
 		"Articles": articles,
 	}
 
-	adminRenderer.HTML(w, http.StatusOK, "article.html", v)
+	adminRenderer.HTML(w, http.StatusOK, "article.html", data)
 }
 
 func toggleLivemode(w http.ResponseWriter, r *http.Request) {
