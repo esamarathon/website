@@ -37,19 +37,19 @@ var adminRenderer = grender.New(grender.Options{
 
 func updateArticle(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
-	u, err := user.UserFromSession(r)
-	if err != nil {
-		log.Println(errors.Wrap(err, "handlers.updateArticle"))
-		//TODO: Handle error
-	}
 
 	a, err := article.Get(id)
 	if err != nil {
 		log.Println(errors.Wrap(err, "handlers.updateArticle"))
-		//TODO: Handle error
+		// TODO: Add flash message letting the user know what went wrong
+		http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
 	}
 
-	if !a.AuthorExists(u) {
+	u, err := user.UserFromSession(r)
+	// No reason to do more error handling since we only use the user for author
+	if err != nil {
+		log.Println(errors.Wrap(err, "handlers.updateArticle"))
+	} else if !a.AuthorExists(u) {
 		a.Authors = append(a.Authors, u)
 	}
 
@@ -67,7 +67,8 @@ func updateArticle(w http.ResponseWriter, r *http.Request) {
 
 	if err = a.Update(); err != nil {
 		log.Println(errors.Wrap(err, "handlers.updateArticle"))
-		//TODO: Handle error
+		// TODO: Add flash message letting the user know that saving the article failed
+		http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
 	}
 
 	http.Redirect(w, r, "/admin/article", http.StatusSeeOther)

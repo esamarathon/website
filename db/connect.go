@@ -22,8 +22,8 @@ func Connect() error {
 	return nil
 }
 
-func Update(table string, data map[string]interface{}) error {
-	_, err := r.Table(table).Update(data).Run(Session)
+func Update(table string, id string, data map[string]interface{}) error {
+	_, err := r.Table(table).Get(id).Update(data).RunWrite(Session)
 	if err != nil {
 		return errors.Wrap(err, "db.Update")
 	}

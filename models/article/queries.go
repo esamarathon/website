@@ -55,5 +55,5 @@ func (a *Article) Update() error {
 		"created_at": time.Now(),
 		"updated_at": time.Now(),
 	}
-	return db.Update(table, data)
+	return db.Update(table, a.ID, data)
 }
