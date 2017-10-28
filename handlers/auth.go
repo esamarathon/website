@@ -2,11 +2,10 @@ package handlers
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
 
 	"github.com/olenedr/esamarathon/config"
-	"github.com/olenedr/esamarathon/user"
+	"github.com/olenedr/esamarathon/models/user"
 	"golang.org/x/oauth2"
 )
 
@@ -48,15 +47,10 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }
 
+// Index returns index view
 func HandleAuth(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("templates/login.html")
-	if err != nil {
-		//@TODO: Some better error handeling needed
-		fmt.Fprint(w, err)
-		return
-	}
-
-	t.Execute(w, nil)
+	data := getPagedata()
+	renderer.HTML(w, http.StatusOK, "login.html", data)
 }
 
 func HandleLogout(w http.ResponseWriter, r *http.Request) {

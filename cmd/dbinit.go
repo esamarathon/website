@@ -6,6 +6,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/olenedr/esamarathon/db"
+	"github.com/olenedr/esamarathon/db/seed"
 )
 
 var (
@@ -36,7 +37,7 @@ func main() {
 		return
 	}
 
-	if err := db.Seed(); err != nil {
+	if err := seed.Seed(); err != nil {
 		log.Println("Error while seeding:", err)
 		return
 	}
