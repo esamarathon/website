@@ -1,0 +1,61 @@
+section.social-bar {
+   margin: auto;
+   max-width: 60rem;
+   padding: $gutter * 3 $gutter * 3 $gutter * 4;
+   position: relative;
+   z-index: 3;
+   h2 {
+      font-weight: 100;
+      font-size: 1.125rem;
+      color: $orange;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      text-align: center;
+      margin-bottom: $gutter * 2;
+      font-family: $condensed;
+      &:after {
+         content: '';
+         display: block;
+         max-width: 3rem;
+         border-top: 3px $orange solid;
+         margin: auto;
+         margin-top: $gutter;
+      }
+   }
+   div.social-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      align-items: baseline;
+      a {
+         text-align: center;
+         text-decoration: none;
+         max-width: 5rem;
+         margin: $gutter;
+         &:hover {
+            span {
+               color: $orange;
+            }
+         }
+         span {
+            display: block;
+            color: $white;
+            text-transform: uppercase;
+            transition: .2s all;
+            letter-spacing: 1px;
+            font-weight: 100;
+            font-family: $condensed;
+         }
+         img {
+            display: block;
+            margin: auto;
+            width: 100%;
+            max-height: 3rem;
+            margin-bottom: $gutter / 2;
+         }
+      }
+   }
+   
+}

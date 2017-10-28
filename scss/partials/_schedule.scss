@@ -1,0 +1,51 @@
+h2.schedule-title {
+   font-weight: 100;
+   font-size: 2rem;
+   color: $orange;
+   text-transform: uppercase;
+   letter-spacing: 1px;
+   display: block;
+   text-align: center;
+   margin-bottom: $gutter * 2;
+   font-family: $condensed;
+   &:after {
+      content: '';
+      display: block;
+      max-width: 3rem;
+      border-top: 3px $orange solid;
+      margin: auto;
+      margin-top: $gutter;
+   }
+}
+table {
+   max-width: 60rem;
+   margin: auto;
+   background: rgba(30, 38, 63, .8);
+   position: relative;
+   z-index: 3;
+   thead {
+      tr {
+         th {
+            text-align: left;
+            padding: $gutter;
+         }
+      }
+   }
+   tbody {
+      tr {
+         td {
+            padding: $gutter / 2 $gutter;
+            border-top: 1px solid rgba(255,255,255,.1);
+            letter-spacing: .5px;
+            a {
+               color: $orange;
+               text-decoration: none;
+               transition: .2s all;
+               &:hover {
+                  color: lighten($orange, 20%);
+               }
+            }
+         }
+      }
+   }
+}

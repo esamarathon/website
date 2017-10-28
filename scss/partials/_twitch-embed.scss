@@ -1,0 +1,17 @@
+#twitch-embed {
+   display:block;
+   box-shadow: 0 15px 35px rgba(0,0,0,.2), 0 5px 15px rgba(0,0,0,.2);
+   min-height: 20rem;
+   position: relative;
+   z-index: 3;
+   margin: $gutter * 2 auto;
+   max-width: 80rem;
+   @include medium-up {
+      margin: 0 auto $gutter * 4;
+   }
+   iframe {
+      width: 100%;
+      min-height: 40rem;
+      margin-bottom: -4px;
+   }
+}
