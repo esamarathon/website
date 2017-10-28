@@ -1,17 +1,24 @@
 header {
-    position: relative;
+    position: absolute;
     z-index: 200;
     padding: $gutter;
+    height: 100%;
+    width: 100%;
+    @include medium-up {
+        display: flex;
+        padding: $gutter * 3;
+        justify-content: center;
+        position: relative;
+        height: auto;
+    }
     &.active {
         height: 100vh;
         @include medium-up {
             height: auto;
         }
-    }
-    @include medium-up {
-        display: flex;
-        padding: $gutter * 3;
-        justify-content: center;
+        nav {
+            margin-left: 0;
+        }
     }
     h1.logo img {
         height: 3rem;
@@ -20,10 +27,17 @@ header {
             display: block;
         }
     }
+    span.menu-toggle {
+        width: 1.5rem;
+        height: 1.5rem;
+        background: url('../img/menu-toggle.svg');
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
     nav {
         letter-spacing: 1px;
-        background: $background-gradient;
-        padding: $gutter;
+        background-image: $background-gradient;
+        padding: $gutter * 5 $gutter $gutter;
         position: absolute;
         top: 0;
         left: 0;
@@ -31,7 +45,12 @@ header {
         height: 100%;
         z-index: 200;
         margin-left: -100vw;
+        flex-direction: column;
+        display: flex;
+        transition: .2s all;
         @include medium-up {
+            padding: $gutter;
+            flex-direction: row;
             position: static;
             width: auto;
             height: auto;
@@ -39,6 +58,23 @@ header {
             align-items: center;
             display: flex;
             margin-left: 0;
+        }
+        &:before {
+            background-image: url('../img/slogan-bg.png');
+            pointer-events: none;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: right bottom;
+            position: absolute;
+            content: '';
+            display: block;
+            height: 100%;
+            width: 90%;
+            right: 0;
+            bottom: 0;
+            @include medium-up {
+                display: none;
+            }
         }
         &:after {
             background: rgba(0,0,0,.6);
@@ -62,9 +98,11 @@ header {
             margin: 0 $gutter / 2.5;
             transition: .2s color;
             color: $white;
-            display: block;
+            display: inline-flex;
             margin-bottom: $gutter;
+            width: 100%;
             @include medium-up {
+                
                 display: inline-flex;
                 margin-bottom: 0;
             }
@@ -77,9 +115,12 @@ header {
                 }
             }
         }
-        img.medium-up {
+        img.logo {
             display: none;
             @include medium-up {
+                order: initial;
+                width: auto;
+                -webkit-filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
                 height: 4rem;
                 margin: 0 $gutter;
                 display: inline-flex;

@@ -21,13 +21,13 @@
     <link rel="stylesheet" href="/static/style/app.css">
 </head>
 <body>
-    <header class="active">
-        <span class="menu-toggle">=</span>
+    <header>
+        <span class="menu-toggle hide-medium"></span>
         <nav>
             <a href="/">Home</a>
             <a href="/news">News</a>
             <a href="/schedule">Schedule</a>
-            <img class="medium-up" src="static/img/logo.png" alt="">
+            <img class="logo" src="/static/img/logo.png" alt="">
             <a href="https://www.speedrun.com/esa2017/donate" target="_blank">Donate</a>
             <a href="https://esamarathon.eventbrite.com/" target="_blank">Tickets</a>
             <a href="https://www.speedrun.com/ESA_Winter_2018/forum" target="_blank">Forum</a>
@@ -36,6 +36,7 @@
     </header>
     {{template "content" .}}
 </body>
+<script src="/static/js/app.js"></script>
 
     {{ if .Livemode }}
         <!-- Load the Twitch embed script -->

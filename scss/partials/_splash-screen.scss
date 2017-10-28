@@ -1,13 +1,11 @@
 .splash {
-   position: absolute;
-   background: $background-gradient;
-   min-height: 80vh;
    width: 100%;
    top: 0;
    left: 0;
    padding: $gutter;
+   
    @include medium-up {
-      padding: $gutter * 10 $gutter * 3 $gutter * 3;
+      padding: 0 $gutter * 3;
    }
    &-logo {
       max-width: 5rem;
@@ -21,14 +19,17 @@
       }
    }
    &-slogan {
-      padding: $gutter 0;
+      padding:0 $gutter;
+      max-width: 60rem;
+      margin: auto;
       img {
+         display: block;
          width: 50%;
          max-width: 15rem;
-         margin: 0  auto $gutter;
+         margin: $gutter  auto;
          @include medium-up {
-            margin: $gutter * 2 0;
-            max-width: 25%;
+            margin: $gutter * 2 auto $gutter * 3;
+            max-width: 20rem;
          }
       }
       p {
@@ -36,9 +37,10 @@
          line-height: 1.6;
          letter-spacing: .5px;
          font-weight: 300;
+         font-size: 1rem;
          @include medium-up {
             font-size: 1.125rem;
-            max-width: 50%;
+            max-width: 100%;
          }
       }
    }
