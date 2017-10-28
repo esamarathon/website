@@ -21,10 +21,10 @@
     </div>
 
     <div class="panel-heading">List of registered users</div>
-    
+
     <ul class="list-group">
         {{ range .Users }}
-            <li class="list-group-item">{{ .Username }} <a href="/user/{ .ID }/delete" class="btn btn-danger btn-xs pull-right">Delete</a></li>
+            <li class="list-group-item">{{ .Username }} <a href="/admin/user/{{ .ID }}/delete" class="btn btn-danger btn-xs pull-right">Delete</a></li>
         {{ end }}
     </ul>
 </div>

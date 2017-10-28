@@ -67,3 +67,8 @@ func GetUserByUsername(username string) (User, error) {
 
 	return u, nil
 }
+
+func Delete(id string) error {
+	_, err := r.Table(Table).Get(id).Delete().Run(db.Session)
+	return err
+}

@@ -22,6 +22,7 @@ func AdminRoutes(base string, router *mux.Router) {
 	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
 	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
 	router.HandleFunc(base+"/user", requireAuth(userStore)).Methods("POST")
+	router.HandleFunc(base+"/user/{id}/delete", requireAuth(deleteUser)).Methods("GET")
 	router.HandleFunc(base+"/article", requireAuth(articleIndex)).Methods("GET")
 	router.HandleFunc(base+"/article/create", requireAuth(articleCreate)).Methods("GET")
 	router.HandleFunc(base+"/article/create", requireAuth(articleStore)).Methods("POST")
@@ -35,6 +36,17 @@ var adminRenderer = grender.New(grender.Options{
 	PartialsGlob:  "templates_admin/partials/*.html",
 })
 
+func deleteUser(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	if err := user.Delete(id); err != nil {
+		log.Println(errors.Wrap(err, "handlers.deleteUser"))
+		// TODO: flash user that something went wrong
+	}
+
+	http.Redirect(w, r, "/admin/user", http.StatusSeeOther)
+}
+
 func updateArticle(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
@@ -43,6 +55,7 @@ func updateArticle(w http.ResponseWriter, r *http.Request) {
 		log.Println(errors.Wrap(err, "handlers.updateArticle"))
 		// TODO: Add flash message letting the user know what went wrong
 		http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
+		return
 	}
 
 	u, err := user.UserFromSession(r)
