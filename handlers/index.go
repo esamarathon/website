@@ -21,16 +21,22 @@ var Content = content{
 	"",
 }
 
-var Page = map[string]interface{}{
-	"Meta":    Meta,
-	"Content": Content,
-}
-
 // Index returns index view
 func Index(w http.ResponseWriter, r *http.Request) {
+	data := getPagedata()
+	renderer.HTML(w, http.StatusOK, "index.html", data)
+}
+
+func getPagedata() map[string]interface{} {
 	s, err := setting.GetLiveMode().AsBool()
-	if err == nil {
-		Page["Livemode"] = s
+	if err != nil {
+		s = false
 	}
-	renderer.HTML(w, http.StatusOK, "index.html", Page)
+
+	p := map[string]interface{}{
+		"Meta":     Meta,
+		"Content":  Content,
+		"Livemode": s,
+	}
+	return p
 }
