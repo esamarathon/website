@@ -33,9 +33,11 @@ func users() error {
 	t := "users"
 	var users = []user.User{
 		{
+			ID:       "1",
 			Username: "korkn",
 		},
 		{
+			ID:       "2",
 			Username: "egreb__",
 		},
 	}

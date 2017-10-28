@@ -22,6 +22,15 @@ func Connect() error {
 	return nil
 }
 
+func Update(table string, id string, data map[string]interface{}) error {
+	_, err := r.Table(table).Get(id).Update(data).RunWrite(Session)
+	if err != nil {
+		return errors.Wrap(err, "db.Update")
+	}
+
+	return nil
+}
+
 func Insert(table string, data map[string]interface{}) error {
 	result, err := r.Table(table).Insert(data).RunWrite(Session)
 	if err != nil {
@@ -39,4 +48,13 @@ func GetAll(table string) (*r.Cursor, error) {
 	}
 
 	return rows, nil
+}
+
+func GetOneById(table, id string) (*r.Cursor, error) {
+	cursor, err := r.Table(table).Get(id).Run(Session)
+	if err != nil {
+		return nil, errors.Wrap(err, "db.GetOneByID")
+	}
+
+	return cursor, err
 }

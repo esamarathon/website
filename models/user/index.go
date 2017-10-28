@@ -67,6 +67,25 @@ func (u *User) Exists() (bool, error) {
 	return true, nil
 }
 
+func GetUserByUsername(username string) (User, error) {
+	res, err := r.Table(Table).Filter(map[string]interface{}{
+		"username": username,
+	}).Run(db.Session)
+
+	var u User
+	if err != nil {
+		return u, errors.Wrap(err, "user.GetUserByUsername")
+	}
+
+	defer res.Close()
+
+	if err = res.One(&u); err != nil {
+		return u, err
+	}
+
+	return u, nil
+}
+
 func RequestTwitchUser(token *oauth2.Token) (User, error) {
 	c := &http.Client{}
 	var res TwitchResponse
