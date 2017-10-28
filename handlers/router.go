@@ -21,6 +21,8 @@ func init() {
 	router.HandleFunc("/logout", HandleLogout).Methods("GET")
 
 	AdminRoutes("/admin", router)
+
+	router.NotFoundHandler = http.HandlerFunc(handleNotFound)
 }
 
 func handleStatic(dir, prefix string) http.HandlerFunc {
@@ -29,6 +31,11 @@ func handleStatic(dir, prefix string) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		realHandler(w, req)
 	}
+}
+
+func handleNotFound(w http.ResponseWriter, r *http.Request) {
+	data := getPagedata()
+	renderer.HTML(w, http.StatusOK, "404.html", data)
 }
 
 func Router(version string) http.Handler {
