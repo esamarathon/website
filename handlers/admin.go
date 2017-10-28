@@ -40,11 +40,13 @@ func updateArticle(w http.ResponseWriter, r *http.Request) {
 	u, err := user.UserFromSession(r)
 	if err != nil {
 		log.Println(errors.Wrap(err, "handlers.updateArticle"))
+		//TODO: Handle error
 	}
 
 	a, err := article.Get(id)
 	if err != nil {
 		log.Println(errors.Wrap(err, "handlers.updateArticle"))
+		//TODO: Handle error
 	}
 
 	if !a.AuthorExists(u) {
@@ -65,6 +67,7 @@ func updateArticle(w http.ResponseWriter, r *http.Request) {
 
 	if err = a.Update(); err != nil {
 		log.Println(errors.Wrap(err, "handlers.updateArticle"))
+		//TODO: Handle error
 	}
 
 	http.Redirect(w, r, "/admin/article", http.StatusSeeOther)

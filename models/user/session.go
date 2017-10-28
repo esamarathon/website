@@ -30,6 +30,7 @@ func UserToSession(w http.ResponseWriter, r *http.Request, u User) error {
 }
 
 func UserFromSession(r *http.Request) (User, error) {
+	//TODO: Get user from db and store entire object in session instead of just the username
 	var u User
 	session, err := SessionStore.Get(r, config.Config.SessionName)
 	if err != nil {
