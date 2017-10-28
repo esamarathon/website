@@ -9,13 +9,14 @@ import (
 	"github.com/olenedr/esamarathon/db"
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
+	r "gopkg.in/gorethink/gorethink.v3"
 )
 
 const Table = "users"
 
 type User struct {
 	ID       string `gorethink:"id,omitempty" json:"id,omitempty"`
-	Username string `gorethink:"username" json:"username,omitempty"`
+	Username string `gorethink:"username" json:"user_name,omitempty"`
 }
 
 type TwitchResponse struct {
@@ -43,6 +44,27 @@ func All() ([]User, error) {
 	}
 
 	return users, nil
+}
+
+// Exists checks the db for the user by Username
+func (u *User) Exists() (bool, error) {
+	res, err := r.Table(Table).Filter(map[string]interface{}{
+		"username": u.Username,
+	}).Run(db.Session)
+
+	if err != nil {
+		return false, err
+	}
+
+	defer res.Close()
+
+	var rows []interface{}
+	res.All(&rows)
+	if len(rows) == 0 {
+		return false, nil
+	}
+
+	return true, nil
 }
 
 func RequestTwitchUser(token *oauth2.Token) (User, error) {
