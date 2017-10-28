@@ -3,6 +3,8 @@ package article
 import (
 	"time"
 
+	"github.com/fatih/structs"
+
 	"github.com/olenedr/esamarathon/db"
 	"github.com/pkg/errors"
 )
@@ -44,4 +46,8 @@ func Get(id string) (Article, error) {
 	}
 
 	return a, nil
+}
+
+func (a *Article) Update() error {
+	return db.Update(table, structs.Map(a))
 }

@@ -40,11 +40,7 @@ func users() error {
 		},
 	}
 
-<<<<<<< Updated upstream:db/seed/seed.go
 	res, err := rt.Table(t).Insert(users).Run(db.Session)
-=======
-	res, err := rt.Table(t).Insert(users).Run(Session)
->>>>>>> Stashed changes:db/seed.go
 	if err != nil {
 		return err
 	}

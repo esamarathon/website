@@ -1,14 +1,12 @@
 {{/* extends "layout.html" */}} {{define "content"}}
 <h2>Edit article</h2>
+    <form action="/admin/article/edit/{{.Article.ID}}" method="POST">
+        <label for="title">Title</label>
+        <input type="text" name="title" value="{{ .Article.Title }}"/>
 
-<form action="/admin/article/edit/{{.ID}}" method="POST">
-    <label for="title">Title</label>
-    <input type="text" name="title" />
+        <label for="body">Innhold</label>
+        <textarea type="text" name="body" >{{ .Article.Body }}</textarea>
 
-    <label for="body">Innhold</label>
-    <textarea type="text" name="body"></textarea>
-
-    <input type="submit" value="Submit" />
-</form>
-
+        <input type="submit" value="Submit" />
+    </form>
 {{end}}

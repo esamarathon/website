@@ -22,6 +22,15 @@ func Connect() error {
 	return nil
 }
 
+func Update(table string, data map[string]interface{}) error {
+	_, err := r.Table(table).Update(data).Run(Session)
+	if err != nil {
+		return errors.Wrap(err, "db.Update")
+	}
+
+	return nil
+}
+
 func Insert(table string, data map[string]interface{}) error {
 	result, err := r.Table(table).Insert(data).RunWrite(Session)
 	if err != nil {

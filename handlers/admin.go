@@ -4,9 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
-
-	"github.com/olenedr/esamarathon/models/article"
 
 	"github.com/dannyvankooten/grender"
 	"github.com/pkg/errors"
@@ -21,19 +18,16 @@ import (
 
 func AdminRoutes(base string, router *mux.Router) {
 	requireAuth := middleware.AuthMiddleware
-<<<<<<< Updated upstream
 	router.HandleFunc(base, requireAuth(index)).Methods("GET")
 	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
 	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
 	router.HandleFunc(base+"/user", requireAuth(userCreate)).Methods("POST")
 	router.HandleFunc(base+"/article", requireAuth(articleIndex)).Methods("GET")
-=======
-	router.HandleFunc(base+"/user/create", requireAuth(createUser)).Methods("POST")
 	router.HandleFunc(base+"/article/create", requireAuth(createArticle)).Methods("POST")
 	router.HandleFunc(base+"/article/create", requireAuth(createArticleIndex)).Methods("GET")
 	router.HandleFunc(base+"/article/edit/{id}", requireAuth(editArticleIndex)).Methods("GET")
+	router.HandleFunc(base+"/article/update/{id}", requireAuth(updateArticle)).Methods("GET")
 	router.HandleFunc(base, requireAuth(index)).Methods("GET", "POST")
->>>>>>> Stashed changes
 }
 
 var adminRenderer = grender.New(grender.Options{
@@ -41,16 +35,56 @@ var adminRenderer = grender.New(grender.Options{
 	PartialsGlob:  "templates_admin/partials/*.html",
 })
 
-func editArticleIndex(w http.ResponseWriter, r *http.Request) {
+func updateArticle(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
+	u, err := user.UserFromSession(r)
+	if err != nil {
+		// something went wrong
+	}
+
 	a, err := article.Get(id)
 	if err != nil {
+		// more wrongs
+	}
+
+	if !a.AuthorExists(u) {
+		a.Authors = append(a.Authors, u)
+	}
+
+	r.ParseForm()
+	title := r.FormValue("title")
+	body := r.FormValue("body")
+
+	if title != "" {
+		a.Title = title
+	}
+
+	if body != "" {
+		a.Body = body
+	}
+
+	if err = a.Update(); err != nil {
+		// more wrongs
+	}
+
+	adminRenderer.HTML(w, http.StatusOK, "admin/article.html", nil)
+}
+
+func editArticleIndex(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	a, err := article.Get(id)
+	if err != nil {
+		log.Println(errors.Wrap(err, "handlers.editArticleIndex"))
 		adminRenderer.HTML(w, http.StatusInternalServerError, "index.html", nil)
 		return
 	}
 
-	Page["article"] = a
-	adminRenderer.HTML(w, http.StatusOK, "edit_article.html", Page)
+	data := map[string]interface{}{
+		"Article": a,
+	}
+
+	adminRenderer.HTML(w, http.StatusOK, "edit_article.html", data)
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
@@ -88,11 +122,7 @@ func userIndex(w http.ResponseWriter, r *http.Request) {
 	adminRenderer.HTML(w, http.StatusOK, "user.html", data)
 }
 
-<<<<<<< Updated upstream
 func userCreate(w http.ResponseWriter, r *http.Request) {
-=======
-func createUser(w http.ResponseWriter, r *http.Request) {
->>>>>>> Stashed changes
 	r.ParseForm()
 	userName := r.Form.Get("username")
 
@@ -102,35 +132,21 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-<<<<<<< Updated upstream
-	log.Println("redirect")
 	http.Redirect(w, r, "/admin/user", http.StatusSeeOther)
 }
 
 func articleIndex(w http.ResponseWriter, r *http.Request) {
 	// Change with actual articledata
-	timestamp := time.Now()
-	body := "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-	articles := []article.Article{
-		{
-			ID:        "1",
-			Title:     "Lorem ipsum",
-			Body:      body,
-			CreatedAt: timestamp,
-			UpdatedAt: timestamp,
-		},
-		{
-			ID:        "2",
-			Title:     "Dolor sit amet",
-			Body:      body,
-			CreatedAt: timestamp,
-			UpdatedAt: timestamp,
-		},
+	articles, err := article.All()
+	if err != nil {
+		log.Println(errors.Wrap(err, "admin.article.index"))
 	}
+
 	u, err := user.UserFromSession(r)
 	if err != nil {
 		log.Println(errors.Wrap(err, "admin.article.index"))
 	}
+
 	data := map[string]interface{}{
 		"User":     u,
 		"Articles": articles,
@@ -141,21 +157,29 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 
 func toggleLivemode(w http.ResponseWriter, r *http.Request) {
 	setting.GetLiveMode().Toggle()
-=======
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }
 
 func createArticleIndex(w http.ResponseWriter, r *http.Request) {
-	adminRenderer.HTML(w, http.StatusOK, "article.html", nil)
+	adminRenderer.HTML(w, http.StatusOK, "create_article.html", nil)
 }
 
 func createArticle(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	fmt.Println("title", r.Form.Get("title"))
+
 	a := article.Article{
 		Title: r.Form.Get("title"),
 		Body:  r.Form.Get("body"),
 	}
+
+	u, err := user.UserFromSession(r)
+	if err != nil {
+		http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
+	}
+
+	fmt.Printf("%#v\n", u)
+
+	a.Authors = append(a.Authors, u)
 
 	//TODO: if something needs to verified, this should be done here
 	if err := a.Create(); err != nil {
@@ -164,7 +188,6 @@ func createArticle(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, err)
 		return
 	}
->>>>>>> Stashed changes
 
-	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+	http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
 }
