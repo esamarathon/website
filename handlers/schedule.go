@@ -60,7 +60,6 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for i, e := range s.Schedule.Entries {
-		log.Println("Original: " + e.Data[1])
 		e.Game = getAnchorText(e.Data[0])
 		e.Players = getPlayers(e.Data[1])
 		e.Platform = e.Data[2]
