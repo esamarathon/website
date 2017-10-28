@@ -21,10 +21,10 @@ func AdminRoutes(base string, router *mux.Router) {
 	router.HandleFunc(base, requireAuth(index)).Methods("GET")
 	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
 	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
-	router.HandleFunc(base+"/user", requireAuth(userCreate)).Methods("POST")
+	router.HandleFunc(base+"/user", requireAuth(userStore)).Methods("POST")
 	router.HandleFunc(base+"/article", requireAuth(articleIndex)).Methods("GET")
-	router.HandleFunc(base+"/article/create", requireAuth(createArticle)).Methods("POST")
-	router.HandleFunc(base+"/article/create", requireAuth(createArticleIndex)).Methods("GET")
+	router.HandleFunc(base+"/article/create", requireAuth(articleCreate)).Methods("GET")
+	router.HandleFunc(base+"/article/create", requireAuth(articleStore)).Methods("POST")
 	router.HandleFunc(base+"/article/edit/{id}", requireAuth(editArticleIndex)).Methods("GET")
 	router.HandleFunc(base+"/article/update/{id}", requireAuth(updateArticle)).Methods("POST")
 	router.HandleFunc(base, requireAuth(index)).Methods("GET", "POST")
@@ -125,7 +125,7 @@ func userIndex(w http.ResponseWriter, r *http.Request) {
 	adminRenderer.HTML(w, http.StatusOK, "user.html", data)
 }
 
-func userCreate(w http.ResponseWriter, r *http.Request) {
+func userStore(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	userName := r.Form.Get("username")
 
@@ -163,11 +163,11 @@ func toggleLivemode(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }
 
-func createArticleIndex(w http.ResponseWriter, r *http.Request) {
+func articleCreate(w http.ResponseWriter, r *http.Request) {
 	adminRenderer.HTML(w, http.StatusOK, "create_article.html", nil)
 }
 
-func createArticle(w http.ResponseWriter, r *http.Request) {
+func articleStore(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
 	a := article.Article{

@@ -2,7 +2,7 @@
 {{define "content"}}
 <div class="row">
     <div class="col-sm-12">
-        <h1>Create article</h1>
+        <h1>New article</h1>
     </div>
 </div>
 
@@ -10,21 +10,29 @@
     <div class="col-sm-12">
         <form action="/admin/article/create" method="POST">
             <div class="row">
-                <div class="col-sm-12">
-                    <label for="title">Title</label>
-                    <input type="text" name="title" />
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" name="title" placeholder="Title">
+                    </div>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                     <label for="body">Content</label>
-                    <textarea type="text" name="body"></textarea>
+                    <textarea class="form-control" rows="3" name="body"></textarea>
+                    <p class="help-block">Utilizes markdown formating. Here's a helpfull link for writing texts:<br />
+                        <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a>
+                    </p>
                 </div>
-
             </div>
 
-            <input type="submit" value="Submit" />
+            <div class="row">
+                <div class="col-sm-6 text-right">
+                    <input type="submit" value="Submit" class="btn btn-primary" />
+                </div>
+            </div>
         </form>
     </div>
 </div>
