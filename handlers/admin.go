@@ -128,11 +128,27 @@ func userIndex(w http.ResponseWriter, r *http.Request) {
 
 func userStore(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	userName := r.Form.Get("username")
+	username := r.Form.Get("username")
+	u := user.User{
+		Username: username,
+	}
 
-	if err := user.Insert(userName); err != nil || userName == "" {
-		// TODO:Handle error better
-		fmt.Fprint(w, err)
+	exists, err := u.Exists()
+	if err != nil {
+		log.Println(errors.Wrap(err, "handlers.userStore"))
+		http.Redirect(w, r, "/admin/user", http.StatusBadRequest)
+		return
+	}
+
+	if exists {
+		//TODO: flash message that user exists
+		http.Redirect(w, r, "/admin/user", http.StatusFound)
+		return
+	}
+
+	if err := user.Create(username); err != nil || username == "" {
+		log.Println(errors.Wrap(err, "handlers.userStore"))
+		http.Redirect(w, r, "/admin/user", http.StatusBadRequest)
 		return
 	}
 
