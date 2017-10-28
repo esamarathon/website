@@ -39,10 +39,13 @@ type schedulePlayer struct {
 	ProfileURL string `json:"profile_url,omitempty"`
 }
 
+// Schedule displays the marathon schedule
+// TODO: The result of this method should be cached, so we don't have to parse the JSON every time.
 func Schedule(w http.ResponseWriter, r *http.Request) {
 	var s scheduleResponse
 	data := getPagedata()
 
+	// TODO: Should not be hard coded
 	resp, err := http.Get("https://horaro.org/-/api/v1/schedules/4311u8b52b04si7a1e")
 	if err != nil {
 		log.Println(errors.Wrap(err, "handlers.Schedule"))
