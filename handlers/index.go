@@ -9,6 +9,7 @@ import (
 
 var renderer = grender.New(grender.Options{
 	TemplatesGlob: "templates/*.html",
+	PartialsGlob:  "templates/partials/*.html",
 })
 
 var Meta = meta{
@@ -27,6 +28,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	renderer.HTML(w, http.StatusOK, "index.html", data)
 }
 
+// getPagedata returns the basic page data
 func getPagedata() map[string]interface{} {
 	s, err := setting.GetLiveMode().AsBool()
 	if err != nil {

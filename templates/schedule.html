@@ -1,25 +1,23 @@
 {{/* extends "layout.html" */}}
 {{define "content"}}
-    <h2>{{ .Name }}</h2>
-    {{ range .Entries }}
-    <p>
-        <span>
-        {{ if .Game }}
-            Game: {{ .Game }}
-        {{ end }}
-        </span>
-        <span>
-        {{ if .Players }}
-            Player(s): 
-            {{ range .Players }}
-                {{ if .ProfileURL }}
-                    <a target="_blank" href="{{ .ProfileURL }}">{{ .Name }}</a> 
-                {{ else }}
-                    {{ .Name }}
-                {{ end }}
+    <h2 style="color:white;">{{ .Schedule.Name }}</h2>
+    
+    <table style="color:white;">
+        <thead>
+            <th>Scheduled</th>
+            <th>Game</th>
+            <th>Estimate</th>
+            <th>Player(s)</th>
+            <th>Platform</th>
+            <th>Category</th>
+            <th>Note</th>
+        </thead>
+        <tbody>
+            {{ range .Schedule.Entries }}
+                <tr>
+                    {{template "schedule-entry" .}}
+                </tr>
             {{ end }}
-        {{ end }}
-        </span>
-    </p>
-    {{ end }}
+        </tbody>
+    </table>
 {{end}}

@@ -19,7 +19,6 @@ type schedule struct {
 	Updated     string          `json:"updated,omitempty"`
 	Link        string          `json:"link,omitempty"`
 	Entries     []scheduleEntry `json:"items,omitempty"`
-	Meta        meta            `json:"data,omitempty"`
 }
 
 type scheduleEntry struct {
@@ -40,20 +39,24 @@ type schedulePlayer struct {
 	ProfileURL string `json:"profile_url,omitempty"`
 }
 
+// Schedule displays the marathon schedule
+// TODO: The result of this method should be cached, so we don't have to parse the JSON every time.
 func Schedule(w http.ResponseWriter, r *http.Request) {
 	var s scheduleResponse
+	data := getPagedata()
 
+	// TODO: Should not be hard coded
 	resp, err := http.Get("https://horaro.org/-/api/v1/schedules/4311u8b52b04si7a1e")
 	if err != nil {
 		log.Println(errors.Wrap(err, "handlers.Schedule"))
-		renderer.HTML(w, http.StatusOK, "500.html", page{Meta, content{}})
+		renderer.HTML(w, http.StatusOK, "500.html", data)
 	}
 
 	defer resp.Body.Close()
 
 	if err = json.NewDecoder(resp.Body).Decode(&s); err != nil {
 		log.Println(errors.Wrap(err, "handlers.Schedule"))
-		renderer.HTML(w, http.StatusOK, "500.html", page{Meta, content{}})
+		renderer.HTML(w, http.StatusOK, "500.html", data)
 	}
 
 	for i, e := range s.Schedule.Entries {
@@ -61,13 +64,15 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 		e.Game = getAnchorText(e.Data[0])
 		e.Players = getPlayers(e.Data[1])
 		e.Platform = e.Data[2]
-		e.Note = e.Data[3]
+		e.Category = e.Data[3]
+		e.Note = e.Data[4]
 		// e.Estimate = getEstimate(e.Length)
 
 		s.Schedule.Entries[i] = e
 	}
-	s.Schedule.Meta = Meta
-	renderer.HTML(w, http.StatusOK, "schedule.html", s.Schedule)
+	data["Schedule"] = s.Schedule
+
+	renderer.HTML(w, http.StatusOK, "schedule.html", data)
 }
 
 func getPlayers(str string) []schedulePlayer {

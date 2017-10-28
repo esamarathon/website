@@ -1,0 +1,39 @@
+{{ define "schedule-entry"}}
+    <td>
+        ~
+        <!-- Scheduled -->
+    </td>
+    <td>
+        {{ if .Game }}
+            {{ .Game }}
+        {{ end }}
+    </td>
+    <td>
+        ~
+        <!-- Time Estimate -->
+    </td>
+    <td>
+        {{ range .Players }}
+            {{ if .ProfileURL }}
+                <a target="_blank" href="{{ .ProfileURL }}">{{ .Name }}</a> 
+            {{ else }}
+                {{ .Name }}
+            {{ end }}
+        {{ end }}
+    </td>
+    <td>
+        {{ if .Platform }}
+            {{ .Platform }}
+        {{ end }}
+    </td>
+    <td>
+        {{ if .Category }}
+            {{ .Category }}
+        {{ end }}
+    </td>
+    <td>
+        {{ if .Note }}
+            {{ .Note }}
+        {{ end }}
+    </td>
+{{ end }}
