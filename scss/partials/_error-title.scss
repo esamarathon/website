@@ -1,0 +1,73 @@
+// h1.error-title {
+//    max-width: 80rem;
+//    margin: $gutter * 4 auto;
+//    color: tomato;
+//    position: relative;
+//    z-index: 3;
+//    &:before,
+//    &:after {
+//       content: attr(data-title);
+//       position: absolute;
+//    }
+//    &:before {
+//       right: 0px;
+//       z-index: 0;
+//       color: white;
+//    }
+//    &:after {
+//       left: 0px;
+//       z-index: 0;
+//       color: greenyellow;
+//    }
+// }
+
+
+.error-titles {
+   padding-top: $gutter * 4;
+   .error-title{
+     color:white;
+     font-size:2rem;
+     position:relative;
+     max-width:30rem;
+     margin:0 auto;
+     display: block;
+     text-align: center;
+     &:after,
+     &:before {
+        position:absolute;
+        content:attr(data-title);
+        text-align: center;
+        color:white;
+        background: #242e4a;
+        overflow:hidden;
+        clip:rect(0,900px,0,0);
+        top: 0;
+        animation:noise-anim 2s infinite linear alternate-reverse;
+     }
+     &:after{
+       left:4px;
+       text-shadow:-1px 0 red;
+     }
+     :before{
+       left:-4px;
+       text-shadow:1px 0 blue; 
+     }
+   }
+   @keyframes noise-anim{
+     $steps:20;
+     @for $i from 0 through $steps{
+       #{percentage($i*(1/$steps))}{
+         clip:rect(random(100)+px,9999px,random(100)+px,0);
+       }
+     }
+   }
+
+   @keyframes noise-anim-2{
+     $steps:20;
+     @for $i from 0 through $steps{
+       #{percentage($i*(1/$steps))}{
+         clip:rect(random(100)+px,9999px,random(100)+px,0);
+       }
+     }
+   }
+}

@@ -24,12 +24,11 @@ h2.schedule-title {
 section.schedule {
    max-width: 100vw;
    @include medium-up {
-      max-width: 60rem;
+      max-width: 80rem;
       margin: auto;
    }
    table {
       overflow-y: scroll;
-      max-width: 60rem;
       margin: auto;
       background: rgba(30, 38, 63, .8);
       position: relative;
