@@ -14,12 +14,6 @@
             <h4 class="list-group-item-heading">{{ .Title }}</h4>
             <p class="list-group-item-text">{{ .Body }}</p>
 
-            <p>Authors:
-            {{ range .Authors }}
-                <span>{{ .User.Username }}</span>
-            {{ end }}
-            </p>
-
             <span class="list-group-item-text">Created {{ .CreatedAt }}</span>
             <span class="list-group-item-text">Updated {{ .UpdatedAt }}</span>
         </a>

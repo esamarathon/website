@@ -27,3 +27,11 @@ func (a *Article) AuthorExists(user user.User) bool {
 
 	return false
 }
+
+func (a *Article) AddAuthor(u user.User) {
+	if a.Authors == nil {
+		a.Authors = []user.User{}
+	}
+
+	a.Authors = append(a.Authors, u)
+}

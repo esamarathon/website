@@ -46,7 +46,7 @@ func UserFromSession(r *http.Request) (User, error) {
 		return u, errors.Wrap(err, "UserFromSession")
 	}
 
-	return u, nil
+	return GetUserByUsername(u.Username)
 }
 
 func SetSessionAge(age int) {

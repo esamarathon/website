@@ -26,7 +26,7 @@ func AdminRoutes(base string, router *mux.Router) {
 	router.HandleFunc(base+"/article/create", requireAuth(createArticle)).Methods("POST")
 	router.HandleFunc(base+"/article/create", requireAuth(createArticleIndex)).Methods("GET")
 	router.HandleFunc(base+"/article/edit/{id}", requireAuth(editArticleIndex)).Methods("GET")
-	router.HandleFunc(base+"/article/update/{id}", requireAuth(updateArticle)).Methods("GET")
+	router.HandleFunc(base+"/article/update/{id}", requireAuth(updateArticle)).Methods("POST")
 	router.HandleFunc(base, requireAuth(index)).Methods("GET", "POST")
 }
 
@@ -39,12 +39,12 @@ func updateArticle(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	u, err := user.UserFromSession(r)
 	if err != nil {
-		// something went wrong
+		log.Println(errors.Wrap(err, "handlers.updateArticle"))
 	}
 
 	a, err := article.Get(id)
 	if err != nil {
-		// more wrongs
+		log.Println(errors.Wrap(err, "handlers.updateArticle"))
 	}
 
 	if !a.AuthorExists(u) {
@@ -64,10 +64,10 @@ func updateArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err = a.Update(); err != nil {
-		// more wrongs
+		log.Println(errors.Wrap(err, "handlers.updateArticle"))
 	}
 
-	adminRenderer.HTML(w, http.StatusOK, "admin/article.html", nil)
+	http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
 }
 
 func editArticleIndex(w http.ResponseWriter, r *http.Request) {
@@ -177,9 +177,7 @@ func createArticle(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
 	}
 
-	fmt.Printf("%#v\n", u)
-
-	a.Authors = append(a.Authors, u)
+	a.AddAuthor(u)
 
 	//TODO: if something needs to verified, this should be done here
 	if err := a.Create(); err != nil {

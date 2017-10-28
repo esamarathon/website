@@ -3,8 +3,6 @@ package article
 import (
 	"time"
 
-	"github.com/fatih/structs"
-
 	"github.com/olenedr/esamarathon/db"
 	"github.com/pkg/errors"
 )
@@ -13,6 +11,7 @@ func (a *Article) Create() error {
 	data := map[string]interface{}{
 		"title":      a.Title,
 		"body":       a.Body,
+		"authors":    a.Authors,
 		"created_at": time.Now(),
 		"updated_at": time.Now(),
 	}
@@ -49,5 +48,12 @@ func Get(id string) (Article, error) {
 }
 
 func (a *Article) Update() error {
-	return db.Update(table, structs.Map(a))
+	data := map[string]interface{}{
+		"title":      a.Title,
+		"body":       a.Body,
+		"authors":    a.Authors,
+		"created_at": time.Now(),
+		"updated_at": time.Now(),
+	}
+	return db.Update(table, data)
 }
