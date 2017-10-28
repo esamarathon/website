@@ -2,22 +2,24 @@
 {{define "content"}}
     <h2 class="schedule-title">{{ .Schedule.Name }}</h2>
     
-    <table style="color:white;">
-        <thead>
-            <th>Scheduled</th>
-            <th>Game</th>
-            <th>Estimate</th>
-            <th>Player(s)</th>
-            <th>Platform</th>
-            <th>Category</th>
-            <th>Note</th>
-        </thead>
-        <tbody>
-            {{ range .Schedule.Entries }}
-                <tr>
-                    {{template "schedule-entry" .}}
-                </tr>
-            {{ end }}
-        </tbody>
-    </table>
+    <section class="schedule">
+        <table style="color:white;">
+            <thead>
+                <th>Scheduled</th>
+                <th>Game</th>
+                <th>Estimate</th>
+                <th>Player(s)</th>
+                <th>Platform</th>
+                <th>Category</th>
+                <th>Note</th>
+            </thead>
+            <tbody>
+                {{ range .Schedule.Entries }}
+                    <tr>
+                        {{template "schedule-entry" .}}
+                    </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </section>
 {{end}}
