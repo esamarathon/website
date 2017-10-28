@@ -7,7 +7,11 @@ h2.schedule-title {
    display: block;
    text-align: center;
    margin-bottom: $gutter * 2;
+   padding-top: $gutter * 4;
    font-family: $condensed;
+   @include medium-up {
+      padding-top: 0;
+   }
    &:after {
       content: '';
       display: block;
@@ -17,32 +21,138 @@ h2.schedule-title {
       margin-top: $gutter;
    }
 }
-table {
-   max-width: 60rem;
-   margin: auto;
-   background: rgba(30, 38, 63, .8);
-   position: relative;
-   z-index: 3;
-   thead {
-      tr {
-         th {
-            text-align: left;
-            padding: $gutter;
+section.schedule {
+   max-width: 100vw;
+   @include medium-up {
+      max-width: 60rem;
+      margin: auto;
+   }
+   table {
+      overflow-y: scroll;
+      max-width: 60rem;
+      margin: auto;
+      background: rgba(30, 38, 63, .8);
+      position: relative;
+      z-index: 3;
+      thead {
+         display: none;
+         @include medium-up {
+            display: table-row;
+         }
+         tr {
+            th {
+               text-align: left;
+               padding: $gutter;
+            }
          }
       }
-   }
-   tbody {
-      tr {
-         td {
-            padding: $gutter / 2 $gutter;
+      tbody {
+         display: block;
+         @include small-only {
+            display: table-row-group;
+         }
+         tr {
+            display: block;
             border-top: 1px solid rgba(255,255,255,.1);
-            letter-spacing: .5px;
-            a {
-               color: $orange;
-               text-decoration: none;
-               transition: .2s all;
-               &:hover {
-                  color: lighten($orange, 20%);
+            padding: $gutter;
+            @include medium-up {
+               padding: 0;
+               display: table-row;
+               border-top: none;
+            }
+            &:nth-of-type(odd) {
+               background: rgba(255,255,255,.05);
+               @include medium-up {
+                  background: none;
+               }
+            }
+            td {
+               padding: $gutter / 2 $gutter;
+               letter-spacing: .5px;
+               padding-left: 32%;
+               display: block;
+               border-top: 0;
+               position: relative;
+               @include medium-up {
+                  padding-left: $gutter;
+                  border-top: 1px solid rgba(255,255,255,.1);
+                  display: table-cell;
+               }
+               &:empty {
+                  padding: 0;
+                  display: none;
+               }
+               a {
+                  color: $orange;
+                  text-decoration: none;
+                  transition: .2s all;
+                  &:hover {
+                     color: lighten($orange, 20%);
+                  }
+               }
+               &:before {
+                  position: absolute;
+                  top: 6px;
+                  left: 6px;
+                  width: 45%;
+                  padding-right: 10px;
+                  white-space: nowrap;
+               }
+               &:nth-child(1) {
+                  &:before {
+                     content:'Scheduled';
+                     @include medium-up {
+                        display: none;
+                     }
+                  }
+               }
+               &:nth-child(2) {
+                  &:before {
+                     content:'Game';
+                     @include medium-up {
+                        display: none;
+                     }
+                  }
+               }
+               &:nth-child(3) {
+                  &:before {
+                     content:'Estimate';
+                     @include medium-up {
+                        display: none;
+                     }
+                  }
+               }
+               &:nth-child(4) {
+                  &:before {
+                     content:'Player(s)';
+                     @include medium-up {
+                        display: none;
+                     }
+                  }
+               }
+               &:nth-child(5) {
+                  &:before {
+                     content:'Platform';
+                     @include medium-up {
+                        display: none;
+                     }
+                  }
+               }
+               &:nth-child(6) {
+                  &:before {
+                     content:'Category';
+                     @include medium-up {
+                        display: none;
+                     }
+                  }
+               }
+               &:nth-child(7) {
+                  &:before {
+                     content:'Note';
+                     @include medium-up {
+                        display: none;
+                     }
+                  }
                }
             }
          }

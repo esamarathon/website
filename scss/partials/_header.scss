@@ -2,7 +2,6 @@ header {
     position: absolute;
     z-index: 200;
     padding: $gutter;
-    height: 100%;
     width: 100%;
     @include medium-up {
         display: flex;
