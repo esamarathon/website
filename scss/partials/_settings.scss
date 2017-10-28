@@ -22,7 +22,7 @@ $medium-up-width: 48rem;
 
 
 html, body {
-   font-size: 14px;
+   font-size: 16px;
    font-family: 'Roboto', sans-serif;
    background: $background;
    background: $background-gradient;
@@ -30,9 +30,12 @@ html, body {
    background-repeat: no-repeat;
    background-attachment: fixed;
    height: 100%;
-   @include medium-up() {
-      font-size: 16px;
-   }
+   &.active {
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+    position: fixed;
+}
    
 }
 body {

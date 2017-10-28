@@ -5,7 +5,7 @@
    padding: $gutter;
    
    @include medium-up {
-      padding: $gutter * 3;
+      padding: 0 $gutter * 3;
    }
    &-logo {
       max-width: 5rem;
@@ -19,16 +19,16 @@
       }
    }
    &-slogan {
-      padding: $gutter 0;
+      padding:0 $gutter;
       max-width: 60rem;
       margin: auto;
       img {
          display: block;
          width: 50%;
          max-width: 15rem;
-         margin: 0  auto $gutter;
+         margin: $gutter  auto;
          @include medium-up {
-            margin: $gutter * 2 auto;
+            margin: $gutter * 2 auto $gutter * 3;
             max-width: 20rem;
          }
       }
