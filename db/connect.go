@@ -22,6 +22,11 @@ func Connect() error {
 	return nil
 }
 
+func Delete(table, id string) error {
+	_, err := r.Table(table).Get(id).Delete().Run(Session)
+	return err
+}
+
 func Update(table string, id string, data map[string]interface{}) error {
 	_, err := r.Table(table).Get(id).Update(data).RunWrite(Session)
 	if err != nil {
