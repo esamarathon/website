@@ -1,9 +1,10 @@
 {{/* extends "layout.html" */}}
 {{define "content"}}
 
-    <h1>{{ .Content.Title }}</h1>
-    <main>
-        {{ .Content.Body }}
-    </main>
+    <article>
+        <h1>{{ .Content.Title }}</h1>
+        <p>{{ .Content.Body }}</p>
+    </article>
+
 
 {{end}}
