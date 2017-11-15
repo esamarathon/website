@@ -22,11 +22,8 @@ h2.schedule-title {
    }
 }
 section.schedule {
-   max-width: 100vw;
-   @include medium-up {
-      max-width: 80rem;
-      margin: auto;
-   }
+   max-width: 80rem;
+   margin: auto;
    table {
       overflow-y: scroll;
       margin: auto;
@@ -34,52 +31,45 @@ section.schedule {
       position: relative;
       z-index: 3;
       thead {
-         display: none;
-         @include medium-up {
-            display: table-row;
+         @include small-only {
+            display: none;
          }
          tr {
             th {
                text-align: left;
                padding: $gutter;
+               text-transform: uppercase;
+               letter-spacing: 1px;
+               font-weight: 400;
             }
          }
       }
       tbody {
-         display: block;
          @include small-only {
             display: table-row-group;
+            height: auto;
          }
          tr {
-            display: block;
-            border-top: 1px solid rgba(255,255,255,.1);
-            padding: $gutter;
-            @include medium-up {
-               padding: 0;
-               display: table-row;
-               border-top: none;
-            }
-            &:nth-of-type(odd) {
-               background: rgba(255,255,255,.05);
-               @include medium-up {
-                  background: none;
-               }
-            }
-            td {
-               padding: $gutter / 2 $gutter;
-               letter-spacing: .5px;
-               padding-left: 32%;
+            @include small-only {
                display: block;
-               border-top: 0;
-               position: relative;
-               @include medium-up {
-                  padding-left: $gutter;
-                  border-top: 1px solid rgba(255,255,255,.1);
-                  display: table-cell;
+               border-top: 1px solid rgba(255,255,255,.1);
+               padding: $gutter;
+               &:nth-of-type(odd) {
+                  background: rgba(255,255,255,.05);
                }
-               &:empty {
-                  padding: 0;
-                  display: none;
+            }
+            
+            td {
+               letter-spacing: .5px;
+               padding: $gutter / 2 $gutter;
+               border-top: 1px solid rgba(255,255,255,.1);
+               @include small-only {
+                  padding: $gutter / 2 $gutter;
+                  display: block;
+                  border-top: 0;
+                  padding-left: 32%;
+                  min-height: 2.1875rem;
+                  position: relative;
                }
                a {
                   color: $orange;
@@ -87,6 +77,14 @@ section.schedule {
                   transition: .2s all;
                   &:hover {
                      color: lighten($orange, 20%);
+                  }
+                  &:after {
+                     content: ', ';
+                  }
+                  &:last-child {
+                     &:after {
+                        content:'';
+                     }
                   }
                }
                &:before {
@@ -99,57 +97,50 @@ section.schedule {
                }
                &:nth-child(1) {
                   &:before {
-                     content:'Scheduled';
-                     @include medium-up {
-                        display: none;
+                     @include small-only {
+                        content:'Scheduled';
                      }
                   }
                }
                &:nth-child(2) {
                   &:before {
-                     content:'Game';
-                     @include medium-up {
-                        display: none;
+                     @include small-only {
+                        content:'Game';
                      }
                   }
                }
                &:nth-child(3) {
                   &:before {
-                     content:'Estimate';
-                     @include medium-up {
-                        display: none;
+                     @include small-only {
+                        content:'Estimate';
                      }
                   }
                }
                &:nth-child(4) {
                   &:before {
-                     content:'Player(s)';
-                     @include medium-up {
-                        display: none;
+                     @include small-only {
+                        content:'Player(s)';
                      }
                   }
                }
                &:nth-child(5) {
                   &:before {
-                     content:'Platform';
-                     @include medium-up {
-                        display: none;
+                     @include small-only {
+                        content:'Platform';
                      }
                   }
                }
                &:nth-child(6) {
                   &:before {
-                     content:'Category';
-                     @include medium-up {
-                        display: none;
+                     @include small-only {
+                        content:'Category';
                      }
                   }
                }
                &:nth-child(7) {
                   &:before {
-                     content:'Note';
-                     @include medium-up {
-                        display: none;
+                     @include small-only {
+                        content:'Note';
                      }
                   }
                }
