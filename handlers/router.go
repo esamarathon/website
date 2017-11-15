@@ -12,9 +12,10 @@ var router = mux.NewRouter()
 
 func init() {
 	router.PathPrefix("/static").Handler(handleStatic("public", "/static"))
-	router.HandleFunc("/", Index).Methods("GET", "OPTIONS")
-	router.HandleFunc("/schedule", Schedule).Methods("GET", "OPTIONS")
-	router.HandleFunc("/news", News).Methods("GET", "OPTIONS")
+	router.HandleFunc("/", Index).Methods("GET")
+	router.HandleFunc("/schedule", Schedule).Methods("GET")
+	router.HandleFunc("/news", News).Methods("GET")
+	router.HandleFunc("/news/{id}", Article).Methods("GET")
 	router.HandleFunc("/auth", AuthRedirect).Methods("GET")
 	router.HandleFunc("/auth/callback", AuthCallback).Methods("GET")
 	router.HandleFunc("/login", HandleAuth).Methods("GET")

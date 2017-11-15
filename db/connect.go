@@ -55,6 +55,17 @@ func GetAll(table string) (*r.Cursor, error) {
 	return rows, nil
 }
 
+func GetPage(table string, page int, perPage int) (*r.Cursor, error) {
+	skip := page * perPage
+	// TODO: Add orderby here
+	rows, err := r.Table(table).Skip(skip).Limit(perPage).Run(Session)
+	if err != nil {
+		return nil, errors.Wrap(err, "db.GetAll")
+	}
+
+	return rows, nil
+}
+
 func GetOneById(table, id string) (*r.Cursor, error) {
 	cursor, err := r.Table(table).Get(id).Run(Session)
 	if err != nil {

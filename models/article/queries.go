@@ -3,6 +3,7 @@ package article
 import (
 	"time"
 
+	"github.com/olenedr/esamarathon/config"
 	"github.com/olenedr/esamarathon/db"
 	"github.com/pkg/errors"
 )
@@ -28,6 +29,20 @@ func All() ([]Article, error) {
 
 	if err = rows.All(&a); err != nil {
 		return a, errors.Wrap(err, "article.All")
+	}
+
+	return a, nil
+}
+
+func Page(page int) ([]Article, error) {
+	rows, err := db.GetPage(table, page, config.Config.ArticlesPerPage)
+	var a []Article
+	if err != nil {
+		return a, errors.Wrap(err, "article.Page")
+	}
+
+	if err = rows.All(&a); err != nil {
+		return a, errors.Wrap(err, "article.Page")
 	}
 
 	return a, nil
