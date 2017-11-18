@@ -22,15 +22,24 @@ func News(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		p = 0
 	}
-	// fmt.Printf("%v\n", p)
 	a, err := article.Page(p)
-
+	// If we failed to get the articles
+	// we return the 500 error page
 	if err != nil {
-		renderer.HTML(w, http.StatusOK, "404.html", data)
+		renderer.HTML(w, http.StatusOK, "500.html", data)
 		return
 	}
 
-	fmt.Printf("%v\n", a)
+	data["Articles"] = a
+	data["CurrPage"] = p
+	data["LastPage"], err = article.PageCount()
+	fmt.Printf("LAST PAGE: %v\n", data["LastPage"])
+	fmt.Printf("CURR PAGE: %v\n", data["CurrPage"])
+	if err != nil {
+		renderer.HTML(w, http.StatusOK, "500.html", data)
+		return
+	}
+
 	renderer.HTML(w, http.StatusOK, "news.html", data)
 }
 

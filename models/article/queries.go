@@ -48,6 +48,16 @@ func Page(page int) ([]Article, error) {
 	return a, nil
 }
 
+// PageCount Calculates the number of pages based on the number of articles
+// and articles per page (minus 1 because we start at 0)
+func PageCount() (int, error) {
+	count, err := db.GetCount(table)
+	if err != nil {
+		return 0, errors.Wrap(err, "article.PageCount")
+	}
+	return (count / config.Config.ArticlesPerPage) - 1, nil
+}
+
 func Get(id string) (Article, error) {
 	var a Article
 	cursor, err := db.GetOneById(table, id)

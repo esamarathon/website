@@ -3,29 +3,15 @@
 
     <main class="article-list">
         <h1>News are coming</h1>
-        <article>
-            <h1>consectetur adipisicing</h1>
-            <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus quisquam nam voluptatem quasi quis nostrum quibusdam eligendi exercitationem, necessitatibus temporibus! Dolor vel quod iusto delectus exercitationem accusantium cumque optio voluptas!
-            </p>
-            <a href="/news/id">Read more &rarr;</a>
-        </article>
-
-        <article>
-            <h1>Lorem ipsum dolor sit</h1>
-            <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus quisquam nam voluptatem quasi quis nostrum quibusdam eligendi exercitationem, necessitatibus temporibus! Dolor vel quod iusto delectus exercitationem accusantium cumque optio voluptas!
-            </p>
-            <a href="/news/id">Read more &rarr;</a>
-        </article>
-
-        <article>
-            <h1>Delectus quisquam</h1>
-            <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus quisquam nam voluptatem quasi quis nostrum quibusdam eligendi exercitationem, necessitatibus temporibus! Dolor vel quod iusto delectus exercitationem accusantium cumque optio voluptas!
-            </p>
-            <a href="/news/id">Read more &rarr;</a>
-        </article>
+        {{ range .Articles }}
+            <article>
+                <h1>{{ .Title }}</h1>
+                <p>{{ .Body }}</p>
+                <a href="/news/{{ .ID }}">Read more &rarr;</a>
+            </article>
+        {{ end }}
+        
+        <a href="/news?page=1">Read more &rarr;</a>
     </main>
 
 {{end}}
