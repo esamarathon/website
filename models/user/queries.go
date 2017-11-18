@@ -15,7 +15,7 @@ func Create(username string) error {
 }
 
 func All() ([]User, error) {
-	rows, err := db.GetAll(Table)
+	rows, err := db.AllOrderBy(Table, "username")
 	var users []User
 	if err != nil {
 		return users, errors.Wrap(err, "user.All")

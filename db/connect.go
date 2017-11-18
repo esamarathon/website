@@ -55,6 +55,15 @@ func GetAll(table string) (*r.Cursor, error) {
 	return rows, nil
 }
 
+func AllOrderBy(table string, index string) (*r.Cursor, error) {
+	rows, err := r.Table(table).OrderBy(r.Desc(index)).Run(Session)
+	if err != nil {
+		return nil, errors.Wrap(err, "db.AllOrderBy")
+	}
+
+	return rows, nil
+}
+
 func GetPage(table string, page int, perPage int) (*r.Cursor, error) {
 	skip := page * perPage
 	// TODO: Add orderby here

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/dannyvankooten/grender"
 	"github.com/pkg/errors"
@@ -142,8 +143,11 @@ func userIndex(w http.ResponseWriter, r *http.Request) {
 func userStore(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	username := r.Form.Get("username")
+	// Create a user object
 	u := user.User{
-		Username: username,
+		// Username is lowercase since that's what Twitch
+		// returns through their Oauth response
+		Username: strings.ToLower(username),
 	}
 
 	exists, err := u.Exists()
