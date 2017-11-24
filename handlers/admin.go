@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/dannyvankooten/grender"
 	"github.com/pkg/errors"
@@ -26,8 +27,8 @@ func AdminRoutes(base string, router *mux.Router) {
 	router.HandleFunc(base+"/article", requireAuth(articleIndex)).Methods("GET")
 	router.HandleFunc(base+"/article/create", requireAuth(articleCreate)).Methods("GET")
 	router.HandleFunc(base+"/article/create", requireAuth(articleStore)).Methods("POST")
-	router.HandleFunc(base+"/article/edit/{id}", requireAuth(editArticleIndex)).Methods("GET")
-	router.HandleFunc(base+"/article/update/{id}", requireAuth(updateArticle)).Methods("POST")
+	router.HandleFunc(base+"/article/{id}", requireAuth(articleEdit)).Methods("GET")
+	router.HandleFunc(base+"/article/{id}", requireAuth(articleUpdate)).Methods("POST")
 	router.HandleFunc(base, requireAuth(index)).Methods("GET", "POST")
 }
 
@@ -47,12 +48,12 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admin/user", http.StatusSeeOther)
 }
 
-func updateArticle(w http.ResponseWriter, r *http.Request) {
+func articleUpdate(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
 	a, err := article.Get(id)
 	if err != nil {
-		log.Println(errors.Wrap(err, "handlers.updateArticle"))
+		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
 		// TODO: Add flash message letting the user know what went wrong
 		http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
 		return
@@ -61,7 +62,7 @@ func updateArticle(w http.ResponseWriter, r *http.Request) {
 	u, err := user.UserFromSession(r)
 	// No reason to do more error handling since we only use the user for author
 	if err != nil {
-		log.Println(errors.Wrap(err, "handlers.updateArticle"))
+		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
 	} else if !a.AuthorExists(u) {
 		a.Authors = append(a.Authors, u)
 	}
@@ -69,6 +70,10 @@ func updateArticle(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	title := r.FormValue("title")
 	body := r.FormValue("body")
+	a.Published = false
+	if r.FormValue("published") == "1" {
+		a.Published = true
+	}
 
 	if title != "" {
 		a.Title = title
@@ -79,20 +84,20 @@ func updateArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err = a.Update(); err != nil {
-		log.Println(errors.Wrap(err, "handlers.updateArticle"))
+		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
 		// TODO: Add flash message letting the user know that saving the article failed
 		http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
 	}
 
-	http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
+	http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
 }
 
-func editArticleIndex(w http.ResponseWriter, r *http.Request) {
+func articleEdit(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
 	a, err := article.Get(id)
 	if err != nil {
-		log.Println(errors.Wrap(err, "handlers.editArticleIndex"))
+		log.Println(errors.Wrap(err, "handlers.articleEdit"))
 		adminRenderer.HTML(w, http.StatusInternalServerError, "index.html", nil)
 		return
 	}
@@ -142,8 +147,11 @@ func userIndex(w http.ResponseWriter, r *http.Request) {
 func userStore(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	username := r.Form.Get("username")
+	// Create a user object
 	u := user.User{
-		Username: username,
+		// Username is lowercase since that's what Twitch
+		// returns through their Oauth response
+		Username: strings.ToLower(username),
 	}
 
 	exists, err := u.Exists()

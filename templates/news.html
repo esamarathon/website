@@ -2,50 +2,27 @@
 {{define "content"}}
 
     <main class="article-list">
-        <h1>News are coming</h1>
-        <article>
-            <h1>consectetur adipisicing</h1>
-            <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus quisquam nam voluptatem quasi quis nostrum quibusdam eligendi exercitationem, necessitatibus temporibus! Dolor vel quod iusto delectus exercitationem accusantium cumque optio voluptas!
-            </p>
-            <a href="#">Read more &rarr;</a>
-        </article>
-
-        <article>
-                <h1>Lorem ipsum dolor sit</h1>
-                <p>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus quisquam nam voluptatem quasi quis nostrum quibusdam eligendi exercitationem, necessitatibus temporibus! Dolor vel quod iusto delectus exercitationem accusantium cumque optio voluptas!
-                </p>
-                <a href="#">Read more &rarr;</a>
-            </article>
-
+        <h1>Latest news from ESA</h1>
+        {{ range .Articles }}
             <article>
-            <h1>Delectus quisquam</h1>
-            <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus quisquam nam voluptatem quasi quis nostrum quibusdam eligendi exercitationem, necessitatibus temporibus! Dolor vel quod iusto delectus exercitationem accusantium cumque optio voluptas!
-            </p>
-            <a href="#">Read more &rarr;</a>
-        </article>
+                <h1>{{ .Title }}</h1>
+                <p>{{ .HTML }}</p>
+                <a href="/news/{{ .ID }}">Read more &rarr;</a>
+            </article>
+        {{ end }}
+        
         <section class="pagination">
-            <a href="#" class="previous inactive">previous</a>
-            <a href="#" class="next">next</a>
+            {{ if (lt .PrevPage 0) }}
+                <a href="#" class="inactive previous">previous</a>
+            {{ else }}
+                <a href="/news?page={{ .PrevPage }}" class="previous">previous</a>
+            {{ end }}
+
+            {{ if (gt .NextPage .LastPage) }}
+                <a href="#" class="inactive next">next</a>
+            {{ else }}
+                <a href="/news?page={{ .NextPage }}" class="next">next</a>
+            {{ end }}
         </section>
     </main>
-
-    <main class="article">
-        <article>
-            <h1>News article example</h1>
-            <section class="byline">
-                <a href="#">Rasmus</a><time datetime="">November 24. 2017, 13:22</time>
-            </section>
-            <h1>Test</h1>
-            <h2>Test</h2>
-            <h3>Test</h3>
-            <h4>Test</h4>
-            <h5>Test</h5>
-            <h6>Test</h6>
-            <p>If clicked on an article, you'll see this. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus quisquam nam voluptatem quasi quis nostrum quibusdam eligendi exercitationem, <a href="#">necessitatibus temporibus</a>! Dolor vel quod iusto delectus exercitationem accusantium cumque optio voluptas! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus quisquam nam voluptatem quasi quis nostrum quibusdam eligendi exercitationem, necessitatibus temporibus! Dolor vel quod iusto delectus exercitationem accusantium cumque optio voluptas! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus quisquam nam voluptatem quasi quis nostrum quibusdam eligendi exercitationem, necessitatibus temporibus! Dolor vel quod iusto delectus exercitationem accusantium cumque optio voluptas!</p>
-        </article>
-    </main>
-
 {{end}}

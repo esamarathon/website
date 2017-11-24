@@ -6,6 +6,7 @@ import (
 	r "gopkg.in/gorethink/gorethink.v3"
 )
 
+// Create inserts a new user entry to the DB
 func Create(username string) error {
 	var data = map[string]interface{}{
 		"username": username,
@@ -14,8 +15,9 @@ func Create(username string) error {
 	return db.Insert(Table, data)
 }
 
+// All returns all the users in the DB
 func All() ([]User, error) {
-	rows, err := db.GetAll(Table)
+	rows, err := db.GetAllOrderBy(Table, "username")
 	var users []User
 	if err != nil {
 		return users, errors.Wrap(err, "user.All")
@@ -49,6 +51,7 @@ func (u *User) Exists() (bool, error) {
 	return true, nil
 }
 
+// GetUserByUsername takes a username and attempts to return the corresponding user in the DB
 func GetUserByUsername(username string) (User, error) {
 	res, err := r.Table(Table).Filter(map[string]interface{}{
 		"username": username,
@@ -68,6 +71,7 @@ func GetUserByUsername(username string) (User, error) {
 	return u, nil
 }
 
+// Delete deletes a user in the DB by ID
 func Delete(id string) error {
 	return db.Delete(Table, id)
 }

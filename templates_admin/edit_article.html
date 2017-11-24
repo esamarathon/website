@@ -7,7 +7,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <form action="/admin/article/update/{{.Article.ID}}" method="POST">
+        <form action="/admin/article/{{.Article.ID}}" method="POST">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
@@ -15,12 +15,20 @@
                         <input type="text" class="form-control" name="title" placeholder="Title" value="{{ .Article.Title }}">
                     </div>
                 </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="title">Publish article?</label>
+                        <div class="checkbox">
+                            <label><input name="published" type="checkbox" value="1" {{ if (.Article.Published)}}checked{{end}}>Published</label>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <label for="body">Content</label>
-                    <textarea class="form-control" rows="3" name="body">{{ .Article.Body }}</textarea>
+                    <textarea class="form-control" rows="24" name="body">{{ .Article.Body }}</textarea>
                     <p class="help-block">Utilizes markdown formating. Here's a helpfull link for writing texts:<br />
                         <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a>
                     </p>

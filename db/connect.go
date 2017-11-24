@@ -55,6 +55,25 @@ func GetAll(table string) (*r.Cursor, error) {
 	return rows, nil
 }
 
+func GetAllOrderBy(table string, index string) (*r.Cursor, error) {
+	rows, err := r.Table(table).OrderBy(r.Desc(index)).Run(Session)
+	if err != nil {
+		return nil, errors.Wrap(err, "db.GetAllOrderBy")
+	}
+
+	return rows, nil
+}
+
+func GetPage(table string, page int, perPage int) (*r.Cursor, error) {
+	skip := page * perPage
+	rows, err := r.Table(table).OrderBy(r.Desc("created_at")).Skip(skip).Limit(perPage).Run(Session)
+	if err != nil {
+		return nil, errors.Wrap(err, "db.GetAll")
+	}
+
+	return rows, nil
+}
+
 func GetOneById(table, id string) (*r.Cursor, error) {
 	cursor, err := r.Table(table).Get(id).Run(Session)
 	if err != nil {
@@ -62,4 +81,17 @@ func GetOneById(table, id string) (*r.Cursor, error) {
 	}
 
 	return cursor, err
+}
+
+func GetCount(table string) (int, error) {
+	cursor, err := r.Table(table).Count().Run(Session)
+	if err != nil {
+		return 0, errors.Wrap(err, "db.GetCount")
+	}
+
+	var count int
+	cursor.One(&count)
+	cursor.Close()
+
+	return count, nil
 }

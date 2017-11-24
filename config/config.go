@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 	"github.com/olenedr/esamarathon/str"
@@ -12,6 +13,7 @@ import (
 
 type config struct {
 	Port               string
+	ArticlesPerPage    int
 	SessionKey         string
 	SessionName        string
 	Database           string
@@ -39,8 +41,15 @@ func init() {
 		log.Fatal("Couldn't loading .env file")
 	}
 
+	articlesPerPage, err := strconv.Atoi(os.Getenv("ARTICLES_PER_PAGE"))
+	if err != nil {
+		log.Println("Failed to parse numeric .env value, using default.")
+		articlesPerPage = 10
+	}
+
 	Config = config{
 		Port:               os.Getenv("PORT"),
+		ArticlesPerPage:    articlesPerPage,
 		SessionKey:         os.Getenv("SESSION_KEY"),
 		SessionName:        os.Getenv("SESSION_NAME"),
 		Database:           os.Getenv("DB_NAME"),
