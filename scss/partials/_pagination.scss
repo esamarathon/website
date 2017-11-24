@@ -1,0 +1,41 @@
+section.pagination {
+   margin: $gutter * 2 auto $gutter;
+   max-width: $max-width;
+   &:after {
+      content: '';
+      display: block;
+      clear: left;
+   }
+   a {
+      color: $white;
+      text-decoration: none;
+      padding: $gutter;
+      transition: .2s all;
+      float: left;
+      width: 50%;
+      &:before,
+      &:after {
+         padding: 0 $gutter;
+      }
+      &:hover {
+         color: $orange-light;
+      }
+      &.inactive {
+         opacity: .4;
+         cursor: default;
+         pointer-events: none;
+      }
+   }
+   a.previous {
+      text-align: right;
+      &:before {
+         content: '\2190';
+      }
+   }
+   a.next {
+      text-align: left;
+      &:after {
+         content: '\2192';
+      }
+   }
+}

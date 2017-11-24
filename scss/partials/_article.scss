@@ -78,52 +78,81 @@ main.article-list {
    }
 }
 main.article {
-   >h1 {
-      font-weight: 100;
-      font-size: 2rem;
-      color: $orange;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      display: block;
-      text-align: center;
-      padding-top: $gutter * 4;
-      font-family: $condensed;
-      @include medium-up {
-         padding-top: 0;
-      }
-      &:after {
-         content: '';
-         display: block;
-         max-width: 3rem;
-         border-top: 3px $orange solid;
-         margin: auto;
-         margin-top: $gutter;
-      }
-   }
-
-   p {
-      display: block;
-      padding: $gutter;
+   article {
+      max-width: 60rem;
       margin: 0 auto  $gutter * 1;
-      font-size: 1.125rem;
-      color: $white;
-      line-height: 1.6;
-      font-weight: 300;
+      padding: $gutter;
       @include medium-up {
-         max-width: 60rem;
          margin: 0 auto $gutter * 3;
-         transition: .4s all;
-         border-radius: 6px;
       }
-      a {
+      h1, h2, h3, h4, h5, h6 {
+         color: $white;
+         font-family: $condensed;
+         text-transform: uppercase;
+         font-weight: 100;
+         letter-spacing: .5px;
+      }
+      h2 {
+         font-size: 1.75rem;
+      }
+      h3 {
+         font-size: 1.5rem;
+      }
+      h4 {
+         font-size: 1.25rem;
+      }
+      h5 {
+         font-size: 1.125rem;
+      }
+      h6 {
+         font-size: 1rem;
+      }
+      >h1 {
+         font-weight: 100;
+         font-size: 2rem;
          color: $orange;
-         text-decoration: none;
+         text-transform: uppercase;
+         letter-spacing: 1px;
+         display: block;
+         text-align: center;
+         padding-top: $gutter * 4;
+         font-family: $condensed;
          @include medium-up {
-            transition: .2s all;
-            text-shadow: 0 0 0 transparent;
-            &:hover {
-               color: $orange-light;
-               text-shadow: 0 2px 4px rgba(0,0,0,.4);
+            padding-top: 0;
+         }
+         &:after {
+            content: '';
+            display: block;
+            max-width: 3rem;
+            border-top: 3px $orange solid;
+            margin: auto;
+            margin-top: $gutter;
+         }
+      }
+      
+      
+      
+      p {
+         display: block;
+         
+         font-size: 1.125rem;
+         color: $white;
+         line-height: 1.6;
+         font-weight: 300;
+         @include medium-up {
+            transition: .4s all;
+            border-radius: 6px;
+         }
+         a {
+            color: $orange;
+            text-decoration: none;
+            @include medium-up {
+               transition: .2s all;
+               text-shadow: 0 0 0 transparent;
+               &:hover {
+                  color: $orange-light;
+                  text-shadow: 0 2px 4px rgba(0,0,0,.4);
+               }
             }
          }
       }
