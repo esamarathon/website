@@ -1,6 +1,7 @@
 package article
 
 import (
+	"math"
 	"time"
 
 	"github.com/olenedr/esamarathon/config"
@@ -14,6 +15,7 @@ func (a *Article) Create() error {
 		"title":      a.Title,
 		"body":       a.Body,
 		"authors":    a.Authors,
+		"published":  a.Published,
 		"created_at": time.Now(),
 		"updated_at": time.Now(),
 	}
@@ -54,11 +56,18 @@ func Page(page int) ([]Article, error) {
 // PageCount Calculates the number of pages based on the number of articles
 // and articles per page (minus 1 because we start at 0)
 func PageCount() (int, error) {
-	count, err := db.GetCount(table)
+	// get the article count
+	articleCount, err := db.GetCount(table)
 	if err != nil {
 		return 0, errors.Wrap(err, "article.PageCount")
 	}
-	return (count / config.Config.ArticlesPerPage) - 1, nil
+
+	// Convert values to float64 in order to do ceil on the result
+	count := float64(articleCount)
+	perPage := float64(config.Config.ArticlesPerPage)
+
+	// Divide the count to the article per page and convert to int
+	return int(math.Ceil(count/perPage)) - 1, nil
 }
 
 // Get returns an article given an ID
@@ -82,6 +91,7 @@ func (a *Article) Update() error {
 		"title":      a.Title,
 		"body":       a.Body,
 		"authors":    a.Authors,
+		"published":  a.Published,
 		"created_at": a.CreatedAt,
 		"updated_at": time.Now(),
 	}

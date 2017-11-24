@@ -40,7 +40,8 @@ func News(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data["Articles"] = articles
-	data["CurrPage"] = p
+	data["NextPage"] = p + 1
+	data["PrevPage"] = p - 1
 	data["LastPage"], err = article.PageCount()
 
 	if err != nil {
@@ -63,6 +64,7 @@ func Article(w http.ResponseWriter, r *http.Request) {
 	}
 
 	a.ParseHTML()
+	a.FormatTimestamp()
 	data["Article"] = a
 
 	renderer.HTML(w, http.StatusOK, "article.html", data)
