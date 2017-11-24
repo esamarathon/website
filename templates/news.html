@@ -11,7 +11,10 @@
             </article>
         {{ end }}
         
-        <a href="/news?page={{ .CurrPage }}">Read more &rarr;</a>
+        <section class="pagination">
+            <a href="#" class="previous inactive">previous</a>
+            <a href="#" class="next">next</a>
+        </section>
     </main>
 
 {{end}}
