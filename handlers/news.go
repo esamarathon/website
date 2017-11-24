@@ -1,17 +1,20 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/olenedr/esamarathon/models/article"
 )
 
+// News renders the news page
 func News(w http.ResponseWriter, r *http.Request) {
 	data := getPagedata()
+	// Default page number
 	page := "0"
 
+	// If a page is specified we use that instead
 	if query := r.URL.Query()["page"]; len(query) != 0 {
 		page = query[0]
 	}
@@ -22,7 +25,7 @@ func News(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		p = 0
 	}
-	a, err := article.Page(p)
+	articles, err := article.Page(p)
 	// If we failed to get the articles
 	// we return the 500 error page
 	if err != nil {
@@ -30,11 +33,16 @@ func News(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data["Articles"] = a
+	// Reduce body to a teaser
+	for i, a := range articles {
+		a.ParseTeaserHTML()
+		articles[i] = a
+	}
+
+	data["Articles"] = articles
 	data["CurrPage"] = p
 	data["LastPage"], err = article.PageCount()
-	fmt.Printf("LAST PAGE: %v\n", data["LastPage"])
-	fmt.Printf("CURR PAGE: %v\n", data["CurrPage"])
+
 	if err != nil {
 		renderer.HTML(w, http.StatusOK, "500.html", data)
 		return
@@ -43,7 +51,19 @@ func News(w http.ResponseWriter, r *http.Request) {
 	renderer.HTML(w, http.StatusOK, "news.html", data)
 }
 
+// Article renders the page of a specific article
 func Article(w http.ResponseWriter, r *http.Request) {
 	data := getPagedata()
+	id := mux.Vars(r)["id"]
+	a, err := article.Get(id)
+
+	if err != nil {
+		renderer.HTML(w, http.StatusOK, "404.html", data)
+		return
+	}
+
+	a.ParseHTML()
+	data["Article"] = a
+
 	renderer.HTML(w, http.StatusOK, "article.html", data)
 }

@@ -6,12 +6,12 @@
         {{ range .Articles }}
             <article>
                 <h1>{{ .Title }}</h1>
-                <p>{{ .Body }}</p>
+                <p>{{ .HTML }}</p>
                 <a href="/news/{{ .ID }}">Read more &rarr;</a>
             </article>
         {{ end }}
         
-        <a href="/news?page=1">Read more &rarr;</a>
+        <a href="/news?page={{ .CurrPage }}">Read more &rarr;</a>
     </main>
 
 {{end}}

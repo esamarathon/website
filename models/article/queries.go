@@ -8,6 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Create inserts a new article entry into the database
 func (a *Article) Create() error {
 	data := map[string]interface{}{
 		"title":      a.Title,
@@ -20,6 +21,7 @@ func (a *Article) Create() error {
 	return db.Insert(table, data)
 }
 
+// All returns a slice containing all the articles
 func All() ([]Article, error) {
 	rows, err := db.GetAll(table)
 	var a []Article
@@ -34,6 +36,7 @@ func All() ([]Article, error) {
 	return a, nil
 }
 
+// Page returns the articles of a given page
 func Page(page int) ([]Article, error) {
 	rows, err := db.GetPage(table, page, config.Config.ArticlesPerPage)
 	var a []Article
@@ -58,6 +61,7 @@ func PageCount() (int, error) {
 	return (count / config.Config.ArticlesPerPage) - 1, nil
 }
 
+// Get returns an article given an ID
 func Get(id string) (Article, error) {
 	var a Article
 	cursor, err := db.GetOneById(table, id)
@@ -72,12 +76,13 @@ func Get(id string) (Article, error) {
 	return a, nil
 }
 
+// Update updates an article entry in the database
 func (a *Article) Update() error {
 	data := map[string]interface{}{
 		"title":      a.Title,
 		"body":       a.Body,
 		"authors":    a.Authors,
-		"created_at": time.Now(),
+		"created_at": a.CreatedAt,
 		"updated_at": time.Now(),
 	}
 	return db.Update(table, a.ID, data)
