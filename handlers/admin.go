@@ -12,7 +12,6 @@ import (
 	"github.com/olenedr/esamarathon/config"
 	"github.com/olenedr/esamarathon/models/article"
 	"github.com/olenedr/esamarathon/models/user"
-	"github.com/olenedr/esamarathon/viewmodels"
 
 	"github.com/gorilla/mux"
 	"github.com/olenedr/esamarathon/middleware"
@@ -188,8 +187,7 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// If something goes wrong we render the 500-page
 		log.Println(errors.Wrap(err, "admin.article.index"))
-		data := viewmodels.GetPagedata()
-		renderer.HTML(w, http.StatusInternalServerError, "500.html", data)
+		HandleInternalError(w)
 		return
 	}
 	for i, a := range articles {
@@ -201,8 +199,7 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// If something goes wrong we render the 500-page
 		log.Println(errors.Wrap(err, "admin.article.index"))
-		data := viewmodels.GetPagedata()
-		renderer.HTML(w, http.StatusInternalServerError, "500.html", data)
+		HandleInternalError(w)
 		return
 	}
 

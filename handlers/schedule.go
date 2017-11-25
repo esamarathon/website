@@ -61,14 +61,16 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	// If something goes wrong, we return the 500-view
 	if err != nil {
 		log.Println(errors.Wrap(err, "handlers.Schedule"))
-		renderer.HTML(w, http.StatusOK, "500.html", data)
+		HandleInternalError(w)
+		return
 	}
 
 	defer resp.Body.Close()
 
 	if err = json.NewDecoder(resp.Body).Decode(&s); err != nil {
 		log.Println(errors.Wrap(err, "handlers.Schedule"))
-		renderer.HTML(w, http.StatusOK, "500.html", data)
+		HandleInternalError(w)
+		return
 	}
 
 	// Get all the indexes for the columns in order to identify them
