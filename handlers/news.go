@@ -36,7 +36,7 @@ func News(w http.ResponseWriter, r *http.Request) {
 	// If we failed to get the articles
 	// we return the 500 error page
 	if err != nil {
-		renderer.HTML(w, http.StatusOK, "500.html", data)
+		renderer.HTML(w, http.StatusInternalServerError, "500.html", data)
 		return
 	}
 
@@ -53,7 +53,7 @@ func News(w http.ResponseWriter, r *http.Request) {
 	data["LastPage"], err = article.PageCount()
 
 	if err != nil {
-		renderer.HTML(w, http.StatusOK, "500.html", data)
+		renderer.HTML(w, http.StatusInternalServerError, "500.html", data)
 		return
 	}
 

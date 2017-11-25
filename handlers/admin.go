@@ -149,7 +149,7 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 		// If something goes wrong we render the 500-page
 		log.Println(errors.Wrap(err, "admin.article.index"))
 		data := getPagedata()
-		renderer.HTML(w, http.StatusOK, "500.html", data)
+		renderer.HTML(w, http.StatusInternalServerError, "500.html", data)
 		return
 	}
 	for i, a := range articles {
@@ -162,7 +162,7 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 		// If something goes wrong we render the 500-page
 		log.Println(errors.Wrap(err, "admin.article.index"))
 		data := getPagedata()
-		renderer.HTML(w, http.StatusOK, "500.html", data)
+		renderer.HTML(w, http.StatusInternalServerError, "500.html", data)
 		return
 	}
 
