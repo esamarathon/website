@@ -6,6 +6,7 @@ import (
 
 	"github.com/olenedr/esamarathon/config"
 	"github.com/olenedr/esamarathon/models/user"
+	"github.com/olenedr/esamarathon/viewmodels"
 	"golang.org/x/oauth2"
 )
 
@@ -49,7 +50,7 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 
 // Index returns index view
 func HandleAuth(w http.ResponseWriter, r *http.Request) {
-	data := getPagedata()
+	data := viewmodels.GetPagedata()
 	renderer.HTML(w, http.StatusOK, "login.html", data)
 }
 

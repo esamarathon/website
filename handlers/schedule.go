@@ -10,6 +10,7 @@ import (
 
 	"github.com/olenedr/esamarathon/cache"
 	"github.com/olenedr/esamarathon/config"
+	"github.com/olenedr/esamarathon/viewmodels"
 	"github.com/pkg/errors"
 	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
@@ -40,7 +41,7 @@ type scheduleEntry struct {
 
 // Schedule displays the marathon schedule
 func Schedule(w http.ResponseWriter, r *http.Request) {
-	data := getPagedata()
+	data := viewmodels.GetPagedata()
 
 	// Attempt to find a cached schedule
 	schedule, found := cache.Get("schedule")

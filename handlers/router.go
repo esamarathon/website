@@ -3,6 +3,8 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/olenedr/esamarathon/viewmodels"
+
 	"github.com/rs/cors"
 
 	"github.com/gorilla/mux"
@@ -36,7 +38,7 @@ func handleStatic(dir, prefix string) http.HandlerFunc {
 
 // HandleNotFound handles the requests that doesn't have route associated with it
 func HandleNotFound(w http.ResponseWriter, r *http.Request) {
-	data := getPagedata()
+	data := viewmodels.GetPagedata()
 	renderer.HTML(w, http.StatusNotFound, "404.html", data)
 }
 

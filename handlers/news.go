@@ -6,6 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/olenedr/esamarathon/models/article"
+	"github.com/olenedr/esamarathon/viewmodels"
 )
 
 // Extracts the page query param if present
@@ -29,7 +30,7 @@ func getArticlePage(r *http.Request) int {
 
 // News renders the news page
 func News(w http.ResponseWriter, r *http.Request) {
-	data := getPagedata()
+	data := viewmodels.GetPagedata()
 	p := getArticlePage(r)
 
 	articles, err := article.Page(p, true)
@@ -62,7 +63,7 @@ func News(w http.ResponseWriter, r *http.Request) {
 
 // Article renders the page of a specific article
 func Article(w http.ResponseWriter, r *http.Request) {
-	data := getPagedata()
+	data := viewmodels.GetPagedata()
 	id := mux.Vars(r)["id"]
 	published := true
 	a, err := article.Get(id, &published)
