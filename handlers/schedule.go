@@ -43,7 +43,10 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	var s scheduleResponse
 	data := getPagedata()
 
+	// Request the schedule JSON-resource
 	resp, err := http.Get(config.Config.ScheduleApiURL)
+
+	// If something goes wrong, we return the 500-view
 	if err != nil {
 		log.Println(errors.Wrap(err, "handlers.Schedule"))
 		renderer.HTML(w, http.StatusOK, "500.html", data)

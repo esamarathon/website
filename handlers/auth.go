@@ -39,7 +39,7 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Store the session
-	if err := user.UserToSession(w, r, u); err != nil {
+	if err := user.ToSession(w, r, u); err != nil {
 		http.Redirect(w, r, "500.html", http.StatusTemporaryRedirect)
 		return
 	}
