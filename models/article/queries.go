@@ -40,7 +40,7 @@ func All() ([]Article, error) {
 
 // Page returns the articles of a given page
 func Page(page int) ([]Article, error) {
-	rows, err := db.GetPage(table, page, config.Config.ArticlesPerPage)
+	rows, err := db.GetFilteredPage(table, page, config.Config.ArticlesPerPage, true)
 	var a []Article
 	if err != nil {
 		return a, errors.Wrap(err, "article.Page")

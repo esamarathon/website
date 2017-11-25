@@ -74,6 +74,19 @@ func GetPage(table string, page int, perPage int) (*r.Cursor, error) {
 	return rows, nil
 }
 
+func GetFilteredPage(table string, page, perPage int, published bool) (*r.Cursor, error) {
+	skip := page * perPage
+	rows, err := r.Table(table).Filter(map[string]interface{}{
+		"published": true,
+	}).OrderBy(r.Desc("created_at")).Skip(skip).Limit(perPage).Run(Session)
+
+	if err != nil {
+		return nil, errors.Wrap(err, "db.GetAll")
+	}
+
+	return rows, nil
+}
+
 func GetOneById(table, id string) (*r.Cursor, error) {
 	cursor, err := r.Table(table).Get(id).Run(Session)
 	if err != nil {
