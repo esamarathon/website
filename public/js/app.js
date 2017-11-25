@@ -94,3 +94,14 @@ function addScheduleDate(el, date) {
         }
     }
 }())
+
+var cookieConsent = window.localStorage.getItem("cookie-consent")
+if (!cookieConsent) {
+    var footer = document.querySelector('footer')
+    footer.innerHTML = '<p class="cookie-warning"><strong>This page utilizes cookies to ensure you get the best experience on our website <span class="small button">Ok!</span><strong></p>' + footer.innerHTML
+    var cookieWarning = document.querySelector('.cookie-warning')
+    cookieWarning.querySelector('span').addEventListener('click', function () {
+        window.localStorage.setItem("cookie-consent", true)
+        cookieWarning.parentNode.removeChild(cookieWarning)
+    })
+}

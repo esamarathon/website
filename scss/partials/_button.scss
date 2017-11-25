@@ -6,10 +6,14 @@
     font-weight: bold;
     padding: 1em;
     text-decoration: none;
+    cursor: pointer;
 
     transition: .2s background-color;
 
     &:hover {
         background-color: $orange;
+    }
+    &.small {
+        padding: 0.4rem
     }
 }
