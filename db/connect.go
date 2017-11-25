@@ -24,6 +24,9 @@ func Connect() error {
 
 func Delete(table, id string) error {
 	_, err := r.Table(table).Get(id).Delete().Run(Session)
+	if err != nil {
+		log.Println("ID: " + id + " deleted from table " + table)
+	}
 	return err
 }
 
@@ -36,14 +39,15 @@ func Update(table string, id string, data map[string]interface{}) error {
 	return nil
 }
 
-func Insert(table string, data map[string]interface{}) error {
+func Insert(table string, data map[string]interface{}) (string, error) {
 	result, err := r.Table(table).Insert(data).RunWrite(Session)
 	if err != nil {
-		return errors.Wrap(err, "db.Insert")
+		return "", errors.Wrap(err, "db.Insert")
 	}
 
-	log.Println("ID: " + result.GeneratedKeys[0] + " inserted into table " + table)
-	return nil
+	id := result.GeneratedKeys[0]
+	log.Println("ID: " + id + " inserted into table " + table)
+	return id, nil
 }
 
 func GetAll(table string) (*r.Cursor, error) {
@@ -55,7 +59,7 @@ func GetAll(table string) (*r.Cursor, error) {
 	return rows, nil
 }
 
-func GetAllOrderBy(table string, index string) (*r.Cursor, error) {
+func GetAllByOrder(table string, index string) (*r.Cursor, error) {
 	rows, err := r.Table(table).OrderBy(r.Desc(index)).Run(Session)
 	if err != nil {
 		return nil, errors.Wrap(err, "db.GetAllOrderBy")
@@ -65,9 +69,9 @@ func GetAllOrderBy(table string, index string) (*r.Cursor, error) {
 }
 
 // GetPage with pagination
-func GetPage(table string, page int, perPage int) (*r.Cursor, error) {
+func GetPage(table, desc string, page int, perPage int) (*r.Cursor, error) {
 	skip := page * perPage
-	rows, err := r.Table(table).OrderBy(r.Desc("created_at")).Skip(skip).Limit(perPage).Run(Session)
+	rows, err := r.Table(table).OrderBy(r.Desc(desc)).Skip(skip).Limit(perPage).Run(Session)
 	if err != nil {
 		return nil, errors.Wrap(err, "db.GetAll")
 	}
@@ -76,9 +80,9 @@ func GetPage(table string, page int, perPage int) (*r.Cursor, error) {
 }
 
 // GetFilteredPage with pagination and an additional filter parameter
-func GetFilteredPage(table string, page, perPage int, filter map[string]interface{}) (*r.Cursor, error) {
+func GetFilteredPage(table, desc string, page, perPage int, filter map[string]interface{}) (*r.Cursor, error) {
 	skip := page * perPage
-	rows, err := r.Table(table).Filter(filter).OrderBy(r.Desc("created_at")).Skip(skip).Limit(perPage).Run(Session)
+	rows, err := r.Table(table).Filter(filter).OrderBy(r.Desc(desc)).Skip(skip).Limit(perPage).Run(Session)
 
 	if err != nil {
 		return nil, errors.Wrap(err, "db.GetAll")

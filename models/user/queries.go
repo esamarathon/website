@@ -7,17 +7,22 @@ import (
 )
 
 // Create inserts a new user entry to the DB
-func Create(username string) error {
+func Create(username string) (User, error) {
 	var data = map[string]interface{}{
 		"username": username,
 	}
 
-	return db.Insert(Table, data)
+	_, err := db.Insert(Table, data)
+	if err != nil {
+		return User{}, errors.Wrap(err, "user.Create")
+	}
+
+	return GetUserByUsername(username)
 }
 
 // All returns all the users in the DB
 func All() ([]User, error) {
-	rows, err := db.GetAllOrderBy(Table, "username")
+	rows, err := db.GetAllByOrder(Table, "username")
 	var users []User
 	if err != nil {
 		return users, errors.Wrap(err, "user.All")
