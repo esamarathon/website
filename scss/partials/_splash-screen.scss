@@ -20,7 +20,7 @@
    }
    &-slogan {
       padding: 0 $gutter $gutter;
-      max-width: 60rem;
+      max-width: $max-width;
       margin: auto;
       img {
          display: block;
@@ -36,8 +36,11 @@
          color: white;
          line-height: 1.6;
          letter-spacing: .5px;
-         font-weight: 300;
+         font-weight: 100;
          font-size: 1rem;
+         strong {
+            font-weight: 500;
+         }
          @include medium-up {
             font-size: 1.125rem;
             max-width: 100%;

@@ -24,7 +24,7 @@ h2.schedule-title {
    }
 }
 section.schedule {
-   max-width: 80rem;
+   max-width: $max-width;
    margin: auto;
    table {
       overflow-y: scroll;

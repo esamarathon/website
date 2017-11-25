@@ -1,5 +1,5 @@
 $condensed: 'Roboto Condensed', sans-serif;
-$serif: 'Open Sans', sans-serif;
+$serif: 'Roboto', sans-serif;
 
 $grid-columns: 12;
 $gutter: 1rem;
@@ -28,7 +28,7 @@ $medium-up-width: 48rem;
 
 html, body {
    font-size: 16px;
-   font-family: 'Roboto', sans-serif;
+   font-family: $serif;
    background: $background;
    background: $background-gradient-darker;
    background-size: 100%;
