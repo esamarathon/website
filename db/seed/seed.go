@@ -35,6 +35,10 @@ func users() error {
 			ID:       "2",
 			Username: "egreb__",
 		},
+		{
+			ID:       "3",
+			Username: "morganbro",
+		},
 	}
 
 	res, err := rt.Table(t).Insert(users).Run(db.Session)
