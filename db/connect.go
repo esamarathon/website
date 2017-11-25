@@ -74,11 +74,9 @@ func GetPage(table string, page int, perPage int) (*r.Cursor, error) {
 	return rows, nil
 }
 
-func GetFilteredPage(table string, page, perPage int, published bool) (*r.Cursor, error) {
+func GetFilteredPage(table string, page, perPage int, filter map[string]interface{}) (*r.Cursor, error) {
 	skip := page * perPage
-	rows, err := r.Table(table).Filter(map[string]interface{}{
-		"published": true,
-	}).OrderBy(r.Desc("created_at")).Skip(skip).Limit(perPage).Run(Session)
+	rows, err := r.Table(table).Filter(filter).OrderBy(r.Desc("created_at")).Skip(skip).Limit(perPage).Run(Session)
 
 	if err != nil {
 		return nil, errors.Wrap(err, "db.GetAll")
@@ -91,6 +89,15 @@ func GetOneById(table, id string) (*r.Cursor, error) {
 	cursor, err := r.Table(table).Get(id).Run(Session)
 	if err != nil {
 		return nil, errors.Wrap(err, "db.GetOneByID")
+	}
+
+	return cursor, err
+}
+
+func GetOneByFilter(table string, filter map[string]interface{}) (*r.Cursor, error) {
+	cursor, err := r.Table(table).Filter(filter).Run(Session)
+	if err != nil {
+		return nil, errors.Wrap(err, "db.GetOneByIDFiltered")
 	}
 
 	return cursor, err

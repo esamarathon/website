@@ -198,7 +198,7 @@ func articleStore(w http.ResponseWriter, r *http.Request) {
 func articleEdit(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
-	a, err := article.Get(id)
+	a, err := article.Get(id, nil)
 	if err != nil {
 		user.SetFlashMessage(w, r, "alert", "Couldn't find the article...")
 		log.Println(errors.Wrap(err, "handlers.articleEdit"))
@@ -218,7 +218,7 @@ func articleEdit(w http.ResponseWriter, r *http.Request) {
 func articleUpdate(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
-	a, err := article.Get(id)
+	a, err := article.Get(id, nil)
 	if err != nil {
 		user.SetFlashMessage(w, r, "alert", "Couldn't find the article...")
 		log.Println(errors.Wrap(err, "handlers.articleUpdate"))

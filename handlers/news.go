@@ -57,7 +57,8 @@ func News(w http.ResponseWriter, r *http.Request) {
 func Article(w http.ResponseWriter, r *http.Request) {
 	data := getPagedata()
 	id := mux.Vars(r)["id"]
-	a, err := article.Get(id)
+	published := true
+	a, err := article.Get(id, &published)
 
 	if err != nil {
 		renderer.HTML(w, http.StatusOK, "404.html", data)
