@@ -24,7 +24,11 @@
 
     <ul class="list-group">
         {{ range .Users }}
-            <li class="list-group-item">{{ .Username }} <a href="/admin/user/{{ .ID }}/delete" class="btn btn-danger btn-xs pull-right">Delete</a></li>
+            <li class="list-group-item">{{ .Username }} 
+                <a href="/admin/user/{{ .ID }}/delete"
+                class="confirmable btn btn-danger btn-xs pull-right"
+                data-message="Are you sure you want to remove {{ .Username }} from accessing the admin-panel?"
+                >Delete</a></li>
         {{ end }}
     </ul>
 </div>
