@@ -25,7 +25,7 @@ func (a *Article) Create() error {
 
 // All returns a slice containing all the articles
 func All() ([]Article, error) {
-	rows, err := db.GetAll(table)
+	rows, err := db.GetAllOrderBy(table, "created_at")
 	var a []Article
 	if err != nil {
 		return a, errors.Wrap(err, "article.All")
@@ -96,4 +96,9 @@ func (a *Article) Update() error {
 		"updated_at": time.Now(),
 	}
 	return db.Update(table, a.ID, data)
+}
+
+// Delete attempts to delete an article given an ID
+func Delete(id string) error {
+	return db.Delete(table, id)
 }

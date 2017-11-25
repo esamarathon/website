@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/dannyvankooten/grender"
 	"github.com/olenedr/esamarathon/models/setting"
@@ -34,11 +35,13 @@ func getPagedata() map[string]interface{} {
 	if err != nil {
 		s = false
 	}
+	t := time.Now()
 
 	p := map[string]interface{}{
-		"Meta":     Meta,
-		"Content":  Content,
-		"Livemode": s,
+		"Meta":          Meta,
+		"Content":       Content,
+		"Livemode":      s,
+		"CopyrightYear": t.Year(),
 	}
 	return p
 }

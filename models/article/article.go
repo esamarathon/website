@@ -45,11 +45,10 @@ func (a *Article) AddAuthor(u user.User) {
 }
 
 // ParseTeaserHTML shaves off some of the body and runs the HTML parser
-func (a *Article) ParseTeaserHTML() {
+func (a *Article) ShortenBody() {
 	if len(a.Body) >= 340 {
 		a.Body = a.Body[0:340] + "..."
 	}
-	a.ParseHTML()
 }
 
 // ParseHTML parses the markdown to HTML
