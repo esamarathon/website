@@ -14,6 +14,7 @@ import (
 type config struct {
 	Port               string
 	ArticlesPerPage    int
+	LiveMode           bool
 	SessionKey         string
 	SessionName        string
 	Database           string
@@ -26,7 +27,7 @@ type config struct {
 	TwitchRedirectURL  string
 	TwitchTokenURL     string
 	TwitchAPIRootURL   string
-	ScheduleApiURL     string
+	ScheduleAPIURL     string
 }
 
 // Config describes the env of the application
@@ -47,10 +48,16 @@ func init() {
 		log.Println("Failed to parse numeric .env value, using default.")
 		articlesPerPage = 10
 	}
+	liveMode, err := strconv.ParseBool(os.Getenv("LIVE_MODE"))
+	if err != nil {
+		log.Println("Failed to parse bool .env value, using default.")
+		liveMode = false
+	}
 
 	Config = config{
 		Port:               os.Getenv("PORT"),
 		ArticlesPerPage:    articlesPerPage,
+		LiveMode:           liveMode,
 		SessionKey:         os.Getenv("SESSION_KEY"),
 		SessionName:        os.Getenv("SESSION_NAME"),
 		Database:           os.Getenv("DB_NAME"),
@@ -63,7 +70,12 @@ func init() {
 		TwitchRedirectURL:  os.Getenv("TWITCH_REDIRECT_URL"),
 		TwitchTokenURL:     os.Getenv("TWITCH_TOKEN_URL"),
 		TwitchAPIRootURL:   os.Getenv("TWITCH_API_ROOT_URL"),
-		ScheduleApiURL:     os.Getenv("SCHEDULE_API_URL"),
+		ScheduleAPIURL:     os.Getenv("SCHEDULE_API_URL"),
+	}
+
+	if Config.ScheduleAPIURL == "" {
+		log.Println("No Schedule API URL defined, utilizing backup")
+		Config.ScheduleAPIURL = "https://horaro.org/-/api/v1/schedules/4311u8b52b04si7a1e"
 	}
 
 	buildTwitchAuthConfig()
@@ -84,6 +96,7 @@ func buildTwitchAuthConfig() {
 	OauthStateString = str.RandStringRunes(10)
 }
 
+// DBConfig returns the database connect options
 func DBConfig() rDB.ConnectOpts {
 	return rDB.ConnectOpts{
 		Address:    Config.DatabaseHost,
@@ -93,4 +106,9 @@ func DBConfig() rDB.ConnectOpts {
 		InitialCap: 10,
 		MaxOpen:    10,
 	}
+}
+
+// ToggleLiveMode toggles the bool in the config
+func ToggleLiveMode() {
+	Config.LiveMode = !Config.LiveMode
 }

@@ -8,8 +8,8 @@ import (
 	"github.com/dannyvankooten/grender"
 	"github.com/pkg/errors"
 
+	"github.com/olenedr/esamarathon/config"
 	"github.com/olenedr/esamarathon/models/article"
-	"github.com/olenedr/esamarathon/models/setting"
 	"github.com/olenedr/esamarathon/models/user"
 
 	"github.com/gorilla/mux"
@@ -18,8 +18,9 @@ import (
 
 func AdminRoutes(base string, router *mux.Router) {
 	requireAuth := middleware.AuthMiddleware
-	router.HandleFunc(base, requireAuth(index)).Methods("GET")
+	router.HandleFunc(base, requireAuth(index)).Methods("GET", "POST")
 	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
+	router.HandleFunc(base+"/schedule", requireAuth(updateSchedule)).Methods("POST")
 	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
 	router.HandleFunc(base+"/user", requireAuth(userStore)).Methods("POST")
 	router.HandleFunc(base+"/user/{id}/delete", requireAuth(deleteUser)).Methods("GET")
@@ -42,25 +43,58 @@ var adminRenderer = grender.New(grender.Options{
 func index(w http.ResponseWriter, r *http.Request) {
 	// Change with actual status from DB
 	u, userErr := user.FromSession(r)
-	s, settingErr := setting.GetLiveMode().AsBool()
-	if settingErr != nil {
-		log.Println(errors.Wrap(settingErr, "admin.index"))
-	}
 	if userErr != nil {
 		log.Println(errors.Wrap(userErr, "admin.index"))
 	}
 	data := map[string]interface{}{
-		"User":    u,
-		"Status":  s,
-		"Alert":   user.GetFlashMessage(w, r, "alert"),
-		"Success": user.GetFlashMessage(w, r, "success"),
+		"User":           u,
+		"Status":         config.Config.LiveMode,
+		"ScheduleAPIURL": config.Config.ScheduleAPIURL,
+		"Alert":          user.GetFlashMessage(w, r, "alert"),
+		"Success":        user.GetFlashMessage(w, r, "success"),
 	}
 
 	adminRenderer.HTML(w, http.StatusOK, "index.html", data)
 }
 
+// Toggles the stream on the frontpage
 func toggleLivemode(w http.ResponseWriter, r *http.Request) {
-	setting.GetLiveMode().Toggle()
+	config.ToggleLiveMode()
+	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+}
+
+// updateSchedule parses a form and updates the ScheduleAPIURL
+// if the new URL seems valid
+func updateSchedule(w http.ResponseWriter, r *http.Request) {
+	// Parse form and get the submitted URL
+	r.ParseForm()
+	URL := r.Form.Get("url")
+
+	// Validate URL
+	if !strings.Contains(URL, "https://horaro.org/-/api/v1/schedules/") {
+		user.SetFlashMessage(w, r, "alert", "Not a valid Horaro API URL. Not updating. Correct format is \"https://horaro.org/-/api/v1/schedules/\"")
+		http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+		return
+	}
+
+	// Attempt to get the resource
+	resp, err := http.Get(URL)
+	if err != nil {
+		user.SetFlashMessage(w, r, "alert", "Request to resource failed, not updating.")
+		http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+		return
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		user.SetFlashMessage(w, r, "alert", "Request to resource failed, not updating.")
+		http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+		return
+	}
+
+	// URL seems fine, updating
+	config.Config.ScheduleAPIURL = URL
+	user.SetFlashMessage(w, r, "success", "Schedule URL has been updated!")
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }
 

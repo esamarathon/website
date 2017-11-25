@@ -44,7 +44,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	data := getPagedata()
 
 	// Request the schedule JSON-resource
-	resp, err := http.Get(config.Config.ScheduleApiURL)
+	resp, err := http.Get(config.Config.ScheduleAPIURL)
 
 	// If something goes wrong, we return the 500-view
 	if err != nil {
