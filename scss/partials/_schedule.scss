@@ -1,3 +1,5 @@
+
+
 h2.schedule-title {
    font-weight: 100;
    font-size: 2rem;
@@ -41,6 +43,7 @@ section.schedule {
                text-transform: uppercase;
                letter-spacing: 1px;
                font-weight: 400;
+               font-family: $condensed;
             }
          }
       }
@@ -70,6 +73,24 @@ section.schedule {
                   padding-left: 32%;
                   min-height: 2.1875rem;
                   position: relative;
+               }
+               &.new-date {
+                  font-family: $condensed;
+                  font-weight: 100;
+                  letter-spacing: 1px;
+                  text-transform: uppercase;
+                  padding-left: 0%;
+                  text-align: center;
+                  color: $white;
+                  @include medium-up {
+                     padding: $gutter * 2 0;
+                  }
+                  strong {
+                     font-weight: 100;
+                  }
+                  &:before {
+                     content: '' !important;
+                  }
                }
                a {
                   color: $orange;
