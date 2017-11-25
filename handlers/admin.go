@@ -124,7 +124,8 @@ func userStore(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := user.Create(username); err != nil || username == "" {
+	_, err = user.Create(username)
+	if err != nil || username == "" {
 		user.SetFlashMessage(w, r, "alert", "Failed to add user to database.")
 		log.Println(errors.Wrap(err, "handlers.userStore"))
 		http.Redirect(w, r, "/admin/user", http.StatusBadRequest)

@@ -21,12 +21,13 @@ func (a *Article) Create() error {
 		"updated_at": time.Now(),
 	}
 
-	return db.Insert(table, data)
+	_, err := db.Insert(table, data)
+	return err
 }
 
 // All returns a slice containing all the articles
 func All() ([]Article, error) {
-	rows, err := db.GetAllOrderBy(table, "created_at")
+	rows, err := db.GetAllByOrder(table, "created_at")
 	var a []Article
 	if err != nil {
 		return a, errors.Wrap(err, "article.All")
@@ -48,9 +49,9 @@ func Page(page int, published bool) ([]Article, error) {
 			"published": true,
 		}
 
-		rows, err = db.GetFilteredPage(table, page, config.Config.ArticlesPerPage, filter)
+		rows, err = db.GetFilteredPage(table, "created_at", page, config.Config.ArticlesPerPage, filter)
 	} else {
-		rows, err = db.GetPage(table, page, config.Config.ArticlesPerPage)
+		rows, err = db.GetPage(table, "created_at", page, config.Config.ArticlesPerPage)
 	}
 
 	var a []Article
