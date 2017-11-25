@@ -95,13 +95,22 @@ function addScheduleDate(el, date) {
     }
 }())
 
+// Cookie consent request
+// Retrieve item from localstorage (locaalstorage doesn't expire)
 var cookieConsent = window.localStorage.getItem("cookie-consent")
+// If not consent has been given we displaya the warning
 if (!cookieConsent) {
+    // Get the footer
     var footer = document.querySelector('footer')
+    // Append warning to footer
     footer.innerHTML = '<p class="cookie-warning"><strong>This page utilizes cookies to ensure you get the best experience on our website <span class="small button">Ok!</span><strong></p>' + footer.innerHTML
+    // Get the warning element
     var cookieWarning = document.querySelector('.cookie-warning')
-    cookieWarning.querySelector('span').addEventListener('click', function () {
+    // Add an eventlistener to the button
+    cookieWarning.querySelector('.button').addEventListener('click', function () {
+        // On click we store the consent
         window.localStorage.setItem("cookie-consent", true)
+        // And remove the warning
         cookieWarning.parentNode.removeChild(cookieWarning)
     })
 }
