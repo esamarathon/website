@@ -32,7 +32,7 @@ func News(w http.ResponseWriter, r *http.Request) {
 	data := getPagedata()
 	p := getArticlePage(r)
 
-	articles, err := article.Page(p)
+	articles, err := article.Page(p, true)
 	// If we failed to get the articles
 	// we return the 500 error page
 	if err != nil {

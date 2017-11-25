@@ -7,6 +7,7 @@ import (
 	"github.com/olenedr/esamarathon/config"
 	"github.com/olenedr/esamarathon/db"
 	"github.com/pkg/errors"
+	r "gopkg.in/gorethink/gorethink.v3"
 )
 
 // Create inserts a new article entry into the database
@@ -39,12 +40,19 @@ func All() ([]Article, error) {
 }
 
 // Page returns the articles of a given page
-func Page(page int) ([]Article, error) {
-	filter := map[string]interface{}{
-		"published": true,
+func Page(page int, published bool) ([]Article, error) {
+	var rows *r.Cursor
+	var err error
+	if published {
+		filter := map[string]interface{}{
+			"published": true,
+		}
+
+		rows, err = db.GetFilteredPage(table, page, config.Config.ArticlesPerPage, filter)
+	} else {
+		rows, err = db.GetPage(table, page, config.Config.ArticlesPerPage)
 	}
 
-	rows, err := db.GetFilteredPage(table, page, config.Config.ArticlesPerPage, filter)
 	var a []Article
 	if err != nil {
 		return a, errors.Wrap(err, "article.Page")

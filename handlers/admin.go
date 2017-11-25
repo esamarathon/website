@@ -173,12 +173,13 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 /*
 *	Article handlers
  */
+// articleIndex renders a paginated list of the articles in the DB
 func articleIndex(w http.ResponseWriter, r *http.Request) {
 	// Get current page number
 	p := getArticlePage(r)
 
 	// Retrieve articles for current page
-	articles, err := article.Page(p)
+	articles, err := article.Page(p, false)
 	if err != nil {
 		// If something goes wrong we render the 500-page
 		log.Println(errors.Wrap(err, "admin.article.index"))

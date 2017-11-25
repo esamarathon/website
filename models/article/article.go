@@ -44,7 +44,7 @@ func (a *Article) AddAuthor(u user.User) {
 	a.Authors = append(a.Authors, u)
 }
 
-// ParseTeaserHTML shaves off some of the body and runs the HTML parser
+// ShortenBody shaves off some of the body to make an appropriate ingress
 func (a *Article) ShortenBody() {
 	if len(a.Body) >= 340 {
 		a.Body = a.Body[0:340] + "..."
@@ -53,9 +53,11 @@ func (a *Article) ShortenBody() {
 
 // ParseHTML parses the markdown to HTML
 func (a *Article) ParseHTML() {
-	body := []byte(a.Body)
-	markdown := string(blackfriday.Run(body, blackfriday.WithExtensions(blackfriday.HardLineBreak)))
-	a.HTML = template.HTML(markdown)
+	extensions := blackfriday.CommonExtensions | blackfriday.HardLineBreak
+
+	markdown := []byte(a.Body)
+	html := blackfriday.Run(markdown, blackfriday.WithExtensions(extensions))
+	a.HTML = template.HTML(string(html))
 }
 
 // FormatTimestamp adds a UTC timestamp to the article
