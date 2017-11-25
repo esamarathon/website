@@ -36,6 +36,12 @@ type adminArticleIndexView struct {
 	LastPage int
 }
 
+type adminArticleCreateView struct {
+	User    user.User
+	Alert   string // Alert message
+	Success string // Success message
+}
+
 type adminArticleEditView struct {
 	User    user.User
 	Article article.Article
@@ -52,7 +58,6 @@ func getUser(r *http.Request) user.User {
 }
 
 func AdminIndex(w http.ResponseWriter, r *http.Request) adminIndexView {
-
 	view := adminIndexView{
 		User:           getUser(r),
 		Livemode:       config.Config.LiveMode,
@@ -81,6 +86,15 @@ func AdminUserIndex(w http.ResponseWriter, r *http.Request) adminUserIndexView {
 
 func AdminArticleIndex(w http.ResponseWriter, r *http.Request) adminArticleIndexView {
 	view := adminArticleIndexView{
+		User:    getUser(r),
+		Alert:   user.GetFlashMessage(w, r, "alert"),
+		Success: user.GetFlashMessage(w, r, "success"),
+	}
+	return view
+}
+
+func AdminArticleCreate(w http.ResponseWriter, r *http.Request) adminArticleCreateView {
+	view := adminArticleCreateView{
 		User:    getUser(r),
 		Alert:   user.GetFlashMessage(w, r, "alert"),
 		Success: user.GetFlashMessage(w, r, "success"),

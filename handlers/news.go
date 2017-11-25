@@ -52,7 +52,7 @@ func News(w http.ResponseWriter, r *http.Request) {
 	data.Articles = articles
 	data.NextPage = p + 1
 	data.PrevPage = p - 1
-	data.LastPage, err = article.PageCount()
+	data.LastPage, err = article.PageCount(true)
 
 	if err != nil {
 		HandleInternalError(w)

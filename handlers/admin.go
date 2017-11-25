@@ -171,7 +171,7 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Total page count
-	count, err := article.PageCount()
+	count, err := article.PageCount(false)
 	if err != nil {
 		// If something goes wrong we render the 500-page
 		log.Println(errors.Wrap(err, "admin.article.index"))
@@ -190,7 +190,7 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func articleCreate(w http.ResponseWriter, r *http.Request) {
-	adminRenderer.HTML(w, http.StatusOK, "create_article.html", nil)
+	adminRenderer.HTML(w, http.StatusOK, "create_article.html", viewmodels.AdminArticleCreate(w, r))
 }
 
 func articleStore(w http.ResponseWriter, r *http.Request) {
@@ -200,6 +200,13 @@ func articleStore(w http.ResponseWriter, r *http.Request) {
 		Title: r.Form.Get("title"),
 		Body:  r.Form.Get("body"),
 	}
+	if a.Title == "" || a.Body == "" {
+		r.Method = "GET"
+		user.SetFlashMessage(w, r, "alert", "Invalid input data.")
+		log.Println("Missing input data, handlers.createArticle")
+		http.Redirect(w, r, "/admin/article/create", http.StatusSeeOther)
+		return
+	}
 	a.Published = false
 	if r.FormValue("published") == "1" {
 		a.Published = true
@@ -207,7 +214,10 @@ func articleStore(w http.ResponseWriter, r *http.Request) {
 
 	u, err := user.FromSession(r)
 	if err != nil {
+		user.SetFlashMessage(w, r, "alert", "An error occured while retriving the user.")
+		log.Println(errors.Wrap(err, "handlers.createArticle"))
 		http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
+		return
 	}
 
 	a.AddAuthor(u)
