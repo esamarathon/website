@@ -82,11 +82,12 @@ func Get(id string, published *bool) (Article, error) {
 		"id": id,
 	}
 
+	// if published is nil, we do not include it in the filter
 	if published != nil {
 		filter["published"] = *published
 	}
 
-	cursor, err := db.GetOneByFilter(table, filter)
+	cursor, err := db.GetByFilter(table, filter)
 	if err != nil {
 		return a, errors.Wrap(err, "article.Get")
 	}

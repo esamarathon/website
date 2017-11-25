@@ -64,6 +64,7 @@ func GetAllOrderBy(table string, index string) (*r.Cursor, error) {
 	return rows, nil
 }
 
+// GetPage with pagination
 func GetPage(table string, page int, perPage int) (*r.Cursor, error) {
 	skip := page * perPage
 	rows, err := r.Table(table).OrderBy(r.Desc("created_at")).Skip(skip).Limit(perPage).Run(Session)
@@ -74,6 +75,7 @@ func GetPage(table string, page int, perPage int) (*r.Cursor, error) {
 	return rows, nil
 }
 
+// GetFilteredPage with pagination and an additional filter parameter
 func GetFilteredPage(table string, page, perPage int, filter map[string]interface{}) (*r.Cursor, error) {
 	skip := page * perPage
 	rows, err := r.Table(table).Filter(filter).OrderBy(r.Desc("created_at")).Skip(skip).Limit(perPage).Run(Session)
@@ -94,7 +96,9 @@ func GetOneById(table, id string) (*r.Cursor, error) {
 	return cursor, err
 }
 
-func GetOneByFilter(table string, filter map[string]interface{}) (*r.Cursor, error) {
+// GetByFilter: apply filter by an map[string]interface{}
+// example: map[string]interface{}{"id": "something", "published": true}
+func GetByFilter(table string, filter map[string]interface{}) (*r.Cursor, error) {
 	cursor, err := r.Table(table).Filter(filter).Run(Session)
 	if err != nil {
 		return nil, errors.Wrap(err, "db.GetOneByIDFiltered")
