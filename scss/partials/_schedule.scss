@@ -78,9 +78,6 @@ section.schedule {
                   &:hover {
                      color: lighten($orange, 20%);
                   }
-                  &:after {
-                     content: ', ';
-                  }
                   &:last-child {
                      &:after {
                         content:'';
