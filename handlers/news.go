@@ -35,7 +35,8 @@ func News(w http.ResponseWriter, r *http.Request) {
 
 	// Reduce body to a teaser
 	for i, a := range articles {
-		a.ParseTeaserHTML()
+		a.ShortenBody()
+		a.ParseHTML()
 		articles[i] = a
 	}
 

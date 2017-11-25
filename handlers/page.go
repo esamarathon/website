@@ -1,8 +1,9 @@
 package handlers
 
 type page struct {
-	Meta    meta    `json:"meta,omitempty"`
-	Content content `json:"content,omitempty"`
+	Meta          meta    `json:"meta,omitempty"`
+	Content       content `json:"content,omitempty"`
+	CopyrightYear string  `json:"copyrightyear,omitempty"`
 }
 
 type content struct {

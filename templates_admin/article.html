@@ -13,9 +13,6 @@
         <a href="/admin/article/{{ .ID }}" class="list-group-item">
             <h4 class="list-group-item-heading">{{ .Title }}</h4>
             <p class="list-group-item-text">{{ .Body }}</p>
-
-            <span class="list-group-item-text">Created {{ .CreatedAt }}</span>
-            <span class="list-group-item-text">Updated {{ .UpdatedAt }}</span>
         </a>
     {{ end }}
 </div>

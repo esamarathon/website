@@ -29,7 +29,7 @@ func AdminRoutes(base string, router *mux.Router) {
 	router.HandleFunc(base+"/article/create", requireAuth(articleStore)).Methods("POST")
 	router.HandleFunc(base+"/article/{id}", requireAuth(articleEdit)).Methods("GET")
 	router.HandleFunc(base+"/article/{id}", requireAuth(articleUpdate)).Methods("POST")
-	router.HandleFunc(base, requireAuth(index)).Methods("GET", "POST")
+	router.HandleFunc(base+"/article/{id}/delete", requireAuth(articleDelete)).Methods("GET")
 }
 
 var adminRenderer = grender.New(grender.Options{
@@ -37,78 +37,9 @@ var adminRenderer = grender.New(grender.Options{
 	PartialsGlob:  "templates_admin/partials/*.html",
 })
 
-func deleteUser(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-
-	if err := user.Delete(id); err != nil {
-		log.Println(errors.Wrap(err, "handlers.deleteUser"))
-		// TODO: flash user that something went wrong
-	}
-
-	http.Redirect(w, r, "/admin/user", http.StatusSeeOther)
-}
-
-func articleUpdate(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-
-	a, err := article.Get(id)
-	if err != nil {
-		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
-		// TODO: Add flash message letting the user know what went wrong
-		http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
-		return
-	}
-
-	u, err := user.UserFromSession(r)
-	// No reason to do more error handling since we only use the user for author
-	if err != nil {
-		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
-	} else if !a.AuthorExists(u) {
-		a.Authors = append(a.Authors, u)
-	}
-
-	r.ParseForm()
-	title := r.FormValue("title")
-	body := r.FormValue("body")
-	a.Published = false
-	if r.FormValue("published") == "1" {
-		a.Published = true
-	}
-
-	if title != "" {
-		a.Title = title
-	}
-
-	if body != "" {
-		a.Body = body
-	}
-
-	if err = a.Update(); err != nil {
-		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
-		// TODO: Add flash message letting the user know that saving the article failed
-		http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
-	}
-
-	http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
-}
-
-func articleEdit(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-
-	a, err := article.Get(id)
-	if err != nil {
-		log.Println(errors.Wrap(err, "handlers.articleEdit"))
-		adminRenderer.HTML(w, http.StatusInternalServerError, "index.html", nil)
-		return
-	}
-
-	data := map[string]interface{}{
-		"Article": a,
-	}
-
-	adminRenderer.HTML(w, http.StatusOK, "edit_article.html", data)
-}
-
+/*
+*	Admin Index routes
+ */
 func index(w http.ResponseWriter, r *http.Request) {
 	// Change with actual status from DB
 	u, userErr := user.UserFromSession(r)
@@ -127,6 +58,14 @@ func index(w http.ResponseWriter, r *http.Request) {
 	adminRenderer.HTML(w, http.StatusOK, "index.html", data)
 }
 
+func toggleLivemode(w http.ResponseWriter, r *http.Request) {
+	setting.GetLiveMode().Toggle()
+	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+}
+
+/*
+*	User routes
+ */
 func userIndex(w http.ResponseWriter, r *http.Request) {
 	users, err := user.All()
 	if err != nil {
@@ -176,11 +115,29 @@ func userStore(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admin/user", http.StatusSeeOther)
 }
 
+func deleteUser(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	if err := user.Delete(id); err != nil {
+		log.Println(errors.Wrap(err, "handlers.deleteUser"))
+		// TODO: flash user that something went wrong
+	}
+
+	http.Redirect(w, r, "/admin/user", http.StatusSeeOther)
+}
+
+/*
+*	Article handlers
+ */
 func articleIndex(w http.ResponseWriter, r *http.Request) {
 	// Change with actual articledata
 	articles, err := article.All()
 	if err != nil {
 		log.Println(errors.Wrap(err, "admin.article.index"))
+	}
+	for i, a := range articles {
+		a.ShortenBody()
+		articles[i] = a
 	}
 
 	u, err := user.UserFromSession(r)
@@ -194,11 +151,6 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 	}
 
 	adminRenderer.HTML(w, http.StatusOK, "article.html", data)
-}
-
-func toggleLivemode(w http.ResponseWriter, r *http.Request) {
-	setting.GetLiveMode().Toggle()
-	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }
 
 func articleCreate(w http.ResponseWriter, r *http.Request) {
@@ -225,6 +177,81 @@ func articleStore(w http.ResponseWriter, r *http.Request) {
 		// TODO: Handle failure better
 		log.Println(errors.Wrap(err, "handlers.createArticle"))
 		fmt.Fprint(w, err)
+		return
+	}
+
+	http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
+}
+
+func articleEdit(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	a, err := article.Get(id)
+	if err != nil {
+		log.Println(errors.Wrap(err, "handlers.articleEdit"))
+		adminRenderer.HTML(w, http.StatusInternalServerError, "index.html", nil)
+		return
+	}
+
+	data := map[string]interface{}{
+		"Article": a,
+	}
+
+	adminRenderer.HTML(w, http.StatusOK, "edit_article.html", data)
+}
+
+func articleUpdate(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	a, err := article.Get(id)
+	if err != nil {
+		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
+		// TODO: Add flash message letting the user know what went wrong
+		http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
+		return
+	}
+
+	u, err := user.UserFromSession(r)
+	// No reason to do more error handling since we only use the user for author
+	if err != nil {
+		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
+	} else if !a.AuthorExists(u) {
+		a.Authors = append(a.Authors, u)
+	}
+
+	r.ParseForm()
+	title := r.FormValue("title")
+	body := r.FormValue("body")
+	a.Published = false
+	if r.FormValue("published") == "1" {
+		a.Published = true
+	}
+
+	if title != "" {
+		a.Title = title
+	}
+
+	if body != "" {
+		a.Body = body
+	}
+
+	if err = a.Update(); err != nil {
+		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
+		// TODO: Add flash message letting the user know that saving the article failed
+		http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
+	}
+
+	http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
+}
+
+func articleDelete(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+	err := article.Delete(id)
+	if err != nil {
+		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
+		// TODO: Flash message "Couldn't find the article..."
+		http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
 		return
 	}
 

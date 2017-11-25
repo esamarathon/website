@@ -15,13 +15,19 @@
                         <input type="text" class="form-control" name="title" placeholder="Title" value="{{ .Article.Title }}">
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <div class="form-group">
                         <label for="title">Publish article?</label>
                         <div class="checkbox">
                             <label><input name="published" type="checkbox" value="1" {{ if (.Article.Published)}}checked{{end}}>Published</label>
                         </div>
                     </div>
+                </div>
+                <div class="col-sm-2">
+                        <a
+                        href="/admin/article/{{ .Article.ID }}/delete"
+                        class=" btn btn-danger btn-block confirmable"
+                        data-message="Are you sure you want to delete this article?">Delete article</a>
                 </div>
             </div>
 
@@ -36,8 +42,8 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-6 text-right">
-                    <input type="submit" value="Submit" class="btn btn-primary" />
+                <div class="col-sm-12 text-right">
+                    <input type="submit" value="Update article" class="btn btn-primary" />
                 </div>
             </div>
         </form>
