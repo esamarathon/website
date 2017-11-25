@@ -140,10 +140,17 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 *	Article handlers
  */
 func articleIndex(w http.ResponseWriter, r *http.Request) {
-	// Change with actual articledata
-	articles, err := article.All()
+	// Get current page number
+	p := getArticlePage(r)
+
+	// Retrieve articles for current page
+	articles, err := article.Page(p)
 	if err != nil {
+		// If something goes wrong we render the 500-page
 		log.Println(errors.Wrap(err, "admin.article.index"))
+		data := getPagedata()
+		renderer.HTML(w, http.StatusOK, "500.html", data)
+		return
 	}
 	for i, a := range articles {
 		a.ShortenBody()
@@ -152,15 +159,25 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 
 	u, err := user.FromSession(r)
 	if err != nil {
+		// If something goes wrong we render the 500-page
 		log.Println(errors.Wrap(err, "admin.article.index"))
+		data := getPagedata()
+		renderer.HTML(w, http.StatusOK, "500.html", data)
+		return
 	}
 
+	// Set up the data we need
 	data := map[string]interface{}{
 		"User":     u,
 		"Articles": articles,
 		"Alert":    user.GetFlashMessage(w, r, "alert"),
 		"Success":  user.GetFlashMessage(w, r, "success"),
+		"NextPage": p + 1,
+		"PrevPage": p - 1,
+		"CurrPage": p,
 	}
+	// Total page count
+	data["LastPage"], err = article.PageCount()
 
 	adminRenderer.HTML(w, http.StatusOK, "article.html", data)
 }

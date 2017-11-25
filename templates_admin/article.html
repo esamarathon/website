@@ -16,4 +16,17 @@
         </a>
     {{ end }}
 </div>
+
+
+<div class="text-center">
+    <ul class="pagination pagination-sm">
+        {{ if not (lt .PrevPage 0) }}
+            <li><a href="/admin/article?page={{ .PrevPage }}" class="previous">&larr; Previous</a></li>
+        {{ end }}
+
+        {{ if not (gt .NextPage .LastPage) }}
+            <li><a href="/admin/article?page={{ .NextPage }}" class="next">Next &rarr;</a></li>
+        {{ end }}
+    </ul>
+</div>
 {{ end }}

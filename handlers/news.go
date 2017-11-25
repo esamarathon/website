@@ -8,9 +8,8 @@ import (
 	"github.com/olenedr/esamarathon/models/article"
 )
 
-// News renders the news page
-func News(w http.ResponseWriter, r *http.Request) {
-	data := getPagedata()
+// Extracts the page query param if present
+func getArticlePage(r *http.Request) int {
 	// Default page number
 	page := "0"
 
@@ -25,6 +24,14 @@ func News(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		p = 0
 	}
+	return p
+}
+
+// News renders the news page
+func News(w http.ResponseWriter, r *http.Request) {
+	data := getPagedata()
+	p := getArticlePage(r)
+
 	articles, err := article.Page(p)
 	// If we failed to get the articles
 	// we return the 500 error page
