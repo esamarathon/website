@@ -64,9 +64,16 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Go through each entry and attempt to set the correct values on the struct
+	// Added some old formats indexes for backwards compatibility for good measure
 	for i, e := range s.Schedule.Entries {
 		if index, ok := columnIndexes["Game"]; ok {
 			e.Game = getHTML(e.Data[index])
+		}
+		if index, ok := columnIndexes["Runner"]; ok {
+			e.Players = getHTML(e.Data[index])
+		}
+		if index, ok := columnIndexes["Runner/Runners"]; ok {
+			e.Players = getHTML(e.Data[index])
 		}
 		if index, ok := columnIndexes["Player(s)"]; ok {
 			e.Players = getHTML(e.Data[index])
@@ -74,8 +81,14 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 		if index, ok := columnIndexes["Platform"]; ok {
 			e.Platform = e.Data[index]
 		}
+		if index, ok := columnIndexes["Console"]; ok {
+			e.Platform = e.Data[index]
+		}
 		if index, ok := columnIndexes["Category"]; ok {
 			e.Category = e.Data[index]
+		}
+		if index, ok := columnIndexes["Region"]; ok {
+			e.Note = e.Data[index]
 		}
 		if index, ok := columnIndexes["Note"]; ok {
 			e.Note = e.Data[index]
