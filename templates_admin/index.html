@@ -27,4 +27,22 @@
             </div>
         {{ end }}
     </div>
+
+    <hr>
+
+    <div class="row">
+        <form action="/admin/schedule" method="POST">
+            <div class="col-sm-12">
+                <label for="url">Horaro Schedule URL</label>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="url" placeholder="Horaro API URL" value="{{ .ScheduleAPIURL }}">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <input type="submit" value="Update URL" class="btn btn-primary" />
+            </div>                    
+        </form>
+    </div>
 {{end}}

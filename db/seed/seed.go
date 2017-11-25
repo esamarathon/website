@@ -7,7 +7,6 @@ package seed
 
 import (
 	"github.com/olenedr/esamarathon/db"
-	"github.com/olenedr/esamarathon/models/setting"
 	"github.com/olenedr/esamarathon/models/user"
 
 	"github.com/pkg/errors"
@@ -19,10 +18,6 @@ var row interface{}
 // Seed initiates the seeding of default data into the DB
 func Seed() error {
 	if err := users(); err != nil {
-		return err
-	}
-
-	if err := settings(); err != nil {
 		return err
 	}
 
@@ -49,28 +44,6 @@ func users() error {
 	defer res.Close()
 
 	if err = validateResult(res, len(users), t); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func settings() error {
-	t := "settings"
-	var settings = []setting.Setting{
-		{
-			Key:   "livemode",
-			Value: "false",
-		},
-	}
-
-	res, err := rt.Table(t).Insert(settings).Run(db.Session)
-	if err != nil {
-		return err
-	}
-	defer res.Close()
-
-	if err = validateResult(res, len(settings), t); err != nil {
 		return err
 	}
 

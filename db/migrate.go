@@ -8,7 +8,6 @@ import (
 var tables = []string{
 	"users",
 	"articles",
-	"settings",
 }
 
 var row interface{}

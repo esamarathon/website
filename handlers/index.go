@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/dannyvankooten/grender"
-	"github.com/olenedr/esamarathon/models/setting"
+	"github.com/olenedr/esamarathon/config"
 )
 
 var renderer = grender.New(grender.Options{
@@ -31,10 +31,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 // getPagedata returns the basic page data
 func getPagedata() map[string]interface{} {
-	s, err := setting.GetLiveMode().AsBool()
-	if err != nil {
-		s = false
-	}
+	s := config.Config.LiveMode
 	t := time.Now()
 
 	p := map[string]interface{}{
