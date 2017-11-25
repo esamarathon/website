@@ -230,6 +230,10 @@ func articleStore(w http.ResponseWriter, r *http.Request) {
 		Title: r.Form.Get("title"),
 		Body:  r.Form.Get("body"),
 	}
+	a.Published = false
+	if r.FormValue("published") == "1" {
+		a.Published = true
+	}
 
 	u, err := user.FromSession(r)
 	if err != nil {
