@@ -11,12 +11,8 @@
         {{ .Estimate }}
     </td>
     <td>
-        {{ range .Players }}
-            {{ if .ProfileURL }}
-                <a target="_blank" href="{{ .ProfileURL }}">{{ .Name }}</a> 
-            {{ else }}
-                {{ .Name }}
-            {{ end }}
+        {{ if .Players }}
+            {{ .Players }}
         {{ end }}
     </td>
     <td>

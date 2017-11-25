@@ -2,14 +2,15 @@ package handlers
 
 import (
 	"encoding/json"
+	"html/template"
 	"log"
 	"math"
 	"net/http"
-	"regexp"
 	"strconv"
-	"strings"
 
+	"github.com/olenedr/esamarathon/config"
 	"github.com/pkg/errors"
+	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
 
 type scheduleResponse struct {
@@ -25,21 +26,15 @@ type schedule struct {
 }
 
 type scheduleEntry struct {
-	Scheduled string           `json:"scheduled,omitempty"`
-	Game      string           `json:"game,omitempty"`
-	GameLink  string           `json:"game_link,omitempty"`
-	Estimate  string           `json:"estimate,omitempty"`
-	Players   []schedulePlayer `json:"players,omitempty"`
-	Platform  string           `json:"platform,omitempty"`
-	Category  string           `json:"category,omitempty"`
-	Note      string           `json:"note,omitempty"`
-	Data      []string         `json:"data,omitempty"`
-	Length    float64          `json:"length_t,omitempty"`
-}
-
-type schedulePlayer struct {
-	Name       string `json:"name,omitempty"`
-	ProfileURL string `json:"profile_url,omitempty"`
+	Scheduled string        `json:"scheduled,omitempty"`
+	Game      template.HTML `json:"game,omitempty"`
+	Estimate  string        `json:"estimate,omitempty"`
+	Players   template.HTML `json:"players,omitempty"`
+	Platform  string        `json:"platform,omitempty"`
+	Category  string        `json:"category,omitempty"`
+	Note      string        `json:"note,omitempty"`
+	Data      []string      `json:"data,omitempty"`
+	Length    float64       `json:"length_t,omitempty"`
 }
 
 // Schedule displays the marathon schedule
@@ -48,8 +43,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	var s scheduleResponse
 	data := getPagedata()
 
-	// TODO: Should not be hard coded
-	resp, err := http.Get("https://horaro.org/-/api/v1/schedules/4311u8b52b04si7a1e")
+	resp, err := http.Get(config.Config.ScheduleApiURL)
 	if err != nil {
 		log.Println(errors.Wrap(err, "handlers.Schedule"))
 		renderer.HTML(w, http.StatusOK, "500.html", data)
@@ -72,10 +66,10 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	// Go through each entry and attempt to set the correct values on the struct
 	for i, e := range s.Schedule.Entries {
 		if index, ok := columnIndexes["Game"]; ok {
-			e.Game = getAnchorText(e.Data[index])
+			e.Game = getHTML(e.Data[index])
 		}
 		if index, ok := columnIndexes["Player(s)"]; ok {
-			e.Players = getPlayers(e.Data[index])
+			e.Players = getHTML(e.Data[index])
 		}
 		if index, ok := columnIndexes["Platform"]; ok {
 			e.Platform = e.Data[index]
@@ -95,44 +89,9 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	renderer.HTML(w, http.StatusOK, "schedule.html", data)
 }
 
-func getPlayers(str string) []schedulePlayer {
-	nameRE := regexp.MustCompile("\\[([^]]+)\\]")
-	names := nameRE.FindAllString(str, -1)
-
-	linkRE := regexp.MustCompile("\\(([^]]+)\\)")
-	links := linkRE.FindAllString(str, -1)
-
-	players := make([]schedulePlayer, len(names))
-	for i, name := range names {
-		name = strings.Replace(name, "[", "", -1)
-		name = strings.Replace(name, "]", "", -1)
-		players[i].Name = name
-	}
-
-	for i, link := range links {
-		link = strings.Replace(link, "(", "", -1)
-		link = strings.Replace(link, ")", "", -1)
-		players[i].ProfileURL = link
-	}
-	return players
-}
-
-func getAnchorText(str string) string {
-	re := regexp.MustCompile("\\[([^]]+)\\]")
-	match := re.FindStringSubmatch(str)
-	if len(match) >= 1 {
-		return match[1]
-	}
-	return str
-}
-
-func getAnchorLink(str string) string {
-	re := regexp.MustCompile("\\(([^]]+)\\)")
-	match := re.FindStringSubmatch(str)
-	if len(match) >= 1 {
-		return match[1]
-	}
-	return str
+func getHTML(str string) template.HTML {
+	markdown := string(blackfriday.Run([]byte(str)))
+	return template.HTML(markdown)
 }
 
 // getEstimate returns a formated string representing
