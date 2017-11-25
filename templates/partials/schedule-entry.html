@@ -1,7 +1,6 @@
 {{ define "schedule-entry"}}
     <td>
-        ~
-        <!-- Scheduled -->
+        <time datetime="{{ .Scheduled }}" class="time-only"></time>
     </td>
     <td>
         {{ if .Game }}
@@ -9,8 +8,7 @@
         {{ end }}
     </td>
     <td>
-        ~
-        <!-- Time Estimate -->
+        {{ .Estimate }}
     </td>
     <td>
         {{ range .Players }}

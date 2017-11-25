@@ -32,26 +32,56 @@ function getMonthName(number) {
     var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     return monthNames[number]
 }
+function getWeekday(number) {
+    var weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    return weekdays[number]
+}
 
 function addLeadingZero(number) {
     return (number < 10) ? "0" + number : number
+}
+
+function addScheduleDate(el, date) {
+    // Format: Saturday, July 22. 2017
+    var timestamp = `${getWeekday(date.getDay())}, ${getMonthName(date.getMonth())} ${date.getDate()}, ${date.getFullYear()}`
+    el.parentNode.parentNode.insertAdjacentHTML('beforebegin', `<tr><td colspan="99" class="new-date"><strong>${timestamp}</strong></td></tr>`);
 }
 
 (function () {
     var timestamps = document.getElementsByTagName('time')
     if (!timestamps.length) return
 
+    var schedule = document.querySelector('.schedule')
+    // Define prevDate in case we're on the schedule
+    var prevDate
+
+    // Loop through all the time-elements
     for (let el of timestamps) {
         if (typeof el !== 'object') return
         // Get the timestamp
         var utcTimestamp = el.getAttribute('datetime')
         // Create a local timestamp
-        var date = new Date(utcTimestamp);
+        var date = new Date(utcTimestamp)
+
+        // Define timestamp
+        var timestamp
 
         // Formats the timestamp correctly
-        // Example: November 24. 2017, 20:08
-        var timestamp = `${getMonthName(date.getMonth())} ${date.getDate()}. ${date.getFullYear()}, ${addLeadingZero(date.getHours())}:${addLeadingZero(date.getMinutes())}`
+        if (el.className.indexOf('time-only') !== -1) {
+            // Format: 20:08
+            timestamp = `${addLeadingZero(date.getHours())}:${addLeadingZero(date.getMinutes())}`
+        } else {
+            // Format: November 24. 2017, 20:08
+            timestamp = `${getMonthName(date.getMonth())} ${date.getDate()}. ${date.getFullYear()}, ${addLeadingZero(date.getHours())}:${addLeadingZero(date.getMinutes())}`
+        }
         // Update the DOM
         el.innerHTML = timestamp
+
+        // Add new schedule date row if we're on a new date
+        // and on the schedule page
+        if (schedule !== null && date.getDate() !== prevDate) {
+            addScheduleDate(el, date)
+            prevDate = date.getDate()
+        }
     }
 }())
