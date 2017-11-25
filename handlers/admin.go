@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -42,7 +41,7 @@ var adminRenderer = grender.New(grender.Options{
  */
 func index(w http.ResponseWriter, r *http.Request) {
 	// Change with actual status from DB
-	u, userErr := user.UserFromSession(r)
+	u, userErr := user.FromSession(r)
 	s, settingErr := setting.GetLiveMode().AsBool()
 	if settingErr != nil {
 		log.Println(errors.Wrap(settingErr, "admin.index"))
@@ -51,8 +50,10 @@ func index(w http.ResponseWriter, r *http.Request) {
 		log.Println(errors.Wrap(userErr, "admin.index"))
 	}
 	data := map[string]interface{}{
-		"User":   u,
-		"Status": s,
+		"User":    u,
+		"Status":  s,
+		"Alert":   user.GetFlashMessage(w, r, "alert"),
+		"Success": user.GetFlashMessage(w, r, "success"),
 	}
 
 	adminRenderer.HTML(w, http.StatusOK, "index.html", data)
@@ -71,19 +72,23 @@ func userIndex(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(errors.Wrap(err, "admin.user.index"))
 	}
-	u, err := user.UserFromSession(r)
+	u, err := user.FromSession(r)
 	if err != nil {
 		log.Println(errors.Wrap(err, "admin.user.index"))
 	}
 	data := map[string]interface{}{
-		"User":  u,
-		"Users": users,
+		"User":    u,
+		"Users":   users,
+		"Alert":   user.GetFlashMessage(w, r, "alert"),
+		"Success": user.GetFlashMessage(w, r, "success"),
 	}
 
 	adminRenderer.HTML(w, http.StatusOK, "user.html", data)
 }
 
+// Store the user in the database
 func userStore(w http.ResponseWriter, r *http.Request) {
+	// Parse form and get the username submitted
 	r.ParseForm()
 	username := r.Form.Get("username")
 	// Create a user object
@@ -95,23 +100,26 @@ func userStore(w http.ResponseWriter, r *http.Request) {
 
 	exists, err := u.Exists()
 	if err != nil {
+		user.SetFlashMessage(w, r, "alert", "Something went wrong.")
 		log.Println(errors.Wrap(err, "handlers.userStore"))
 		http.Redirect(w, r, "/admin/user", http.StatusBadRequest)
 		return
 	}
 
 	if exists {
-		//TODO: flash message that user exists
+		user.SetFlashMessage(w, r, "alert", "User already exists.")
 		http.Redirect(w, r, "/admin/user", http.StatusFound)
 		return
 	}
 
 	if err := user.Create(username); err != nil || username == "" {
+		user.SetFlashMessage(w, r, "alert", "Failed to add user to database.")
 		log.Println(errors.Wrap(err, "handlers.userStore"))
 		http.Redirect(w, r, "/admin/user", http.StatusBadRequest)
 		return
 	}
 
+	user.SetFlashMessage(w, r, "success", "User was added.")
 	http.Redirect(w, r, "/admin/user", http.StatusSeeOther)
 }
 
@@ -119,8 +127,10 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
 	if err := user.Delete(id); err != nil {
+		user.SetFlashMessage(w, r, "alert", "Something went wrong while trying to delete the user.")
 		log.Println(errors.Wrap(err, "handlers.deleteUser"))
-		// TODO: flash user that something went wrong
+	} else {
+		user.SetFlashMessage(w, r, "success", "The user was deleted")
 	}
 
 	http.Redirect(w, r, "/admin/user", http.StatusSeeOther)
@@ -140,7 +150,7 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 		articles[i] = a
 	}
 
-	u, err := user.UserFromSession(r)
+	u, err := user.FromSession(r)
 	if err != nil {
 		log.Println(errors.Wrap(err, "admin.article.index"))
 	}
@@ -148,6 +158,8 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 	data := map[string]interface{}{
 		"User":     u,
 		"Articles": articles,
+		"Alert":    user.GetFlashMessage(w, r, "alert"),
+		"Success":  user.GetFlashMessage(w, r, "success"),
 	}
 
 	adminRenderer.HTML(w, http.StatusOK, "article.html", data)
@@ -165,21 +177,21 @@ func articleStore(w http.ResponseWriter, r *http.Request) {
 		Body:  r.Form.Get("body"),
 	}
 
-	u, err := user.UserFromSession(r)
+	u, err := user.FromSession(r)
 	if err != nil {
 		http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
 	}
 
 	a.AddAuthor(u)
 
-	//TODO: if something needs to verified, this should be done here
 	if err := a.Create(); err != nil {
-		// TODO: Handle failure better
+		user.SetFlashMessage(w, r, "alert", "An error occured while trying to create the article.")
 		log.Println(errors.Wrap(err, "handlers.createArticle"))
-		fmt.Fprint(w, err)
+		http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
 		return
 	}
 
+	user.SetFlashMessage(w, r, "success", "The article was saved successfully")
 	http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
 }
 
@@ -188,13 +200,16 @@ func articleEdit(w http.ResponseWriter, r *http.Request) {
 
 	a, err := article.Get(id)
 	if err != nil {
+		user.SetFlashMessage(w, r, "alert", "Couldn't find the article...")
 		log.Println(errors.Wrap(err, "handlers.articleEdit"))
-		adminRenderer.HTML(w, http.StatusInternalServerError, "index.html", nil)
+		http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
 		return
 	}
 
 	data := map[string]interface{}{
 		"Article": a,
+		"Alert":   user.GetFlashMessage(w, r, "alert"),
+		"Success": user.GetFlashMessage(w, r, "success"),
 	}
 
 	adminRenderer.HTML(w, http.StatusOK, "edit_article.html", data)
@@ -205,13 +220,13 @@ func articleUpdate(w http.ResponseWriter, r *http.Request) {
 
 	a, err := article.Get(id)
 	if err != nil {
+		user.SetFlashMessage(w, r, "alert", "Couldn't find the article...")
 		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
-		// TODO: Add flash message letting the user know what went wrong
-		http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
+		http.Redirect(w, r, "/admin/article/", http.StatusSeeOther)
 		return
 	}
 
-	u, err := user.UserFromSession(r)
+	u, err := user.FromSession(r)
 	// No reason to do more error handling since we only use the user for author
 	if err != nil {
 		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
@@ -236,11 +251,13 @@ func articleUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err = a.Update(); err != nil {
+		user.SetFlashMessage(w, r, "alert", "Something went wrong while updating...")
 		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
-		// TODO: Add flash message letting the user know that saving the article failed
 		http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
+		return
 	}
 
+	user.SetFlashMessage(w, r, "success", "Changes have been saved")
 	http.Redirect(w, r, "/admin/article/"+id, http.StatusSeeOther)
 }
 
@@ -250,10 +267,11 @@ func articleDelete(w http.ResponseWriter, r *http.Request) {
 	err := article.Delete(id)
 	if err != nil {
 		log.Println(errors.Wrap(err, "handlers.articleUpdate"))
-		// TODO: Flash message "Couldn't find the article..."
+		user.SetFlashMessage(w, r, "alert", "Couldn't find the article you tried to delete")
 		http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
 		return
 	}
 
+	user.SetFlashMessage(w, r, "success", "The article was deleted")
 	http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
 }
