@@ -40,7 +40,11 @@ func All() ([]Article, error) {
 
 // Page returns the articles of a given page
 func Page(page int) ([]Article, error) {
-	rows, err := db.GetPage(table, page, config.Config.ArticlesPerPage)
+	filter := map[string]interface{}{
+		"published": true,
+	}
+
+	rows, err := db.GetFilteredPage(table, page, config.Config.ArticlesPerPage, filter)
 	var a []Article
 	if err != nil {
 		return a, errors.Wrap(err, "article.Page")
@@ -71,9 +75,19 @@ func PageCount() (int, error) {
 }
 
 // Get returns an article given an ID
-func Get(id string) (Article, error) {
+func Get(id string, published *bool) (Article, error) {
 	var a Article
-	cursor, err := db.GetOneById(table, id)
+
+	filter := map[string]interface{}{
+		"id": id,
+	}
+
+	// if published is nil, we do not include it in the filter
+	if published != nil {
+		filter["published"] = *published
+	}
+
+	cursor, err := db.GetByFilter(table, filter)
 	if err != nil {
 		return a, errors.Wrap(err, "article.Get")
 	}
