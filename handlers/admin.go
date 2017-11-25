@@ -8,6 +8,7 @@ import (
 	"github.com/dannyvankooten/grender"
 	"github.com/pkg/errors"
 
+	"github.com/olenedr/esamarathon/cache"
 	"github.com/olenedr/esamarathon/config"
 	"github.com/olenedr/esamarathon/models/article"
 	"github.com/olenedr/esamarathon/models/user"
@@ -91,6 +92,7 @@ func updateSchedule(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 		return
 	}
+	cache.Cache.Delete("schedule")
 
 	// URL seems fine, updating
 	config.Config.ScheduleAPIURL = URL

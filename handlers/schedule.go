@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/olenedr/esamarathon/cache"
 	"github.com/olenedr/esamarathon/config"
 	"github.com/pkg/errors"
 	blackfriday "gopkg.in/russross/blackfriday.v2"
@@ -38,10 +39,20 @@ type scheduleEntry struct {
 }
 
 // Schedule displays the marathon schedule
-// TODO: The result of this method should be cached, so we don't have to parse the JSON every time.
 func Schedule(w http.ResponseWriter, r *http.Request) {
-	var s scheduleResponse
 	data := getPagedata()
+
+	// Attempt to find a cached schedule
+	schedule, found := cache.Cache.Get("schedule")
+	if found {
+		// Found cache, attaching to data object
+		data["Schedule"] = schedule
+		// Render cached data
+		renderer.HTML(w, http.StatusOK, "schedule.html", data)
+		return
+	}
+
+	var s scheduleResponse
 
 	// Request the schedule JSON-resource
 	resp, err := http.Get(config.Config.ScheduleAPIURL)
@@ -100,9 +111,13 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 		s.Schedule.Entries[i] = e
 	}
+	// Attach the schedule
 	data["Schedule"] = s.Schedule
 
+	// Render
 	renderer.HTML(w, http.StatusOK, "schedule.html", data)
+	// Write to the cache
+	cache.Cache.Set("schedule", s.Schedule, cache.Duration())
 }
 
 func getHTML(str string) template.HTML {
