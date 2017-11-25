@@ -6,6 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/olenedr/esamarathon/models/article"
+	"github.com/olenedr/esamarathon/viewmodels"
 )
 
 // Extracts the page query param if present
@@ -29,14 +30,14 @@ func getArticlePage(r *http.Request) int {
 
 // News renders the news page
 func News(w http.ResponseWriter, r *http.Request) {
-	data := getPagedata()
+	data := viewmodels.News()
 	p := getArticlePage(r)
 
 	articles, err := article.Page(p, true)
 	// If we failed to get the articles
 	// we return the 500 error page
 	if err != nil {
-		renderer.HTML(w, http.StatusInternalServerError, "500.html", data)
+		HandleInternalError(w)
 		return
 	}
 
@@ -47,13 +48,14 @@ func News(w http.ResponseWriter, r *http.Request) {
 		articles[i] = a
 	}
 
-	data["Articles"] = articles
-	data["NextPage"] = p + 1
-	data["PrevPage"] = p - 1
-	data["LastPage"], err = article.PageCount()
+	// Attach needed values
+	data.Articles = articles
+	data.NextPage = p + 1
+	data.PrevPage = p - 1
+	data.LastPage, err = article.PageCount(true)
 
 	if err != nil {
-		renderer.HTML(w, http.StatusInternalServerError, "500.html", data)
+		HandleInternalError(w)
 		return
 	}
 
@@ -62,19 +64,26 @@ func News(w http.ResponseWriter, r *http.Request) {
 
 // Article renders the page of a specific article
 func Article(w http.ResponseWriter, r *http.Request) {
-	data := getPagedata()
+	// Get the ID
 	id := mux.Vars(r)["id"]
+
+	// Request a the published article
 	published := true
 	a, err := article.Get(id, &published)
 
 	if err != nil {
-		renderer.HTML(w, http.StatusOK, "404.html", data)
+		// Not found, return 404
+		HandleNotFound(w, r)
 		return
 	}
 
+	// Build the markup
 	a.ParseHTML()
 	a.FormatTimestamp()
-	data["Article"] = a
+
+	// Prepare the view
+	data := viewmodels.Article()
+	data.Article = a
 
 	renderer.HTML(w, http.StatusOK, "article.html", data)
 }

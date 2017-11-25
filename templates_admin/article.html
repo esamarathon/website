@@ -11,8 +11,19 @@
 <div class="list-group">
     {{ range .Articles }}
         <a href="/admin/article/{{ .ID }}" class="list-group-item">
-            <h4 class="list-group-item-heading">{{ .Title }}</h4>
-            <p class="list-group-item-text">{{ .Body }}</p>
+            <div class="row">
+                <div class="col-sm-8">
+                    <h4 class="list-group-item-heading">{{ .Title }}</h4>
+                    <p class="list-group-item-text">{{ .Body }}</p>
+                </div>
+                <div class="col-sm-4 text-right">
+                    {{ if (.Published) }}
+                        <span class="label label-success">Published</span>
+                    {{ else }}
+                        <span class="label label-default">Draft</span>
+                    {{ end }}
+                </div>
+            </div>
         </a>
     {{ end }}
 </div>

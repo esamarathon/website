@@ -67,9 +67,21 @@ func Page(page int, published bool) ([]Article, error) {
 
 // PageCount Calculates the number of pages based on the number of articles
 // and articles per page (minus 1 because we start at 0)
-func PageCount() (int, error) {
-	// get the article count
-	articleCount, err := db.GetCount(table)
+func PageCount(published bool) (int, error) {
+	var articleCount int
+	var err error
+
+	// Get the article count
+	if published {
+		filter := map[string]interface{}{
+			"published": true,
+		}
+
+		articleCount, err = db.GetFilteredCount(table, filter)
+	} else {
+		articleCount, err = db.GetCount(table)
+	}
+
 	if err != nil {
 		return 0, errors.Wrap(err, "article.PageCount")
 	}

@@ -119,3 +119,16 @@ func GetCount(table string) (int, error) {
 
 	return count, nil
 }
+
+func GetFilteredCount(table string, filter map[string]interface{}) (int, error) {
+	cursor, err := r.Table(table).Filter(filter).Count().Run(Session)
+	if err != nil {
+		return 0, errors.Wrap(err, "db.GetCount")
+	}
+
+	var count int
+	cursor.One(&count)
+	cursor.Close()
+
+	return count, nil
+}

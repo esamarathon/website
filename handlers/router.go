@@ -34,12 +34,6 @@ func handleStatic(dir, prefix string) http.HandlerFunc {
 	}
 }
 
-// HandleNotFound handles the requests that doesn't have route associated with it
-func HandleNotFound(w http.ResponseWriter, r *http.Request) {
-	data := getPagedata()
-	renderer.HTML(w, http.StatusNotFound, "404.html", data)
-}
-
 func Router(version string) http.Handler {
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
