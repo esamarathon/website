@@ -17,9 +17,10 @@ import (
 	"github.com/olenedr/esamarathon/middleware"
 )
 
+// AdminRoutes adds the admin routes to the router
 func AdminRoutes(base string, router *mux.Router) {
 	requireAuth := middleware.AuthMiddleware
-	router.HandleFunc(base, requireAuth(index)).Methods("GET", "POST")
+	router.HandleFunc(base, requireAuth(indexAdmin)).Methods("GET", "POST")
 	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
 	router.HandleFunc(base+"/schedule", requireAuth(updateSchedule)).Methods("POST")
 	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
@@ -33,6 +34,7 @@ func AdminRoutes(base string, router *mux.Router) {
 	router.HandleFunc(base+"/article/{id}/delete", requireAuth(articleDelete)).Methods("GET")
 }
 
+// Boots a renderer for the admin views
 var adminRenderer = grender.New(grender.Options{
 	TemplatesGlob: "templates_admin/*.html",
 	PartialsGlob:  "templates_admin/partials/*.html",
@@ -41,7 +43,7 @@ var adminRenderer = grender.New(grender.Options{
 /*
 *	Admin Index routes
  */
-func index(w http.ResponseWriter, r *http.Request) {
+func indexAdmin(w http.ResponseWriter, r *http.Request) {
 	// Change with actual status from DB
 	u, userErr := user.FromSession(r)
 	if userErr != nil {
