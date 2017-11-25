@@ -46,7 +46,7 @@ type adminArticleEditView struct {
 func getUser(r *http.Request) user.User {
 	u, userErr := user.FromSession(r)
 	if userErr != nil {
-		log.Println(errors.Wrap(userErr, "admin.index"))
+		log.Println(errors.Wrap(userErr, "getUser"))
 	}
 	return u
 }
