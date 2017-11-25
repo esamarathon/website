@@ -12,6 +12,7 @@ import (
 	"github.com/olenedr/esamarathon/config"
 	"github.com/olenedr/esamarathon/models/article"
 	"github.com/olenedr/esamarathon/models/user"
+	"github.com/olenedr/esamarathon/viewmodels"
 
 	"github.com/gorilla/mux"
 	"github.com/olenedr/esamarathon/middleware"
@@ -20,7 +21,7 @@ import (
 // AdminRoutes adds the admin routes to the router
 func AdminRoutes(base string, router *mux.Router) {
 	requireAuth := middleware.AuthMiddleware
-	router.HandleFunc(base, requireAuth(indexAdmin)).Methods("GET", "POST")
+	router.HandleFunc(base, requireAuth(adminIndex)).Methods("GET", "POST")
 	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
 	router.HandleFunc(base+"/schedule", requireAuth(updateSchedule)).Methods("POST")
 	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
@@ -34,7 +35,7 @@ func AdminRoutes(base string, router *mux.Router) {
 	router.HandleFunc(base+"/article/{id}/delete", requireAuth(articleDelete)).Methods("GET")
 }
 
-// Boots a renderer for the admin views
+// Initiates a renderer for the admin views
 var adminRenderer = grender.New(grender.Options{
 	TemplatesGlob: "templates_admin/*.html",
 	PartialsGlob:  "templates_admin/partials/*.html",
@@ -43,21 +44,8 @@ var adminRenderer = grender.New(grender.Options{
 /*
 *	Admin Index routes
  */
-func indexAdmin(w http.ResponseWriter, r *http.Request) {
-	// Change with actual status from DB
-	u, userErr := user.FromSession(r)
-	if userErr != nil {
-		log.Println(errors.Wrap(userErr, "admin.index"))
-	}
-	data := map[string]interface{}{
-		"User":           u,
-		"Status":         config.Config.LiveMode,
-		"ScheduleAPIURL": config.Config.ScheduleAPIURL,
-		"Alert":          user.GetFlashMessage(w, r, "alert"),
-		"Success":        user.GetFlashMessage(w, r, "success"),
-	}
-
-	adminRenderer.HTML(w, http.StatusOK, "index.html", data)
+func adminIndex(w http.ResponseWriter, r *http.Request) {
+	adminRenderer.HTML(w, http.StatusOK, "index.html", viewmodels.AdminIndex(w, r))
 }
 
 // Toggles the stream on the frontpage
@@ -105,23 +93,9 @@ func updateSchedule(w http.ResponseWriter, r *http.Request) {
 /*
 *	User routes
  */
+// List all the users
 func userIndex(w http.ResponseWriter, r *http.Request) {
-	users, err := user.All()
-	if err != nil {
-		log.Println(errors.Wrap(err, "admin.user.index"))
-	}
-	u, err := user.FromSession(r)
-	if err != nil {
-		log.Println(errors.Wrap(err, "admin.user.index"))
-	}
-	data := map[string]interface{}{
-		"User":    u,
-		"Users":   users,
-		"Alert":   user.GetFlashMessage(w, r, "alert"),
-		"Success": user.GetFlashMessage(w, r, "success"),
-	}
-
-	adminRenderer.HTML(w, http.StatusOK, "user.html", data)
+	adminRenderer.HTML(w, http.StatusOK, "user.html", viewmodels.AdminUserIndex(w, r))
 }
 
 // Store the user in the database
@@ -181,6 +155,7 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 func articleIndex(w http.ResponseWriter, r *http.Request) {
 	// Get current page number
 	p := getArticlePage(r)
+	view := viewmodels.AdminArticleIndex(w, r)
 
 	// Retrieve articles for current page
 	articles, err := article.Page(p, false)
@@ -195,7 +170,8 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 		articles[i] = a
 	}
 
-	u, err := user.FromSession(r)
+	// Total page count
+	count, err := article.PageCount()
 	if err != nil {
 		// If something goes wrong we render the 500-page
 		log.Println(errors.Wrap(err, "admin.article.index"))
@@ -203,20 +179,14 @@ func articleIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Set up the data we need
-	data := map[string]interface{}{
-		"User":     u,
-		"Articles": articles,
-		"Alert":    user.GetFlashMessage(w, r, "alert"),
-		"Success":  user.GetFlashMessage(w, r, "success"),
-		"NextPage": p + 1,
-		"PrevPage": p - 1,
-		"CurrPage": p,
-	}
-	// Total page count
-	data["LastPage"], err = article.PageCount()
+	// Set all the necessary values
+	view.Articles = articles
+	view.NextPage = p + 1
+	view.PrevPage = p - 1
+	view.CurrPage = p
+	view.LastPage = count
 
-	adminRenderer.HTML(w, http.StatusOK, "article.html", data)
+	adminRenderer.HTML(w, http.StatusOK, "article.html", view)
 }
 
 func articleCreate(w http.ResponseWriter, r *http.Request) {
@@ -255,6 +225,7 @@ func articleStore(w http.ResponseWriter, r *http.Request) {
 
 func articleEdit(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
+	view := viewmodels.AdminArticleEdit(w, r)
 
 	a, err := article.Get(id, nil)
 	if err != nil {
@@ -263,14 +234,9 @@ func articleEdit(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin/article", http.StatusSeeOther)
 		return
 	}
+	view.Article = a
 
-	data := map[string]interface{}{
-		"Article": a,
-		"Alert":   user.GetFlashMessage(w, r, "alert"),
-		"Success": user.GetFlashMessage(w, r, "success"),
-	}
-
-	adminRenderer.HTML(w, http.StatusOK, "edit_article.html", data)
+	adminRenderer.HTML(w, http.StatusOK, "edit_article.html", view)
 }
 
 func articleUpdate(w http.ResponseWriter, r *http.Request) {

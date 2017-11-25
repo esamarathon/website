@@ -3,8 +3,6 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/olenedr/esamarathon/viewmodels"
-
 	"github.com/rs/cors"
 
 	"github.com/gorilla/mux"

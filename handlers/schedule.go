@@ -10,49 +10,25 @@ import (
 
 	"github.com/olenedr/esamarathon/cache"
 	"github.com/olenedr/esamarathon/config"
+	"github.com/olenedr/esamarathon/models/schedule"
 	"github.com/olenedr/esamarathon/viewmodels"
 	"github.com/pkg/errors"
 	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
 
 type scheduleResponse struct {
-	Schedule *schedule `json:"data,omitempty"`
-}
-type schedule struct {
-	Name        string          `json:"name,omitempty"`
-	Description string          `json:"description,omitempty"`
-	Updated     string          `json:"updated,omitempty"`
-	Link        string          `json:"link,omitempty"`
-	Entries     []scheduleEntry `json:"items,omitempty"`
-	Columns     []string        `json:"columns,omitempty"`
-}
-
-type scheduleEntry struct {
-	Scheduled string        `json:"scheduled,omitempty"`
-	Game      template.HTML `json:"game,omitempty"`
-	Estimate  string        `json:"estimate,omitempty"`
-	Players   template.HTML `json:"players,omitempty"`
-	Platform  string        `json:"platform,omitempty"`
-	Category  string        `json:"category,omitempty"`
-	Note      string        `json:"note,omitempty"`
-	Data      []string      `json:"data,omitempty"`
-	Length    float64       `json:"length_t,omitempty"`
+	Schedule *schedule.Schedule `json:"data,omitempty"`
 }
 
 // Schedule displays the marathon schedule
 func Schedule(w http.ResponseWriter, r *http.Request) {
-	data := viewmodels.GetPagedata()
+	view := viewmodels.Schedule()
 
-	// Attempt to find a cached schedule
-	schedule, found := cache.Get("schedule")
-	if found {
-		// Found cache, attaching to data object
-		data["Schedule"] = schedule
-		// Render cached data
-		renderer.HTML(w, http.StatusOK, "schedule.html", data)
+	if view.Cached {
+		// Render cached view
+		renderer.HTML(w, http.StatusOK, "schedule.html", view)
 		return
 	}
-
 	var s scheduleResponse
 
 	// Request the schedule JSON-resource
@@ -115,14 +91,15 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 		s.Schedule.Entries[i] = e
 	}
 	// Attach the schedule
-	data["Schedule"] = s.Schedule
+	view.Schedule = s.Schedule
 
 	// Render
-	renderer.HTML(w, http.StatusOK, "schedule.html", data)
+	renderer.HTML(w, http.StatusOK, "schedule.html", view)
 	// Write to the cache
 	cache.Cache.Set("schedule", s.Schedule, cache.Duration())
 }
 
+// returns HTML based a on markdown string
 func getHTML(str string) template.HTML {
 	markdown := string(blackfriday.Run([]byte(str)))
 	return template.HTML(markdown)
