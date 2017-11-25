@@ -43,7 +43,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	data := getPagedata()
 
 	// Attempt to find a cached schedule
-	schedule, found := cache.Cache.Get("schedule")
+	schedule, found := cache.Get("schedule")
 	if found {
 		// Found cache, attaching to data object
 		data["Schedule"] = schedule

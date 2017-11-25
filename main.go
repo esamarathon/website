@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/olenedr/esamarathon/cache"
 	"github.com/olenedr/esamarathon/handlers"
 
 	"github.com/joho/godotenv"
@@ -23,7 +22,6 @@ func main() {
 		port = "3000"
 	}
 
-	cache.Boot()
 	if err := db.Connect(); err != nil {
 		log.Println("Could not connect to the database:", err)
 	} else {

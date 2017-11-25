@@ -23,7 +23,7 @@ func init() {
 
 	AdminRoutes("/admin", router)
 
-	router.NotFoundHandler = http.HandlerFunc(handleNotFound)
+	router.NotFoundHandler = http.HandlerFunc(HandleNotFound)
 }
 
 func handleStatic(dir, prefix string) http.HandlerFunc {
@@ -34,9 +34,10 @@ func handleStatic(dir, prefix string) http.HandlerFunc {
 	}
 }
 
-func handleNotFound(w http.ResponseWriter, r *http.Request) {
+// HandleNotFound handles the requests that doesn't have route associated with it
+func HandleNotFound(w http.ResponseWriter, r *http.Request) {
 	data := getPagedata()
-	renderer.HTML(w, http.StatusOK, "404.html", data)
+	renderer.HTML(w, http.StatusNotFound, "404.html", data)
 }
 
 func Router(version string) http.Handler {
