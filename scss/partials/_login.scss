@@ -1,12 +1,15 @@
 .login {
-    width: 600px;
+    max-width: $max-width;
+    width: 100%;
     margin: 4em auto;
-
     text-align: center;
     h1 {
         text-transform: uppercase;
         color: $white;
         margin-bottom: 2em;
+        letter-spacing: .5px;
+        font-family: $condensed;
+        font-weight: 300;
     }
 
         
