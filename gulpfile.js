@@ -26,7 +26,7 @@ function errorHandler (error) {
 gulp.task('css', function () {
     return gulp.src(paths.src.style)
         .pipe(sass().on('error', sass.logError))
-        .pipe(cleanCSS({compatibility: 'ie8'}))
+        .pipe(cleanCSS({compatibility: 'ie9'}))
         .on('error', errorHandler)
         .pipe(gulp.dest(paths.dest.style))
 })
