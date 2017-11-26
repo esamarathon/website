@@ -1,3 +1,5 @@
+//This is the article list
+
 main.article-list {
    position: relative;
    z-index: 3;
@@ -78,6 +80,8 @@ main.article-list {
       }
    }
 }
+
+//This is the article
 main.article {
    article {
       max-width: $max-width;
@@ -138,6 +142,12 @@ main.article {
          line-height: 1.6;
          font-weight: 300;
          letter-spacing: .5px;
+         >a {
+            display: inline;
+            border: none;
+            padding: 0;
+            color: $orange;
+         }
          @include medium-up {
             transition: .4s all;
             border-radius: 6px;
