@@ -20,7 +20,11 @@ type newsView struct {
 // News returns the viewmodel for /news
 func News() newsView {
 	view := newsView{
-		Meta:          DefaultMeta,
+		Meta: meta{
+			Title:       "News - ESA Marathon",
+			Description: "We constantly update with news about our events.",
+			Image:       DefaultMeta.Image,
+		},
 		CopyrightYear: time.Now().Year(),
 		Livemode:      config.Config.LiveMode,
 	}

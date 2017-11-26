@@ -17,7 +17,7 @@ type meta struct {
 var DefaultMeta = meta{
 	"ESA Marathon",
 	"Welcome to European Speedrunner Assembly!",
-	"http://www.esamarathon.com/images/esa/europeanspeedrunnerassembly.png",
+	"http://www.esamarathon.com/static/img/og-image.png",
 }
 
 type indexView struct {
@@ -40,17 +40,4 @@ func Index() indexView {
 	}
 
 	return view
-}
-
-// GetPagedata returns the basic page data
-func GetPagedata() map[string]interface{} {
-	s := config.Config.LiveMode
-	t := time.Now()
-
-	p := map[string]interface{}{
-		"Meta":          DefaultMeta,
-		"Livemode":      s,
-		"CopyrightYear": t.Year(),
-	}
-	return p
 }
