@@ -2,12 +2,17 @@
 
 var gulp = require('gulp')
 var sass = require('gulp-sass')
+var uglify = require('gulp-uglify')
+let cleanCSS = require('gulp-clean-css')
+
 var paths = {
     src: {
-        style: './scss/**/*.scss'
+        style: './scss/**/*.scss',
+        scripts: './scripts/*.js'
     },
     dest: {
-        style: './public/style'
+        style: './public/style',
+        scripts: './public/js'
     }
 }
 
@@ -21,12 +26,21 @@ function errorHandler (error) {
 gulp.task('css', function () {
     return gulp.src(paths.src.style)
         .pipe(sass().on('error', sass.logError))
+        .pipe(cleanCSS({compatibility: 'ie8'}))
         .on('error', errorHandler)
         .pipe(gulp.dest(paths.dest.style))
 })
 
+gulp.task('js', function() {
+	gulp.src(paths.src.scripts)
+	.pipe(uglify())
+    .on('error', errorHandler)
+	.pipe(gulp.dest(paths.dest.scripts));
+});
+
+
 gulp.task('watch', function () {
-    gulp.watch(paths.src.style, ['css'])
+    gulp.watch(paths.src.style, ['css', 'js'])
 })
 
-gulp.task('default', ['css'])
+gulp.task('default', ['css', 'js'])

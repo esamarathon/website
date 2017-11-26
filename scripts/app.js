@@ -43,8 +43,8 @@ function addLeadingZero(number) {
 
 function addScheduleDate(el, date) {
     // Format: Saturday, July 22. 2017
-    var timestamp = `${getWeekday(date.getDay())}, ${getMonthName(date.getMonth())} ${date.getDate()}, ${date.getFullYear()}`
-    el.parentNode.parentNode.insertAdjacentHTML('beforebegin', `<tr><td colspan="99" class="new-date"><strong>${timestamp}</strong></td></tr>`);
+    var timestamp = getWeekday(date.getDay()) + ', ' + getMonthName(date.getMonth()) + ' ' + date.getDate() + ', ' + date.getFullYear()
+    el.parentNode.parentNode.insertAdjacentHTML('beforebegin', '<tr><td colspan="99" class="new-date"><strong>' + timestamp + '</strong></td></tr>');
 }
 
 (function () {
@@ -56,7 +56,8 @@ function addScheduleDate(el, date) {
     var prevDate
 
     // Loop through all the time-elements
-    for (let el of timestamps) {
+    for (var i in timestamps) {
+        var el = timestamps[i]
         if (typeof el !== 'object') return
         // Get the timestamp
         var utcTimestamp = el.getAttribute('datetime')
@@ -69,10 +70,10 @@ function addScheduleDate(el, date) {
         // Formats the timestamp correctly
         if (el.className.indexOf('time-only') !== -1) {
             // Format: 20:08
-            timestamp = `${addLeadingZero(date.getHours())}:${addLeadingZero(date.getMinutes())}`
+            timestamp = addLeadingZero(date.getHours()) + ':' + addLeadingZero(date.getMinutes())
         } else {
             // Format: November 24. 2017, 20:08
-            timestamp = `${getMonthName(date.getMonth())} ${date.getDate()}. ${date.getFullYear()}, ${addLeadingZero(date.getHours())}:${addLeadingZero(date.getMinutes())}`
+            timestamp = getMonthName(date.getMonth()) + ' ' + date.getDate() + '. ' + date.getFullYear() + ', ' + addLeadingZero(date.getHours()) + ':' + addLeadingZero(date.getMinutes())
         }
         // Update the DOM
         el.innerHTML = timestamp
