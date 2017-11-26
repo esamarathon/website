@@ -75,3 +75,15 @@ h1, h2, h3 , h4, span, p, a {
 article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {
    display: block
 }
+.hide-medium {
+    display: block;
+    @include medium-up {
+        display: none;
+    }
+}
+.show-medium {
+    display: none;
+    @include medium-up {
+        display: block;
+    }
+}
