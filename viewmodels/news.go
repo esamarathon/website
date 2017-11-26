@@ -24,6 +24,8 @@ func News() newsView {
 		CopyrightYear: time.Now().Year(),
 		Livemode:      config.Config.LiveMode,
 	}
+	view.Meta.Title = "News - ESA Marathon"
+	view.Meta.Description = "We constantly update with news about our events."
 
 	return view
 }

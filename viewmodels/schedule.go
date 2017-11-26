@@ -18,8 +18,8 @@ type scheduleView struct {
 // Schedule returns the viewmodel for /schedule
 func Schedule() scheduleView {
 	metadata := meta{
-		Title:       "ESA Schedule",
-		Description: "See the schedule for the next great ESA event!",
+		Title:       "Schedule - ESA Marathon",
+		Description: "Check out the schedule for the next great ESA event!",
 		Image:       DefaultMeta.Image,
 	}
 	view := scheduleView{
