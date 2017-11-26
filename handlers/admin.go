@@ -126,12 +126,12 @@ func userIndex(w http.ResponseWriter, r *http.Request) {
 func userStore(w http.ResponseWriter, r *http.Request) {
 	// Parse form and get the username submitted
 	r.ParseForm()
-	username := r.Form.Get("username")
+	// Username is lowercase since that's what Twitch
+	// returns through their Oauth response
+	username := strings.ToLower(r.Form.Get("username"))
 	// Create a user object
 	u := user.User{
-		// Username is lowercase since that's what Twitch
-		// returns through their Oauth response
-		Username: strings.ToLower(username),
+		Username: username,
 	}
 
 	exists, err := u.Exists()
