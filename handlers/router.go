@@ -1,8 +1,12 @@
 package handlers
 
 import (
+	"compress/gzip"
+	"io"
 	"net/http"
+	"strings"
 
+	"github.com/olenedr/esamarathon/config"
 	"github.com/rs/cors"
 
 	"github.com/gorilla/mux"
@@ -29,19 +33,44 @@ func init() {
 func handleStatic(dir, prefix string) http.HandlerFunc {
 	fs := http.FileServer(http.Dir(dir))
 	realHandler := http.StripPrefix(prefix, fs).ServeHTTP
-	return func(w http.ResponseWriter, req *http.Request) {
+	f := func(w http.ResponseWriter, req *http.Request) {
 		w.Header().Set("Cache-Control", "max-age=2592000")
 		realHandler(w, req)
 	}
+	return makeGzipHandler(f)
+
 }
 
 func Router(version string) http.Handler {
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
+		AllowedOrigins:   []string{config.Config.SiteURL},
 		AllowedMethods:   []string{"*"},
 		AllowedHeaders:   []string{"*"},
 		AllowCredentials: true,
 	})
 
 	return c.Handler(router)
+}
+
+type gzipResponseWriter struct {
+	io.Writer
+	http.ResponseWriter
+}
+
+func (w gzipResponseWriter) Write(b []byte) (int, error) {
+	return w.Writer.Write(b)
+}
+
+func makeGzipHandler(fn http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if !strings.Contains(r.Header.Get("Accept-Encoding"), "gzip") {
+			fn(w, r)
+			return
+		}
+		w.Header().Set("Content-Encoding", "gzip")
+		gz := gzip.NewWriter(w)
+		defer gz.Close()
+		gzr := gzipResponseWriter{Writer: gz, ResponseWriter: w}
+		fn(gzr, r)
+	}
 }

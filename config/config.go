@@ -17,6 +17,7 @@ type config struct {
 	Port               string
 	ArticlesPerPage    int
 	LiveMode           bool
+	SiteURL            string
 	FrontpageDataPath  string
 	MarkdownExtensions blackfriday.Extensions
 	SessionKey         string
@@ -69,6 +70,7 @@ func init() {
 		Port:               os.Getenv("PORT"),
 		ArticlesPerPage:    articlesPerPage,
 		LiveMode:           liveMode,
+		SiteURL:            os.Getenv("SITE_URL"),
 		FrontpageDataPath:  frontpageDataPath,
 		MarkdownExtensions: blackfriday.CommonExtensions | blackfriday.HardLineBreak,
 		SessionKey:         os.Getenv("SESSION_KEY"),
