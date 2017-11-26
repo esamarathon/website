@@ -17,13 +17,12 @@ type scheduleView struct {
 
 // Schedule returns the viewmodel for /schedule
 func Schedule() scheduleView {
-	metadata := meta{
-		Title:       "Schedule - ESA Marathon",
-		Description: "Check out the schedule for the next great ESA event!",
-		Image:       DefaultMeta.Image,
-	}
 	view := scheduleView{
-		Meta:          metadata,
+		Meta: meta{
+			Title:       "Schedule - ESA Marathon",
+			Description: "Check out the schedule for the next great ESA event!",
+			Image:       DefaultMeta.Image,
+		},
 		CopyrightYear: time.Now().Year(),
 		Livemode:      config.Config.LiveMode,
 	}
