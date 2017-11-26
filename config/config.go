@@ -3,18 +3,22 @@ package config
 import (
 	"log"
 	"os"
+	"path/filepath"
 	"strconv"
 
 	"github.com/joho/godotenv"
 	"github.com/olenedr/esamarathon/str"
 	"golang.org/x/oauth2"
 	rDB "gopkg.in/gorethink/gorethink.v3"
+	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
 
 type config struct {
 	Port               string
 	ArticlesPerPage    int
 	LiveMode           bool
+	FrontpageDataPath  string
+	MarkdownExtensions blackfriday.Extensions
 	SessionKey         string
 	SessionName        string
 	Database           string
@@ -53,11 +57,20 @@ func init() {
 		log.Println("Failed to parse bool .env value, using default.")
 		liveMode = false
 	}
+	frontpageDataPath, err := filepath.Abs("")
+	if err != nil {
+		log.Println("Failed to create path, defaulting to tmp folder.")
+		frontpageDataPath = "/tmp/frontpage.json"
+	} else {
+		frontpageDataPath = frontpageDataPath + "/templates/frontpage.json"
+	}
 
 	Config = config{
 		Port:               os.Getenv("PORT"),
 		ArticlesPerPage:    articlesPerPage,
 		LiveMode:           liveMode,
+		FrontpageDataPath:  frontpageDataPath,
+		MarkdownExtensions: blackfriday.CommonExtensions | blackfriday.HardLineBreak,
 		SessionKey:         os.Getenv("SESSION_KEY"),
 		SessionName:        os.Getenv("SESSION_NAME"),
 		Database:           os.Getenv("DB_NAME"),

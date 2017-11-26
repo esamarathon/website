@@ -46,4 +46,31 @@
             </div>                    
         </form>
     </div>
+
+    <hr>
+
+    <div class="row">
+        <form action="/admin/front" method="POST">
+            <div class="col-sm-12">
+                <label>Frontpage</label>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" name="title" placeholder="Frontpage title" value="{{ .Frontpage.Title }}">
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <label for="body">Content</label>
+                <textarea class="form-control" rows="10" name="body">{{ .Frontpage.Body }}</textarea>
+            </div>
+            <div class="col-sm-12">
+                <div class="text-right">
+                    <input type="submit" value="Update frontpage" class="btn btn-primary" />
+                </div>
+            </div>
+                      
+        </form>
+    </div>
 {{end}}

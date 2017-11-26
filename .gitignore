@@ -1,5 +1,6 @@
 node_modules/
 tmp/
+templates/frontpage.json
 .env
 yarn-error.log
 .runner/
