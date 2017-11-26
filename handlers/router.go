@@ -30,6 +30,7 @@ func handleStatic(dir, prefix string) http.HandlerFunc {
 	fs := http.FileServer(http.Dir(dir))
 	realHandler := http.StripPrefix(prefix, fs).ServeHTTP
 	return func(w http.ResponseWriter, req *http.Request) {
+		w.Header().Set("Cache-Control", "max-age=2592000")
 		realHandler(w, req)
 	}
 }
