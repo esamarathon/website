@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/olenedr/esamarathon/config"
 	"github.com/rs/cors"
 
 	"github.com/gorilla/mux"
@@ -37,7 +38,7 @@ func handleStatic(dir, prefix string) http.HandlerFunc {
 
 func Router(version string) http.Handler {
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
+		AllowedOrigins:   []string{config.Config.SiteURL},
 		AllowedMethods:   []string{"*"},
 		AllowedHeaders:   []string{"*"},
 		AllowCredentials: true,
