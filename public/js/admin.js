@@ -8,7 +8,7 @@
         if (typeof el !== 'object') return;
 
         el.addEventListener('click', function (e) {
-            if (!confirm(el.dataset.message)) {
+            if (!confirm(this.dataset.message)) {
                 e.preventDefault();
             }
         })
