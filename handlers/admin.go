@@ -24,6 +24,7 @@ func AdminRoutes(base string, router *mux.Router) {
 	router.HandleFunc(base, requireAuth(adminIndex)).Methods("GET", "POST")
 	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
 	router.HandleFunc(base+"/schedule", requireAuth(updateSchedule)).Methods("POST")
+	router.HandleFunc(base+"/front", requireAuth(updateFront)).Methods("POST")
 	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
 	router.HandleFunc(base+"/user", requireAuth(userStore)).Methods("POST")
 	router.HandleFunc(base+"/user/{id}/delete", requireAuth(deleteUser)).Methods("GET")
@@ -87,6 +88,29 @@ func updateSchedule(w http.ResponseWriter, r *http.Request) {
 	// URL seems fine, updating
 	config.Config.ScheduleAPIURL = URL
 	user.SetFlashMessage(w, r, "success", "Schedule URL has been updated!")
+	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+}
+
+// Update the text on the front row based on the input data
+func updateFront(w http.ResponseWriter, r *http.Request) {
+	// Parse input data
+	r.ParseForm()
+	title := r.Form.Get("title")
+	body := r.Form.Get("body")
+
+	// If title or body is empty
+	if title == "" || body == "" {
+		// Set flash message and redirect
+		user.SetFlashMessage(w, r, "alert", "Not enough input data, please fill inn Title and Content")
+		http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+		return
+	}
+
+	// Update frontpage with new input
+	viewmodels.UpdateFrontpage(title, body)
+
+	// Set flaash and redirect back
+	user.SetFlashMessage(w, r, "success", "The frontpage has been updated!")
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }
 

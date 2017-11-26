@@ -14,6 +14,7 @@ type adminIndexView struct {
 	User           user.User
 	Livemode       bool
 	ScheduleAPIURL string
+	Frontpage      frontPage
 	Alert          string // Alert message
 	Success        string // Success message
 }
@@ -62,6 +63,7 @@ func AdminIndex(w http.ResponseWriter, r *http.Request) adminIndexView {
 		User:           getUser(r),
 		Livemode:       config.Config.LiveMode,
 		ScheduleAPIURL: config.Config.ScheduleAPIURL,
+		Frontpage:      getFrontpage(),
 		Alert:          user.GetFlashMessage(w, r, "alert"),
 		Success:        user.GetFlashMessage(w, r, "success"),
 	}

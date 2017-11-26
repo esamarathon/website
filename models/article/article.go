@@ -3,6 +3,7 @@ package article
 import (
 	"html/template"
 
+	"github.com/olenedr/esamarathon/config"
 	"github.com/olenedr/esamarathon/models/user"
 	blackfriday "gopkg.in/russross/blackfriday.v2"
 
@@ -53,10 +54,8 @@ func (a *Article) ShortenBody() {
 
 // ParseHTML parses the markdown to HTML
 func (a *Article) ParseHTML() {
-	extensions := blackfriday.CommonExtensions | blackfriday.HardLineBreak
-
 	markdown := []byte(a.Body)
-	html := blackfriday.Run(markdown, blackfriday.WithExtensions(extensions))
+	html := blackfriday.Run(markdown, blackfriday.WithExtensions(config.Config.MarkdownExtensions))
 	a.HTML = template.HTML(string(html))
 }
 
