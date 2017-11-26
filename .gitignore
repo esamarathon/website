@@ -6,4 +6,5 @@ yarn-error.log
 .runner/
 public/style/*.css
 public/js/*.js
+templates_minified/
 .vscode

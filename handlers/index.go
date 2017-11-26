@@ -8,8 +8,8 @@ import (
 )
 
 var renderer = grender.New(grender.Options{
-	TemplatesGlob: "templates/*.html",
-	PartialsGlob:  "templates/partials/*.html",
+	TemplatesGlob: "templates_minified/*.html",
+	PartialsGlob:  "templates_minified/partials/*.html",
 })
 
 // Index returns index view
