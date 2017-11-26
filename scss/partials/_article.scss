@@ -52,12 +52,16 @@ main.article-list {
          font-size: 1.5rem;
          margin-bottom: $gutter / 2;
          time {
+            display: block;
+            
             color: $orange-light;
             border-radius: 5px;
             font-size: 1rem;
-            padding: .1rem .4rem .2rem;
-            float: right;
             line-height: 1.7;
+            @include medium-up {
+               float: right;
+               padding: .1rem .4rem .2rem;
+            }
          }
          &:after {
             content: '';
