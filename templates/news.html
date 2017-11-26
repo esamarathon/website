@@ -5,7 +5,7 @@
         <h1>Latest news from ESA</h1>
         {{ range .Articles }}
             <article>
-                <h1>{{ .Title }}</h1>
+                <h1>{{ .Title }} <time datetime="{{ .Timestamp }}">{{ .Timestamp }}</time></h1>
                 <p>{{ .HTML }}</p>
                 <a href="/news/{{ .ID }}">Read more &rarr;</a>
             </article>

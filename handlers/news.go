@@ -45,6 +45,7 @@ func News(w http.ResponseWriter, r *http.Request) {
 	for i, a := range articles {
 		a.ShortenBody()
 		a.ParseHTML()
+		a.FormatTimestamp()
 		articles[i] = a
 	}
 
