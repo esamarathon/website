@@ -5,4 +5,5 @@ templates/frontpage.json
 yarn-error.log
 .runner/
 public/style/*.css
+public/js/*.js
 .vscode

@@ -4,7 +4,8 @@
  */
 (function () {
     var confirmables = document.getElementsByClassName("confirmable");
-    for (el of confirmables) {
+    for (var i in confirmables) {
+        var el = confirmables[i]
         if (typeof el !== 'object') return;
 
         el.addEventListener('click', function (e) {
