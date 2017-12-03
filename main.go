@@ -41,5 +41,7 @@ func attemptReconnectDB() {
 	log.Println("Attempting to connect again...")
 	if err := db.Connect(); err != nil {
 		log.Println("Could not connect to the database:", err)
+	} else {
+		log.Println("Successfully connected to the database")
 	}
 }
