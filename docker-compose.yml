@@ -12,3 +12,5 @@ services:
     image: "esa"
     ports:
       - "3001:3001"
+    volumes:
+      - "./templates:/go/src/github.com/esamarathon/website/templates"
