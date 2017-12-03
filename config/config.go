@@ -120,6 +120,7 @@ func DBConfig() rDB.ConnectOpts {
 		Password:   Config.DatabasePassword,
 		InitialCap: 10,
 		MaxOpen:    10,
+		Timeout:    10000,
 	}
 }
 
