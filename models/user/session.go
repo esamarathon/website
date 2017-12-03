@@ -6,8 +6,8 @@ import (
 
 	"github.com/pkg/errors"
 
+	"github.com/esamarathon/website/config"
 	"github.com/gorilla/sessions"
-	"github.com/olenedr/esamarathon/config"
 )
 
 // SessionStore holds the session

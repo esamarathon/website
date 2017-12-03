@@ -4,9 +4,9 @@ import (
 	"flag"
 	"log"
 
+	"github.com/esamarathon/website/db"
+	"github.com/esamarathon/website/db/seed"
 	"github.com/joho/godotenv"
-	"github.com/olenedr/esamarathon/db"
-	"github.com/olenedr/esamarathon/db/seed"
 )
 
 var (

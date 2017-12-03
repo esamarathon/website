@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/olenedr/esamarathon/viewmodels"
+	"github.com/esamarathon/website/viewmodels"
 )
 
 // HandleNotFound handles the requests that doesn't have route associated with it

@@ -3,8 +3,8 @@ package article
 import (
 	"html/template"
 
-	"github.com/olenedr/esamarathon/config"
-	"github.com/olenedr/esamarathon/models/user"
+	"github.com/esamarathon/website/config"
+	"github.com/esamarathon/website/models/user"
 	blackfriday "gopkg.in/russross/blackfriday.v2"
 
 	"time"

@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/olenedr/esamarathon/config"
-	"github.com/olenedr/esamarathon/models/article"
-	"github.com/olenedr/esamarathon/models/user"
+	"github.com/esamarathon/website/config"
+	"github.com/esamarathon/website/models/article"
+	"github.com/esamarathon/website/models/user"
 	"github.com/pkg/errors"
 )
 

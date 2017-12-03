@@ -4,8 +4,8 @@ import (
 	"math"
 	"time"
 
-	"github.com/olenedr/esamarathon/config"
-	"github.com/olenedr/esamarathon/db"
+	"github.com/esamarathon/website/config"
+	"github.com/esamarathon/website/db"
 	"github.com/pkg/errors"
 	r "gopkg.in/gorethink/gorethink.v3"
 )

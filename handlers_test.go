@@ -5,9 +5,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/esamarathon/website/db"
+	"github.com/esamarathon/website/handlers"
 	"github.com/joho/godotenv"
-	"github.com/olenedr/esamarathon/db"
-	"github.com/olenedr/esamarathon/handlers"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -6,8 +6,8 @@ package seed
  */
 
 import (
-	"github.com/olenedr/esamarathon/db"
-	"github.com/olenedr/esamarathon/models/user"
+	"github.com/esamarathon/website/db"
+	"github.com/esamarathon/website/models/user"
 
 	"github.com/pkg/errors"
 	rt "gopkg.in/gorethink/gorethink.v3"

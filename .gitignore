@@ -1,5 +1,5 @@
 node_modules/
-tmp/
+rethink/
 templates/frontpage.json
 .env
 yarn-error.log

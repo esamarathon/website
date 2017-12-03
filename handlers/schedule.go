@@ -8,10 +8,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/olenedr/esamarathon/cache"
-	"github.com/olenedr/esamarathon/config"
-	"github.com/olenedr/esamarathon/models/schedule"
-	"github.com/olenedr/esamarathon/viewmodels"
+	"github.com/esamarathon/website/cache"
+	"github.com/esamarathon/website/config"
+	"github.com/esamarathon/website/models/schedule"
+	"github.com/esamarathon/website/viewmodels"
 	"github.com/pkg/errors"
 	blackfriday "gopkg.in/russross/blackfriday.v2"
 )

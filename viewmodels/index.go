@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/olenedr/esamarathon/cache"
-	"github.com/olenedr/esamarathon/config"
+	"github.com/esamarathon/website/cache"
+	"github.com/esamarathon/website/config"
 	"github.com/pkg/errors"
 	blackfriday "gopkg.in/russross/blackfriday.v2"
 )

@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/olenedr/esamarathon/config"
+	"github.com/esamarathon/website/config"
 	rt "gopkg.in/gorethink/gorethink.v3"
 )
 

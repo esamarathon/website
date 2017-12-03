@@ -3,7 +3,7 @@ package viewmodels
 import (
 	"time"
 
-	"github.com/olenedr/esamarathon/config"
+	"github.com/esamarathon/website/config"
 )
 
 type loginView struct {

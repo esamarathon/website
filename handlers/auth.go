@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/olenedr/esamarathon/config"
-	"github.com/olenedr/esamarathon/models/user"
-	"github.com/olenedr/esamarathon/viewmodels"
+	"github.com/esamarathon/website/config"
+	"github.com/esamarathon/website/models/user"
+	"github.com/esamarathon/website/viewmodels"
 	"golang.org/x/oauth2"
 )
 

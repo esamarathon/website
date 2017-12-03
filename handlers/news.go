@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/esamarathon/website/models/article"
+	"github.com/esamarathon/website/viewmodels"
 	"github.com/gorilla/mux"
-	"github.com/olenedr/esamarathon/models/article"
-	"github.com/olenedr/esamarathon/viewmodels"
 )
 
 // Extracts the page query param if present

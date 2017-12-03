@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/olenedr/esamarathon/models/user"
+	"github.com/esamarathon/website/models/user"
 )
 
 // AuthMiddleware verifies that the current user is logged in before

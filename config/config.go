@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"github.com/esamarathon/website/str"
 	"github.com/joho/godotenv"
-	"github.com/olenedr/esamarathon/str"
 	"golang.org/x/oauth2"
 	rDB "gopkg.in/gorethink/gorethink.v3"
 	blackfriday "gopkg.in/russross/blackfriday.v2"

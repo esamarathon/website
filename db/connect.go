@@ -3,7 +3,7 @@ package db
 import (
 	"log"
 
-	"github.com/olenedr/esamarathon/config"
+	"github.com/esamarathon/website/config"
 	"github.com/pkg/errors"
 	r "gopkg.in/gorethink/gorethink.v3"
 )
