@@ -1,0 +1,17 @@
+{{/* extends "layout.html" */}}
+{{define "content"}}
+    <main class="article">
+        <article>
+            <h1>{{ .Article.Title }}</h1>
+
+            <section class="byline">
+
+                {{ range .Article.Authors }}
+                    <a href="https://www.twitch.tv/{{ .Username }}" target="_blank">{{ .Username }}</a>
+                {{ end }}
+                <time datetime="{{ .Article.Timestamp }}"></time>
+            </section>
+            {{ .Article.HTML }}
+        </article>
+    </main>
+{{end}}

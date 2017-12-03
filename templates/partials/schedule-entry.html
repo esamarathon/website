@@ -1,0 +1,33 @@
+{{ define "schedule-entry"}}
+    <td>
+        <time datetime="{{ .Scheduled }}" class="time-only"></time>
+    </td>
+    <td>
+        {{ if .Game }}
+            {{ .Game }}
+        {{ end }}
+    </td>
+    <td>
+        {{ .Estimate }}
+    </td>
+    <td>
+        {{ if .Players }}
+            {{ .Players }}
+        {{ end }}
+    </td>
+    <td>
+        {{ if .Platform }}
+            {{ .Platform }}
+        {{ end }}
+    </td>
+    <td>
+        {{ if .Category }}
+            {{ .Category }}
+        {{ end }}
+    </td>
+    <td>
+        {{ if .Note }}
+            {{ .Note }}
+        {{ end }}
+    </td>
+{{ end }}

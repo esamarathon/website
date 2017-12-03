@@ -1,0 +1,26 @@
+{
+  "name": "European Speedrunner Assembly",
+  "short_name": "ESA",
+  "start_url": ".",
+  "icons": [
+    {
+      "src": "/android-chrome-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+    ,
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#9412ED",
+  "background_color": "#9412ED",
+  "display": "standalone"
+}

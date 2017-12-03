@@ -1,0 +1,43 @@
+{{/* extends "layout.html" */}}
+{{ define "content" }}
+<div class="row">
+    <div class="col-sm-12">
+        <h1>
+            Articles
+            <a href="/admin/article/create" class="btn pull-right btn-primary">New</a>
+        </h1>
+    </div>
+</div>
+<div class="list-group">
+    {{ range .Articles }}
+        <a href="/admin/article/{{ .ID }}" class="list-group-item">
+            <div class="row">
+                <div class="col-sm-8">
+                    <h4 class="list-group-item-heading">{{ .Title }}</h4>
+                    <p class="list-group-item-text">{{ .Body }}</p>
+                </div>
+                <div class="col-sm-4 text-right">
+                    {{ if (.Published) }}
+                        <span class="label label-success">Published</span>
+                    {{ else }}
+                        <span class="label label-default">Draft</span>
+                    {{ end }}
+                </div>
+            </div>
+        </a>
+    {{ end }}
+</div>
+
+
+<div class="text-center">
+    <ul class="pagination pagination-sm">
+        {{ if not (lt .PrevPage 0) }}
+            <li><a href="/admin/article?page={{ .PrevPage }}" class="previous">&larr; Previous</a></li>
+        {{ end }}
+
+        {{ if not (gt .NextPage .LastPage) }}
+            <li><a href="/admin/article?page={{ .NextPage }}" class="next">Next &rarr;</a></li>
+        {{ end }}
+    </ul>
+</div>
+{{ end }}

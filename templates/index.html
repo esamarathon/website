@@ -1,9 +1,21 @@
 {{/* extends "layout.html" */}}
 {{define "content"}}
-
-    <h1>{{ .Content.Title }}</h1>
+    <section class="splash">
+        <div class="splash-logo hide-medium">
+            <img src="/static/img/logo.svg" alt="">
+        </div>
+        {{ if .Livemode}}
+            <div id="twitch-embed"></div>
+        {{ end }}
+    </section>
+    <h1></h1>
     <main>
-        {{ .Content.Body }}
+        <div class="splash-slogan">
+            <img class="" src="/static/img/slogan.svg" alt="">
+            <p><strong>{{ .Frontpage.Title }}</strong> 
+                {{ .Frontpage.Body }}
+            </p>
+        </div>
     </main>
 
 {{end}}

@@ -7,8 +7,72 @@
     <title>{{ .Meta.Title }}</title>
     <meta name="description" value="{{ .Meta.Description }}" />
     <meta name="og:image" value="{{ .Meta.Image }}" />
+    
+    <link rel="apple-touch-icon" sizes="120x120" href="/static/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/static/assets/favicon/manifest.json">
+    <link rel="mask-icon" href="/static/assets/favicon/safari-pinned-tab.svg" color="#603cba">
+    <meta name="theme-color" content="#FFBA00">
+
+    <link rel="stylesheet" href="/static/style/app.css">
 </head>
 <body>
+    <header>
+        <span class="menu-toggle hide-medium"></span>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/news">News</a>
+            <a href="/schedule">Schedule</a>
+            <img class="logo" src="/static/img/logo.svg" alt="European Speedrunner Assemble">
+            <a href="https://www.speedrun.com/esa2017/donate" target="_blank" rel="noopener">Donate</a>
+            <a href="https://esamarathon.eventbrite.com/" target="_blank" rel="noopener">Tickets</a>
+            <a href="https://www.speedrun.com/ESA_Winter_2018/forum" target="_blank" rel="noopener">Forum</a>
+            <span class="close"></span>
+        </nav>
+    </header>
     {{template "content" .}}
+    <section class="social-bar">
+        <h2>Get connected with us</h2>
+        <div class="social-container">
+            <a href="http://www.twitter.com/esamarathon" target="_blank" rel="noopener">
+                <img src="/static/img/ico-twitter.svg" alt="Twitter icon">
+                <span>Twitter</span>
+            </a>
+            
+            <a href="https://www.discord.gg/0TZ2NlveujtasAqb" target="_blank" rel="noopener">
+                <img src="/static/img/ico-discord.svg" alt="Discord icon">
+                <span>Discord</span>
+            </a>
+
+            <a href="https://www.youtube.com/user/EuroSpeedAssembly" target="_blank" rel="noopener">
+                <img src="/static/img/ico-youtube.svg" alt="YouTube icon">
+                <span>YouTube</span>
+            </a>
+
+            <a href="https://www.twitch.tv/esamarathon" target="_blank" rel="noopener">
+                <img src="/static/img/ico-twitch.svg" alt="Twitch icon">
+                <span>Twitch</span>
+            </a>
+            
+            <a href="http://www.speedrun.com/ESA_Winter_2018/forum" target="_blank" rel="noopener">
+                <img src="/static/img/ico-forum.svg" alt="Forum icon">
+                <span>Forum</span>
+            </a>
+            <a href="https://www.facebook.com/europeanspeedrunnerassembly" target="_blank" rel="noopener">
+                <img src="/static/img/ico-facebook.svg" alt="Facebook icon">
+                <span>Facebook</span>
+            </a>
+        </div>
+    </section>
+    <footer>
+        © {{ .CopyrightYear }} ESA – European Speedrunner Assembly           
+    </footer>
 </body>
+
+    {{ if .Livemode }}
+        <!-- Load the Twitch embed script -->
+        <script src="https://embed.twitch.tv/embed/v1.js"></script>
+    {{ end }}
+    <script src="/static/js/app.js" async></script>
 </html>

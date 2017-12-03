@@ -1,0 +1,169 @@
+
+
+h2.schedule-title {
+   font-weight: 100;
+   font-size: 2rem;
+   color: $orange;
+   text-transform: uppercase;
+   letter-spacing: 1px;
+   display: block;
+   text-align: center;
+   margin-bottom: $gutter * 2;
+   padding-top: $gutter * 4;
+   font-family: $condensed;
+   @include medium-up {
+      padding-top: 0;
+   }
+   &:after {
+      content: '';
+      display: block;
+      max-width: 3rem;
+      border-top: 3px $orange solid;
+      margin: auto;
+      margin-top: $gutter;
+   }
+}
+section.schedule {
+   max-width: $max-width;
+   margin: auto;
+   table {
+      overflow-y: scroll;
+      margin: auto;
+      background: rgba(30, 38, 63, .8);
+      position: relative;
+      z-index: 3;
+      thead {
+         @include small-only {
+            display: none;
+         }
+         tr {
+            th {
+               text-align: left;
+               padding: $gutter;
+               text-transform: uppercase;
+               letter-spacing: 1px;
+               font-weight: 400;
+               font-family: $condensed;
+            }
+         }
+      }
+      tbody {
+         @include small-only {
+            display: table-row-group;
+            height: auto;
+         }
+         tr {
+            @include small-only {
+               display: block;
+               border-top: 1px solid rgba(255,255,255,.1);
+               padding: $gutter;
+               &:nth-of-type(odd) {
+                  background: rgba(255,255,255,.05);
+               }
+            }
+            
+            td {
+               letter-spacing: .5px;
+               padding: $gutter / 2 $gutter;
+               border-top: 1px solid rgba(255,255,255,.1);
+               @include small-only {
+                  padding: $gutter / 2 $gutter;
+                  display: block;
+                  border-top: 0;
+                  padding-left: 32%;
+                  min-height: 2.1875rem;
+                  position: relative;
+               }
+               &.new-date {
+                  font-family: $condensed;
+                  font-weight: 100;
+                  letter-spacing: 1px;
+                  text-transform: uppercase;
+                  padding-left: 0%;
+                  text-align: center;
+                  color: $white;
+                  @include medium-up {
+                     padding: $gutter * 2 0;
+                  }
+                  strong {
+                     font-weight: 100;
+                  }
+                  &:before {
+                     content: '' !important;
+                  }
+               }
+               a {
+                  color: $orange;
+                  text-decoration: none;
+                  transition: .2s all;
+                  &:hover {
+                     color: lighten($orange, 20%);
+                  }
+                  &:last-child {
+                     &:after {
+                        content:'';
+                     }
+                  }
+               }
+               &:before {
+                  position: absolute;
+                  top: 6px;
+                  left: 6px;
+                  width: 45%;
+                  padding-right: 10px;
+                  white-space: nowrap;
+               }
+               &:nth-child(1) {
+                  &:before {
+                     @include small-only {
+                        content:'Scheduled';
+                     }
+                  }
+               }
+               &:nth-child(2) {
+                  &:before {
+                     @include small-only {
+                        content:'Game';
+                     }
+                  }
+               }
+               &:nth-child(3) {
+                  &:before {
+                     @include small-only {
+                        content:'Estimate';
+                     }
+                  }
+               }
+               &:nth-child(4) {
+                  &:before {
+                     @include small-only {
+                        content:'Player(s)';
+                     }
+                  }
+               }
+               &:nth-child(5) {
+                  &:before {
+                     @include small-only {
+                        content:'Platform';
+                     }
+                  }
+               }
+               &:nth-child(6) {
+                  &:before {
+                     @include small-only {
+                        content:'Category';
+                     }
+                  }
+               }
+               &:nth-child(7) {
+                  &:before {
+                     @include small-only {
+                        content:'Note';
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}

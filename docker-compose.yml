@@ -1,6 +1,14 @@
-mdb:
-  image: mongo
-  ports:
-    - "27017:27017"
-  volumes:
-    - "./tmp/db:/data/db"
+version: "3"
+
+services:
+  db:
+    image: "rethinkdb"
+    ports:
+      - "8080:8080"
+      - "28015:28015"
+    volumes:
+      - "./rethink:/data"
+  app:
+    image: "esa"
+    ports:
+      - "3001:3001"

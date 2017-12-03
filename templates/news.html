@@ -1,0 +1,28 @@
+{{/* extends "layout.html" */}}
+{{define "content"}}
+
+    <main class="article-list">
+        <h1>Latest news from ESA</h1>
+        {{ range .Articles }}
+            <article>
+                <h1>{{ .Title }} <time datetime="{{ .Timestamp }}">{{ .Timestamp }}</time></h1>
+                <p>{{ .HTML }}</p>
+                <a href="/news/{{ .ID }}">Read more &rarr;</a>
+            </article>
+        {{ end }}
+        
+        <section class="pagination">
+            {{ if (lt .PrevPage 0) }}
+                <a href="#" class="inactive previous">previous</a>
+            {{ else }}
+                <a href="/news?page={{ .PrevPage }}" class="previous">previous</a>
+            {{ end }}
+
+            {{ if (gt .NextPage .LastPage) }}
+                <a href="#" class="inactive next">next</a>
+            {{ else }}
+                <a href="/news?page={{ .NextPage }}" class="next">next</a>
+            {{ end }}
+        </section>
+    </main>
+{{end}}
