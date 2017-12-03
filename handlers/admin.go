@@ -8,14 +8,14 @@ import (
 	"github.com/dannyvankooten/grender"
 	"github.com/pkg/errors"
 
-	"github.com/olenedr/esamarathon/cache"
-	"github.com/olenedr/esamarathon/config"
-	"github.com/olenedr/esamarathon/models/article"
-	"github.com/olenedr/esamarathon/models/user"
-	"github.com/olenedr/esamarathon/viewmodels"
+	"github.com/esamarathon/website/cache"
+	"github.com/esamarathon/website/config"
+	"github.com/esamarathon/website/models/article"
+	"github.com/esamarathon/website/models/user"
+	"github.com/esamarathon/website/viewmodels"
 
+	"github.com/esamarathon/website/middleware"
 	"github.com/gorilla/mux"
-	"github.com/olenedr/esamarathon/middleware"
 )
 
 // AdminRoutes adds the admin routes to the router

@@ -8,10 +8,16 @@ The greatest speedrunning event Europe has ever seen
 * Npm
 
 ## Local development
-1. Set up your local .env file base don the .example-env
+1. Set up your local .env file base don the .example.env
 2. Download dependencies with `go get` and `npm install` (or `yarn`)
 3. Run `docker-compose up -d` to initialize the Database
 4. Migrate the DB by running `go run cmd/dbinit.go` (add `--seed` to insert default data)
 5. Compile styles, js and html with `npm run gulp`
 6. Run [`fresh`](https://github.com/pilu/fresh) or `go run main.go`
 7. Add some cool features
+
+## Production build
+1. Clone repository and set up .env file
+2. Run `docker build -t esa:latest .`
+3. Run `docker-compose up -d`
+4. (First time setup) Run `docker exec -it {containerID} /bin/sh` and `go run cmd/dbinit.go --seed` 

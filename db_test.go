@@ -3,9 +3,9 @@ package main
 import (
 	"testing"
 
-	"github.com/olenedr/esamarathon/db"
+	"github.com/esamarathon/website/db"
 
-	"github.com/olenedr/esamarathon/config"
+	"github.com/esamarathon/website/config"
 	r "gopkg.in/gorethink/gorethink.v3"
 )
 

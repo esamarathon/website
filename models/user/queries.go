@@ -1,7 +1,7 @@
 package user
 
 import (
-	"github.com/olenedr/esamarathon/db"
+	"github.com/esamarathon/website/db"
 	"github.com/pkg/errors"
 	r "gopkg.in/gorethink/gorethink.v3"
 )

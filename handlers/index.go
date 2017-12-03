@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/dannyvankooten/grender"
-	"github.com/olenedr/esamarathon/viewmodels"
+	"github.com/esamarathon/website/viewmodels"
 )
 
 var renderer = grender.New(grender.Options{

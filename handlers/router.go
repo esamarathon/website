@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/olenedr/esamarathon/config"
+	"github.com/esamarathon/website/config"
 	"github.com/rs/cors"
 
 	"github.com/gorilla/mux"

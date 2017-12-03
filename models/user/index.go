@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/olenedr/esamarathon/config"
+	"github.com/esamarathon/website/config"
 	"golang.org/x/oauth2"
 )
 

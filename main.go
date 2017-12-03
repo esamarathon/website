@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/olenedr/esamarathon/handlers"
+	"github.com/esamarathon/website/handlers"
 
+	"github.com/esamarathon/website/db"
 	"github.com/joho/godotenv"
-	"github.com/olenedr/esamarathon/db"
 )
 
 func main() {

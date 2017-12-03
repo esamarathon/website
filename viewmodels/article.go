@@ -3,8 +3,8 @@ package viewmodels
 import (
 	"time"
 
-	"github.com/olenedr/esamarathon/config"
-	"github.com/olenedr/esamarathon/models/article"
+	"github.com/esamarathon/website/config"
+	"github.com/esamarathon/website/models/article"
 )
 
 type articleView struct {
