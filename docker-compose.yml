@@ -7,7 +7,7 @@ services:
       - "8080:8080"
       - "28015:28015"
     volumes:
-      - "./tmp/rethinkdb:/var/lib/rethinkdb"
+      - "./rethink:/data"
   app:
     image: "esa"
     ports:
