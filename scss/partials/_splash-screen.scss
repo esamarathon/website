@@ -41,6 +41,14 @@
          strong {
             font-weight: 500;
          }
+         a {
+            color: $orange;
+            &:hover,
+            &:active,
+            &:focus {
+               color: $orange-light;
+            }
+         }
          @include medium-up {
             font-size: 1.125rem;
             max-width: 100%;
