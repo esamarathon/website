@@ -31,6 +31,7 @@ main.article-list {
       background: $background-gradient-darker;
       box-shadow: 0 15px 35px rgba(0,0,0,.3), 0 5px 15px rgba(0,0,0,.2);
       margin: 0 $gutter $gutter * 1;
+      color: $white;
       @include medium-up {
          max-width: $max-width;
          margin: 0 auto $gutter * 3;
@@ -112,6 +113,7 @@ main.article {
       max-width: $max-width;
       margin: 0 auto  $gutter * 1;
       padding: $gutter;
+      color: $white;
       @include medium-up {
          margin: 0 auto $gutter * 3;
       }
