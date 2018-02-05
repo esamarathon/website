@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/esamarathon/website/models/article"
+	"github.com/esamarathon/website/models/user"
 	"github.com/esamarathon/website/viewmodels"
 	"github.com/gorilla/mux"
 )
@@ -68,9 +69,18 @@ func Article(w http.ResponseWriter, r *http.Request) {
 	// Get the ID
 	id := mux.Vars(r)["id"]
 
-	// Request a the published article
-	published := true
-	a, err := article.Get(id, &published)
+	// Check auth filter
+	_, err := user.FromSession(r)
+	// Define an article variable
+	var a article.Article
+	if err == nil {
+		// Attempt to find the article (no filter for published status due to authed user)
+		a, err = article.Get(id, nil)
+	} else {
+		// Request a the published article
+		published := true
+		a, err = article.Get(id, &published)
+	}
 
 	if err != nil {
 		// Not found, return 404
