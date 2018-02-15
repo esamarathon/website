@@ -23,6 +23,14 @@ h2.schedule-title {
       margin-top: $gutter;
    }
 }
+
+p.schedule-information {
+   color: $white;
+   text-align: center;
+   font-size: 1.3rem;
+   margin: 2rem;
+}
+
 section.schedule {
    max-width: $max-width;
    margin: auto;
