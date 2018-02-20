@@ -70,6 +70,7 @@ body {
     }
 }
 h1, h2, h3 , h4, span, p, a {
+   color: white;
    text-rendering: optimizeLegibility;
 }
 article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {
@@ -86,4 +87,9 @@ article, aside, details, figcaption, figure, footer, header, main, menu, nav, se
     @include medium-up {
         display: block;
     }
+}
+
+p.margined {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }

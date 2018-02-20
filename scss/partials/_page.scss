@@ -1,0 +1,12 @@
+main.content {
+	max-width: $max-width;
+	@include medium-up {
+		margin: auto;
+	}
+	
+
+	article {
+		margin: $gutter * 2;
+	}
+	
+}
