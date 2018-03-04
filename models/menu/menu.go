@@ -22,3 +22,7 @@ func Default() Menu {
 		},
 	}
 }
+
+func Get() Menu {
+	return Default()
+}

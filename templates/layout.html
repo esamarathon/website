@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ .Meta.Title }}</title>
-    <meta name="description" value="{{ .Meta.Description }}" />
-    <meta name="og:image" value="{{ .Meta.Image }}" />
-    
+    <title>{{ .Layout.Meta.Title }}</title>
+    <meta name="description" value="{{ .Layout.Meta.Description }}" />
+    <meta name="og:image" value="{{ .Layout.Meta.Image }}" />
+
     <link rel="apple-touch-icon" sizes="120x120" href="/static/assets/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/favicon/favicon-16x16.png">
@@ -21,13 +21,21 @@
     <header>
         <span class="menu-toggle hide-medium"></span>
         <nav>
-            <a href="/">Home</a>
-            <a href="/news">News</a>
-            <a href="/schedule">Schedule</a>
-            <img class="logo" src="/static/img/logo.svg" alt="European Speedrunner Assemble">
-            <a href="https://www.speedrun.com/esa2017/donate" target="_blank" rel="noopener">Donate</a>
-            <a href="https://esamarathon.eventbrite.com/" target="_blank" rel="noopener">Tickets</a>
-            <a href="https://www.speedrun.com/ESA_Winter_2018/forum" target="_blank" rel="noopener">Forum</a>
+            {{ range $i, $e := .Layout.Menu.Items }}
+                {{ if $e.NewTab}}
+                    <a href="{{$e.Link}}" target="_blank">
+                        {{ $e.Title }}
+                    </a>
+                {{ else }}
+                    <a href="{{$e.Link}}">
+                        {{ $e.Title }}
+                    </a>
+                {{ end }}
+
+                {{ if eq $i 2 }}
+                    <img class="logo" src="/static/img/logo.svg" alt="European Speedrunner Assemble">
+                {{ end }}
+            {{ end }}
             <span class="close"></span>
         </nav>
     </header>
@@ -39,7 +47,7 @@
                 <img src="/static/img/ico-twitter.svg" alt="Twitter icon">
                 <span>Twitter</span>
             </a>
-            
+
             <a href="https://www.discord.gg/0TZ2NlveujtasAqb" target="_blank" rel="noopener">
                 <img src="/static/img/ico-discord.svg" alt="Discord icon">
                 <span>Discord</span>
@@ -54,7 +62,7 @@
                 <img src="/static/img/ico-twitch.svg" alt="Twitch icon">
                 <span>Twitch</span>
             </a>
-            
+
             <a href="http://www.speedrun.com/ESA_Winter_2018/forum" target="_blank" rel="noopener">
                 <img src="/static/img/ico-forum.svg" alt="Forum icon">
                 <span>Forum</span>
@@ -66,7 +74,7 @@
         </div>
     </section>
     <footer>
-        © {{ .CopyrightYear }} ESA – European Speedrunner Assembly           
+        © {{ .CopyrightYear }} ESA – European Speedrunner Assembly
     </footer>
 </body>
 

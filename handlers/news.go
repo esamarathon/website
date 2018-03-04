@@ -85,7 +85,7 @@ func Article(w http.ResponseWriter, r *http.Request) {
 	// Prepare the view
 	data := viewmodels.Article()
 	data.Article = a
-	data.Meta.Title = a.Title + " - ESA Marathon"
+	data.Layout.Meta.Title = a.Title + " - ESA Marathon"
 
 	renderer.HTML(w, http.StatusOK, "article.html", data)
 }

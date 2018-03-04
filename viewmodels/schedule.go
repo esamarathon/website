@@ -5,10 +5,11 @@ import (
 
 	"github.com/esamarathon/website/cache"
 	"github.com/esamarathon/website/config"
+	"github.com/esamarathon/website/models/menu"
 )
 
 type scheduleView struct {
-	Meta          meta
+	Layout        layout
 	Schedule      interface{}
 	Cached        bool
 	CopyrightYear int
@@ -18,13 +19,9 @@ type scheduleView struct {
 // Schedule returns the viewmodel for /schedule
 func Schedule() scheduleView {
 	view := scheduleView{
-		Meta: meta{
-			Title:       "Schedule - ESA Marathon",
-			Description: "Check out the schedule for the next great ESA event!",
-			Image:       DefaultMeta.Image,
-		},
-		CopyrightYear: time.Now().Year(),
+		Layout:        layout{DefaultMeta, menu.Get()},
 		Livemode:      config.Config.LiveMode,
+		CopyrightYear: time.Now().Year(),
 	}
 
 	// Attempt to find a cached schedule
