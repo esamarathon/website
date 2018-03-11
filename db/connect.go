@@ -59,8 +59,12 @@ func GetAll(table string) (*r.Cursor, error) {
 	return rows, nil
 }
 
-func GetAllByOrder(table string, index string) (*r.Cursor, error) {
-	rows, err := r.Table(table).OrderBy(r.Desc(index)).Run(Session)
+func GetAllByOrder(table string, index string, desc bool) (*r.Cursor, error) {
+	order := r.Asc(index)
+	if desc {
+		order = r.Desc(index)
+	}
+	rows, err := r.Table(table).OrderBy(order).Run(Session)
 	if err != nil {
 		return nil, errors.Wrap(err, "db.GetAllOrderBy")
 	}

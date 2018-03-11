@@ -5,10 +5,11 @@ import (
 
 	"github.com/esamarathon/website/config"
 	"github.com/esamarathon/website/models/article"
+	"github.com/esamarathon/website/models/menu"
 )
 
 type newsView struct {
-	Meta          meta
+	Layout        layout
 	Articles      []article.Article
 	NextPage      int
 	PrevPage      int
@@ -20,11 +21,7 @@ type newsView struct {
 // News returns the viewmodel for /news
 func News() newsView {
 	view := newsView{
-		Meta: meta{
-			Title:       "News - ESA Marathon",
-			Description: "We constantly update with news about our events.",
-			Image:       DefaultMeta.Image,
-		},
+		Layout:        layout{DefaultMeta, menu.Get()},
 		CopyrightYear: time.Now().Year(),
 		Livemode:      config.Config.LiveMode,
 	}

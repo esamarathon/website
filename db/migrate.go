@@ -8,10 +8,12 @@ import (
 var tables = []string{
 	"users",
 	"articles",
+	"menu_items",
 }
 
 var row interface{}
 
+// Migrate ensures the DB and tables exists in the Database
 func Migrate() error {
 	if err := ensureDBExists(); err != nil {
 		return err

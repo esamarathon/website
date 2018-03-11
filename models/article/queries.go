@@ -27,7 +27,7 @@ func (a *Article) Create() error {
 
 // All returns a slice containing all the articles
 func All() ([]Article, error) {
-	rows, err := db.GetAllByOrder(table, "created_at")
+	rows, err := db.GetAllByOrder(table, "created_at", true)
 	var a []Article
 	if err != nil {
 		return a, errors.Wrap(err, "article.All")
