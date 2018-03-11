@@ -47,8 +47,8 @@ func Default() Menu {
 				Order:  3,
 			},
 			MenuItem{
-				Title:  "Tickets",
-				Link:   "https://esamarathon.eventbrite.com/",
+				Title:  "Submit",
+				Link:   "https://submissions.esamarathon.com/",
 				NewTab: true,
 				Order:  4,
 			},
