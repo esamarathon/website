@@ -60,11 +60,11 @@ func Default() Menu {
 // Get returns an instance of the Menu struct
 func Get() Menu {
 	m, err := All()
-	if err != nil {
-		fmt.Printf("%v", err)
+	if err != nil || len(m) == 0 {
+		fmt.Printf("Error getting menu: %v", err)
 		return Default()
 	}
-	fmt.Printf("%v", m)
+	fmt.Printf("Got the menu! %v", m)
 	return Default()
 }
 

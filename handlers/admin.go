@@ -35,6 +35,7 @@ func AdminRoutes(base string, router *mux.Router) {
 	router.HandleFunc(base+"/article/{id}", requireAuth(articleUpdate)).Methods("POST")
 	router.HandleFunc(base+"/article/{id}/delete", requireAuth(articleDelete)).Methods("GET")
 	router.HandleFunc(base+"/menu", requireAuth(menuIndex)).Methods("GET")
+	router.HandleFunc(base+"/menu", requireAuth(menuStore)).Methods("POST")
 }
 
 // Initiates a renderer for the admin views
@@ -338,4 +339,12 @@ func articleDelete(w http.ResponseWriter, r *http.Request) {
 
 func menuIndex(w http.ResponseWriter, r *http.Request) {
 	adminRenderer.HTML(w, http.StatusOK, "menu.html", viewmodels.AdminMenuIndex(w, r))
+}
+
+func menuStore(w http.ResponseWriter, r *http.Request) {
+
+	r.ParseForm()
+
+	user.SetFlashMessage(w, r, "success", "The menu was updated")
+	http.Redirect(w, r, "/admin/menu", http.StatusSeeOther)
 }

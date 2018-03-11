@@ -53,6 +53,7 @@ type adminArticleEditView struct {
 
 type adminMenuIndexView struct {
 	Menu    menu.Menu
+	User    user.User
 	Alert   string // Alert message
 	Success string // Success message
 }
@@ -123,6 +124,7 @@ func AdminArticleEdit(w http.ResponseWriter, r *http.Request) adminArticleEditVi
 func AdminMenuIndex(w http.ResponseWriter, r *http.Request) adminMenuIndexView {
 	view := adminMenuIndexView{
 		Menu:    menu.Get(),
+		User:    getUser(r),
 		Alert:   user.GetFlashMessage(w, r, "alert"),
 		Success: user.GetFlashMessage(w, r, "success"),
 	}

@@ -1,13 +1,61 @@
-{{/* extends "layout.html" */}} {{ define "content" }}
-<div class="panel panel-default">
-	<!-- Default panel contents -->
-	<div class="panel-heading">
-		<strong>Menu</strong>
+{{/* extends "layout.html" */}}
+{{ define "content" }}
+
+<div class="row">
+	<div class="col-sm-12">
+		<h1>
+			Menu items
+		</h1>
 	</div>
-
-	<div class="panel-heading">Edit menu elements</div>
-
-	<ul class="list-group">
-	</ul>
+</div>
+<div class="row">
+	<form action="/admin/menu" class="form-inline" method="post">
+		<div class="col-sm-12">
+			<div class="panel panel-default">
+				<!-- Default panel contents -->
+				<div class="panel-heading">
+					<strong>Update the menu items</strong>
+				</div>
+				<ul class="list-group">
+					{{ range .Menu.Items }}
+					<input type="hidden" name="id" value="{{ .ID }}">
+					<li class="list-group-item">
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon">Title</div>
+										<input type="text" name="title" class="form-control" id="title" placeholder="Title" value="{{ .Title }}">
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon">Link</div>
+										<input type="text" name="link" class="form-control" id="link" placeholder="Link" value="{{ .Link }}">
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-group">
+									<div class="checkbox">
+										<label>
+											<input type="hidden" name="new_tab" value="false">
+											<input type="checkbox" name="new_tab"  {{ if (.NewTab)}}checked{{end}} value="true"> Open link in new tab?
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</li>
+					{{ end }}
+				</ul>
+			</div>
+		</div>
+		<div class="col-sm-12 text-right">
+			<input type="submit" value="Save" class="btn btn-primary">
+		</div>
+	</form>
 </div>
 {{ end }}
