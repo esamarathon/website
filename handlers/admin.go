@@ -36,7 +36,7 @@ func AdminRoutes(base string, router *mux.Router) {
 	router.HandleFunc(base+"/article/{id}", requireAuth(articleUpdate)).Methods("POST")
 	router.HandleFunc(base+"/article/{id}/delete", requireAuth(articleDelete)).Methods("GET")
 	router.HandleFunc(base+"/menu", requireAuth(menuIndex)).Methods("GET")
-	router.HandleFunc(base+"/menu", requireAuth(menuStore)).Methods("POST")
+	router.HandleFunc(base+"/menu/{id}", requireAuth(menuUpdate)).Methods("POST")
 }
 
 // Initiates a renderer for the admin views
@@ -349,9 +349,30 @@ func menuIndex(w http.ResponseWriter, r *http.Request) {
 	adminRenderer.HTML(w, http.StatusOK, "menu.html", viewmodels.AdminMenuIndex(w, r))
 }
 
-func menuStore(w http.ResponseWriter, r *http.Request) {
+func menuUpdate(w http.ResponseWriter, r *http.Request) {
+
+	id := mux.Vars(r)["id"]
+	m, err := menu.Find(id)
+	if err != nil {
+		user.SetFlashMessage(w, r, "alert", "Couldn't find the menu item you wanted to update")
+		http.Redirect(w, r, "/admin/menu", http.StatusSeeOther)
+		return
+	}
 
 	r.ParseForm()
+	m.Title = r.Form.Get("title")
+	m.Link = r.Form.Get("link")
+	if r.Form.Get("new_tab") == "true" {
+		m.NewTab = true
+	} else {
+		m.NewTab = false
+	}
+	err = m.Update()
+	if err != nil {
+		user.SetFlashMessage(w, r, "alert", "Something went wrong while trying to update")
+		http.Redirect(w, r, "/admin/menu", http.StatusSeeOther)
+		return
+	}
 
 	user.SetFlashMessage(w, r, "success", "The menu was updated")
 	http.Redirect(w, r, "/admin/menu", http.StatusSeeOther)

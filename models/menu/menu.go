@@ -62,6 +62,26 @@ func Default() Menu {
 	}
 }
 
+// Find a menu item given an id
+func Find(id string) (MenuItem, error) {
+	var m MenuItem
+
+	filter := map[string]interface{}{
+		"id": id,
+	}
+
+	cursor, err := db.GetByFilter(table, filter)
+	if err != nil {
+		return m, errors.Wrap(err, "menu.Find")
+	}
+
+	if err = cursor.One(&m); err != nil {
+		return m, errors.Wrap(err, "menu.Find")
+	}
+
+	return m, nil
+}
+
 // Get returns an instance of the Menu struct
 func Get() Menu {
 	m, err := All()
@@ -117,4 +137,15 @@ func (m *MenuItem) Create() error {
 
 	_, err := db.Insert(table, data)
 	return err
+}
+
+// Update updates a menu item entry
+func (m *MenuItem) Update() error {
+	data := map[string]interface{}{
+		"title":   m.Title,
+		"link":    m.Link,
+		"new_tab": m.NewTab,
+		"order":   m.Order,
+	}
+	return db.Update(table, m.ID, data)
 }
