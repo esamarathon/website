@@ -61,5 +61,5 @@ func (a *Article) ParseHTML() {
 
 // FormatTimestamp adds a UTC timestamp to the article
 func (a *Article) FormatTimestamp() {
-	a.Timestamp = a.CreatedAt.UTC().String()
+	a.Timestamp = a.CreatedAt.Format("2006-01-02T15:04:05") + "+02:00"
 }

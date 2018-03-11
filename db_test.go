@@ -73,7 +73,7 @@ func TestGetAllByOrder(t *testing.T) {
 			orderBy = "title"
 		}
 
-		rows, err := db.GetAllByOrder(table, orderBy)
+		rows, err := db.GetAllByOrder(table, orderBy, true)
 		checkError(err, t)
 
 		checkError(rows.All(&data), t)

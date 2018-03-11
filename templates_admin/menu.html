@@ -1,0 +1,55 @@
+{{/* extends "layout.html" */}}
+{{ define "content" }}
+
+<div class="row">
+	<div class="col-sm-12">
+		<h1>
+			Menu items
+		</h1>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<strong>Update the menu items</strong>
+	</div>
+	<ul class="list-group">
+		{{ range .Menu.Items }}
+			<li class="list-group-item">
+				<form action="/admin/menu/{{ .ID }}" class="form-inline" method="post">
+				<div class="row">
+					<div class="col-sm-4">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">Title</div>
+								<input type="text" name="title" class="form-control" id="title" placeholder="Title" value="{{ .Title }}">
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">Link</div>
+								<input type="text" name="link" class="form-control" id="link" placeholder="Link" value="{{ .Link }}">
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<div class="form-group">
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="new_tab"  {{ if (.NewTab)}}checked{{end}} value="true"> Open link in new tab?
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-2 text-right">
+						<input type="submit" value="Update" class="btn btn-primary">
+					</div>
+				</div>
+				</form>
+			</li>
+			{{ end }}
+		</ul>
+	</div>
+</div>
+{{ end }}
