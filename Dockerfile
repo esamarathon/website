@@ -1,4 +1,4 @@
-FROM node:7.9-alpine AS builder
+FROM node:9.8.0-alpine AS builder
 
 COPY . app
 WORKDIR app
@@ -8,7 +8,7 @@ RUN yarn
 RUN npm run gulp
 RUN rm -rf node_modules
 
-FROM golang:1.9.2-alpine AS golang
+FROM golang:1.10.0-alpine AS golang
 
 RUN apk add --no-cache ca-certificates && mkdir -p /go/src/github.com/esamarathon/website/public
 WORKDIR /go/src/github.com/esamarathon/website
