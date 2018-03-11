@@ -6,6 +6,7 @@ import (
 
 	"github.com/esamarathon/website/config"
 	"github.com/esamarathon/website/models/article"
+	"github.com/esamarathon/website/models/menu"
 	"github.com/esamarathon/website/models/user"
 	"github.com/pkg/errors"
 )
@@ -46,6 +47,12 @@ type adminArticleCreateView struct {
 type adminArticleEditView struct {
 	User    user.User
 	Article article.Article
+	Alert   string // Alert message
+	Success string // Success message
+}
+
+type adminMenuIndexView struct {
+	Menu    menu.Menu
 	Alert   string // Alert message
 	Success string // Success message
 }
@@ -107,6 +114,15 @@ func AdminArticleCreate(w http.ResponseWriter, r *http.Request) adminArticleCrea
 func AdminArticleEdit(w http.ResponseWriter, r *http.Request) adminArticleEditView {
 	view := adminArticleEditView{
 		User:    getUser(r),
+		Alert:   user.GetFlashMessage(w, r, "alert"),
+		Success: user.GetFlashMessage(w, r, "success"),
+	}
+	return view
+}
+
+func AdminMenuIndex(w http.ResponseWriter, r *http.Request) adminMenuIndexView {
+	view := adminMenuIndexView{
+		Menu:    menu.Get(),
 		Alert:   user.GetFlashMessage(w, r, "alert"),
 		Success: user.GetFlashMessage(w, r, "success"),
 	}
