@@ -11,6 +11,7 @@ import (
 	"github.com/esamarathon/website/cache"
 	"github.com/esamarathon/website/config"
 	"github.com/esamarathon/website/models/article"
+	"github.com/esamarathon/website/models/menu"
 	"github.com/esamarathon/website/models/user"
 	"github.com/esamarathon/website/viewmodels"
 
@@ -338,6 +339,13 @@ func articleDelete(w http.ResponseWriter, r *http.Request) {
 }
 
 func menuIndex(w http.ResponseWriter, r *http.Request) {
+	if !menu.IsStored() {
+		m := menu.Get()
+		err := m.Insert()
+		if len(err) > 0 {
+			user.SetFlashMessage(w, r, "alert", "Couldn't get data from DB. There might be connection issues or the table might not exist!")
+		}
+	}
 	adminRenderer.HTML(w, http.StatusOK, "menu.html", viewmodels.AdminMenuIndex(w, r))
 }
 
