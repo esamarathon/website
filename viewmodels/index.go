@@ -10,25 +10,13 @@ import (
 
 	"github.com/esamarathon/website/cache"
 	"github.com/esamarathon/website/config"
+	"github.com/esamarathon/website/models/menu"
 	"github.com/pkg/errors"
 	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
 
-type meta struct {
-	Title       string `json:"title,omitempty"`
-	Description string `json:"description,omitempty"`
-	Image       string `json:"image,omitempty"`
-}
-
-// DefaultMata is a set of default metadata values
-var DefaultMeta = meta{
-	"ESA Marathon",
-	"Welcome to European Speedrunner Assembly!",
-	"http://www.esamarathon.com/static/img/og-image.png",
-}
-
 type indexView struct {
-	Meta          meta
+	Layout        layout
 	Frontpage     interface{}
 	Livemode      bool
 	CopyrightYear int
@@ -43,7 +31,7 @@ type frontPage struct {
 func Index() indexView {
 	// Convert from markdown to html
 	view := indexView{
-		Meta:          DefaultMeta,
+		Layout:        layout{DefaultMeta, menu.Get()},
 		Livemode:      config.Config.LiveMode,
 		CopyrightYear: time.Now().Year(),
 	}

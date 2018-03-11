@@ -22,7 +22,7 @@ func Create(username string) (User, error) {
 
 // All returns all the users in the DB
 func All() ([]User, error) {
-	rows, err := db.GetAllByOrder(Table, "username")
+	rows, err := db.GetAllByOrder(Table, "username", true)
 	var users []User
 	if err != nil {
 		return users, errors.Wrap(err, "user.All")
