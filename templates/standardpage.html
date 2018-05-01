@@ -1,0 +1,13 @@
+{{/* extends "layout.html" */}}
+{{define "content"}}
+    <main class="page">
+        <article>
+            <h1>{{ .Article.Title }}</h1>
+
+            <section class="byline">
+                <time datetime="{{ .Article.Timestamp }}"></time>
+            </section>
+            {{ .Article.HTML }}
+        </article>
+    </main>
+{{end}}

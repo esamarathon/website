@@ -9,6 +9,7 @@ var tables = []string{
 	"users",
 	"articles",
 	"menu_items",
+	"pages",
 }
 
 var row interface{}

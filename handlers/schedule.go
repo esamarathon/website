@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 
+	. "github.com/esamarathon/website/handlers/helpers"
 	"github.com/esamarathon/website/cache"
 	"github.com/esamarathon/website/config"
 	"github.com/esamarathon/website/models/schedule"
@@ -26,7 +27,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 
 	if view.Cached {
 		// Render cached view
-		renderer.HTML(w, http.StatusOK, "schedule.html", view)
+		Renderer.HTML(w, http.StatusOK, "schedule.html", view)
 		return
 	}
 	var s scheduleResponse
@@ -94,7 +95,7 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	view.Schedule = s.Schedule
 
 	// Render
-	renderer.HTML(w, http.StatusOK, "schedule.html", view)
+	Renderer.HTML(w, http.StatusOK, "schedule.html", view)
 	// Write to the cache
 	cache.Cache.Set("schedule", s.Schedule, cache.Duration())
 }
