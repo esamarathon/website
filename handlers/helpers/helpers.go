@@ -34,6 +34,7 @@ func GetPagination(r *http.Request) int {
 }
 
 func Urlify(s string) string {
+	s = strings.ToLower(s);
 	s = strings.Replace(s, " ", "-", -1)
 	s = url.PathEscape(s)
 	return s

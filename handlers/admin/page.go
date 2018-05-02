@@ -82,6 +82,20 @@ func pageStore(w http.ResponseWriter, r *http.Request) {
 
 	p.FriendlyName = Urlify(p.FriendlyName)
 
+	if 	p.FriendlyName == "admin"    ||
+		p.FriendlyName == "login"    ||
+		p.FriendlyName == "logout"   ||
+		p.FriendlyName == "auth"     ||
+		p.FriendlyName == "schedule" ||
+		p.FriendlyName == "news" {
+
+		r.Method = "GET"
+		user.SetFlashMessage(w, r, "alert", "Invalid input data. Name of page is reserved.")
+		log.Println("Reserved page name., handlers.createPage")
+		http.Redirect(w, r, "/admin/page/create", http.StatusSeeOther)
+		return
+	}
+
 	p.Published = false
 	if r.FormValue("published") == "1" {
 		p.Published = true
@@ -158,6 +172,20 @@ func pageUpdate(w http.ResponseWriter, r *http.Request) {
 
 	if name != "" {
 		p.FriendlyName = Urlify(name)
+	}
+
+	if 	p.FriendlyName == "admin"    ||
+		p.FriendlyName == "login"    ||
+		p.FriendlyName == "logout"   ||
+		p.FriendlyName == "auth"     ||
+		p.FriendlyName == "schedule" ||
+		p.FriendlyName == "news" {
+
+		r.Method = "GET"
+		user.SetFlashMessage(w, r, "alert", "Invalid input data. Name of page is reserved.")
+		log.Println("Reserved page name., handlers.createPage")
+		http.Redirect(w, r, "/admin/page/"+id, http.StatusSeeOther)
+		return
 	}
 
 	if body != "" {

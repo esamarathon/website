@@ -22,7 +22,6 @@ func init() {
 	router.HandleFunc("/schedule", Schedule).Methods("GET")
 	router.HandleFunc("/news", News).Methods("GET")
 	router.HandleFunc("/news/{id}", Article).Methods("GET")
-	router.HandleFunc("/en/{name}", Page).Methods("GET")
 	router.HandleFunc("/auth", AuthRedirect).Methods("GET")
 	router.HandleFunc("/auth/callback", AuthCallback).Methods("GET")
 	router.HandleFunc("/login", HandleAuth).Methods("GET")
@@ -30,6 +29,8 @@ func init() {
 	router.HandleFunc("/sweepstakes", Sweepstakes).Methods("GET")
 
 	admin.AdminRoutes("/admin", router)
+
+	router.HandleFunc("/{name}", Page).Methods("GET")
 
 	router.NotFoundHandler = http.HandlerFunc(HandleNotFound)
 }
