@@ -31,6 +31,25 @@
     <hr>
 
     <div class="row">
+        <h1>Toggle Schedule</h1>
+        <p class="lead">Toggling schedule will display a message that the schedule has not been released yet instead of showing the schedule.</p>
+
+        <div class="col-sm-4 col-md-2">
+            <p>
+                <strong>Current status is <i>{{if .ShowSchedule }} enabled {{else}} disabled {{end}}</i></strong>
+            </p>
+        </div>
+        <div class="col-sm-4">
+            <p>
+                <form action="/admin/toggleSchedule" method="POST">
+                <button type="submit" 
+                    class="btn {{if .ShowSchedule }} btn-warning {{else}} btn-primary {{end}} btn-xs">
+                    {{if .ShowSchedule }} Disable {{else}} Enable {{end}}
+                </button>
+                </form>
+            </p>
+        </div>
+
         <form action="/admin/schedule" method="POST">
             <div class="col-sm-12">
                 <label for="url">Horaro Schedule URL</label>

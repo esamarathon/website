@@ -121,7 +121,7 @@ func UpdateFrontpage(title, body string) error {
 		_, found := cache.Get("frontpage")
 		if found {
 			// We delete it
-			cache.Cache.Delete("frontpage")
+			cache.Clear("frontpage")
 		}
 	}
 	return err

@@ -16,7 +16,7 @@ import (
 
 /*
 *	Article handlers
-*/
+ */
 // articleIndex renders a paginated list of the articles in the DB
 func articleIndex(w http.ResponseWriter, r *http.Request) {
 	// Get current page number

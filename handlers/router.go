@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"strings"
 
-	. "github.com/esamarathon/website/handlers/helpers"
-	"github.com/esamarathon/website/handlers/admin"
 	"github.com/esamarathon/website/config"
+	"github.com/esamarathon/website/handlers/admin"
+	. "github.com/esamarathon/website/handlers/helpers"
 	"github.com/rs/cors"
 
 	"github.com/gorilla/mux"
