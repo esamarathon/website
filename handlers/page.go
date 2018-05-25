@@ -1,12 +1,11 @@
 package handlers
 
-
 import (
 	"net/http"
 
 	. "github.com/esamarathon/website/handlers/helpers"
-	"github.com/esamarathon/website/models/user"
 	"github.com/esamarathon/website/models/page"
+	"github.com/esamarathon/website/models/user"
 	"github.com/esamarathon/website/viewmodels"
 	"github.com/gorilla/mux"
 )

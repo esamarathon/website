@@ -1,22 +1,99 @@
 main {
-	max-width: $max-width;
-	@include medium-up {
-		margin: auto;
-	}
-	
-	h1 {
-		margin: $gutter *2 0;
-	}
+    max-width: $max-width;
+    @include medium-up {
+        margin: auto;
+    }
+    
+    h1 {
+        margin: $gutter *2 0;
+    }
 
-	article {
-		margin: $gutter * 2;
-	}
-	
-	img {
-		width: 100%;
+    article {
+        margin: $gutter * 2;
+    }
+    
+    img {
+        width: 100%;
 
-		&.small {
-			width: 50%;
-		}
-	}
+        &.small {
+            width: 50%;
+        }
+    }
+
+    p {
+        color: white;
+        line-height: 1.6;
+        letter-spacing: .5px;
+        font-weight: 100;
+        font-size: 1rem;
+        margin-top: $gutter / 2;
+        margin-bottom: $gutter / 2;
+         strong {
+            font-weight: 500;
+         }
+         a {
+            color: $orange;
+            &:hover,
+            &:active,
+            &:focus {
+               color: $orange-light;
+            }
+         }
+         @include medium-up {
+            font-size: 1.125rem;
+            max-width: 100%;
+         }
+      }
+      h1, h2, h3, h4, h5, h6 {
+         color: $white;
+         font-family: $condensed;
+         text-transform: uppercase;
+         font-weight: 100;
+         letter-spacing: .5px;
+         margin-bottom: $gutter / 2;
+      }
+      h2 {
+         font-size: 1.75rem;
+      }
+      h3 {
+         font-size: 1.5rem;
+      }
+      h4 {
+         font-size: 1.25rem;
+      }
+      h5 {
+         font-size: 1.125rem;
+      }
+      h6 {
+         font-size: 1rem;
+      }
+      >h1 {
+         font-weight: 100;
+         font-size: 2rem;
+         color: $orange;
+         text-transform: uppercase;
+         letter-spacing: 1px;
+         display: block;
+         text-align: center;
+         padding-top: $gutter * 4;
+         font-family: $condensed;
+         @include medium-up {
+            padding-top: 0;
+         }
+         &:after {
+            content: '';
+            display: block;
+            max-width: 3rem;
+            border-top: 3px $orange solid;
+            margin: auto;
+            margin-top: $gutter;
+         }
+      }
+
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

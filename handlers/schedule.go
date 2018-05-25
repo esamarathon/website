@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"strconv"
 
-	. "github.com/esamarathon/website/handlers/helpers"
 	"github.com/esamarathon/website/cache"
 	"github.com/esamarathon/website/config"
+	. "github.com/esamarathon/website/handlers/helpers"
 	"github.com/esamarathon/website/models/schedule"
 	"github.com/esamarathon/website/viewmodels"
 	"github.com/pkg/errors"
@@ -24,6 +24,11 @@ type scheduleResponse struct {
 // Schedule displays the marathon schedule
 func Schedule(w http.ResponseWriter, r *http.Request) {
 	view := viewmodels.Schedule()
+
+	if !config.Config.ShowSchedule {
+		NoSchedule(w, r)
+		return
+	}
 
 	if view.Cached {
 		// Render cached view
@@ -97,7 +102,14 @@ func Schedule(w http.ResponseWriter, r *http.Request) {
 	// Render
 	Renderer.HTML(w, http.StatusOK, "schedule.html", view)
 	// Write to the cache
-	cache.Cache.Set("schedule", s.Schedule, cache.Duration())
+	cache.Set("schedule", s.Schedule, cache.Duration())
+}
+
+func NoSchedule(w http.ResponseWriter, r *http.Request) {
+	err := Renderer.HTML(w, http.StatusOK, "noschedule.html", viewmodels.NoSchedule())
+	if err != nil {
+		log.Println(errors.Wrap(err, "handlers.NoSchedule"))
+	}
 }
 
 // returns HTML based a on markdown string
@@ -108,6 +120,8 @@ func getHTML(str string) template.HTML {
 
 // getEstimate returns a formated string representing
 // the estimated time of a speedrun in hours:minutes
+// Parameters:
+// length: Duration of speedrun in seconds.
 func getEstimate(length float64) string {
 	// Convert length to hours
 	hours := math.Floor(length / 3600)

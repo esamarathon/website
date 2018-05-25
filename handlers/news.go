@@ -7,11 +7,9 @@ import (
 	"github.com/esamarathon/website/models/article"
 	"github.com/esamarathon/website/models/user"
 	"github.com/esamarathon/website/viewmodels"
-	
+
 	"github.com/gorilla/mux"
 )
-
-
 
 // News renders the news page
 func News(w http.ResponseWriter, r *http.Request) {

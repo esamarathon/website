@@ -20,6 +20,7 @@ func AdminRoutes(base string, router *mux.Router) {
 	requireAuth := middleware.AuthMiddleware
 	router.HandleFunc(base, requireAuth(adminIndex)).Methods("GET", "POST")
 	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
+	router.HandleFunc(base+"/toggleSchedule", requireAuth(toggleShowSchedule)).Methods("POST")
 	router.HandleFunc(base+"/schedule", requireAuth(updateSchedule)).Methods("POST")
 	router.HandleFunc(base+"/front", requireAuth(updateFront)).Methods("POST")
 	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
@@ -33,14 +34,12 @@ func AdminRoutes(base string, router *mux.Router) {
 	router.HandleFunc(base+"/article/{id}", requireAuth(articleUpdate)).Methods("POST")
 	router.HandleFunc(base+"/article/{id}/delete", requireAuth(articleDelete)).Methods("GET")
 
-    
 	router.HandleFunc(base+"/page", requireAuth(pageIndex)).Methods("GET")
 	router.HandleFunc(base+"/page/create", requireAuth(pageCreate)).Methods("GET")
 	router.HandleFunc(base+"/page/create", requireAuth(pageStore)).Methods("POST")
 	router.HandleFunc(base+"/page/{id}", requireAuth(pageEdit)).Methods("GET")
 	router.HandleFunc(base+"/page/{id}", requireAuth(pageUpdate)).Methods("POST")
 	router.HandleFunc(base+"/page/{id}/delete", requireAuth(pageDelete)).Methods("GET")
-	
 
 	router.HandleFunc(base+"/menu", requireAuth(menuIndex)).Methods("GET")
 	router.HandleFunc(base+"/menu/{id}", requireAuth(menuUpdate)).Methods("POST")
@@ -65,11 +64,17 @@ func toggleLivemode(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }
 
+func toggleShowSchedule(w http.ResponseWriter, r *http.Request) {
+	config.ToggleShowSchedule()
+	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+}
+
 // updateSchedule parses a form and updates the ScheduleAPIURL
 // if the new URL seems valid
 func updateSchedule(w http.ResponseWriter, r *http.Request) {
 	// Parse form and get the submitted URL
 	r.ParseForm()
+
 	URL := r.Form.Get("url")
 
 	// Validate URL
@@ -93,7 +98,7 @@ func updateSchedule(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 		return
 	}
-	cache.Cache.Delete("schedule")
+	cache.Clear("schedule")
 
 	// URL seems fine, updating
 	config.Config.ScheduleAPIURL = URL

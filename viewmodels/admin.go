@@ -6,8 +6,8 @@ import (
 
 	"github.com/esamarathon/website/config"
 	"github.com/esamarathon/website/models/article"
-	"github.com/esamarathon/website/models/page"
 	"github.com/esamarathon/website/models/menu"
+	"github.com/esamarathon/website/models/page"
 	"github.com/esamarathon/website/models/user"
 	"github.com/pkg/errors"
 )
@@ -29,12 +29,13 @@ type adminIndexView struct {
 	AdminView
 	Livemode       bool
 	ScheduleAPIURL string
+	ShowSchedule   bool
 	Frontpage      frontPage
 }
 
 type adminUserIndexView struct {
 	AdminView
-	Users   []user.User
+	Users []user.User
 }
 
 type adminArticleIndexView struct {
@@ -54,7 +55,7 @@ type adminArticleEditView struct {
 
 type adminMenuIndexView struct {
 	AdminView
-	Menu    menu.Menu
+	Menu menu.Menu
 }
 
 type adminPageIndexView struct {
@@ -81,7 +82,7 @@ func getUser(r *http.Request) user.User {
 }
 
 func getAdminView(w http.ResponseWriter, r *http.Request) AdminView {
-	return AdminView {
+	return AdminView{
 		User:    getUser(r),
 		Alert:   user.GetFlashMessage(w, r, "alert"),
 		Success: user.GetFlashMessage(w, r, "success"),
@@ -90,9 +91,10 @@ func getAdminView(w http.ResponseWriter, r *http.Request) AdminView {
 
 func AdminIndex(w http.ResponseWriter, r *http.Request) adminIndexView {
 	view := adminIndexView{
-		AdminView:      getAdminView(w,r),
+		AdminView:      getAdminView(w, r),
 		Livemode:       config.Config.LiveMode,
 		ScheduleAPIURL: config.Config.ScheduleAPIURL,
+		ShowSchedule:   config.Config.ShowSchedule,
 		Frontpage:      getFrontpage(),
 	}
 
@@ -105,8 +107,8 @@ func AdminUserIndex(w http.ResponseWriter, r *http.Request) adminUserIndexView {
 		log.Println(errors.Wrap(err, "admin.user.index"))
 	}
 	view := adminUserIndexView{
-		AdminView: getAdminView(w,r),
-		Users:   users,
+		AdminView: getAdminView(w, r),
+		Users:     users,
 	}
 
 	return view
@@ -114,49 +116,49 @@ func AdminUserIndex(w http.ResponseWriter, r *http.Request) adminUserIndexView {
 
 func AdminArticleIndex(w http.ResponseWriter, r *http.Request) adminArticleIndexView {
 	view := adminArticleIndexView{
-		AdminView: getAdminView(w,r),
+		AdminView: getAdminView(w, r),
 	}
 	return view
 }
 
 func AdminArticleCreate(w http.ResponseWriter, r *http.Request) adminArticleCreateView {
 	view := adminArticleCreateView{
-		AdminView: getAdminView(w,r),
+		AdminView: getAdminView(w, r),
 	}
 	return view
 }
 
 func AdminArticleEdit(w http.ResponseWriter, r *http.Request) adminArticleEditView {
 	view := adminArticleEditView{
-		AdminView: getAdminView(w,r),
+		AdminView: getAdminView(w, r),
 	}
 	return view
 }
 
 func AdminMenuIndex(w http.ResponseWriter, r *http.Request) adminMenuIndexView {
 	view := adminMenuIndexView{
-		Menu:    menu.Get(),
-		AdminView: getAdminView(w,r),
+		Menu:      menu.Get(),
+		AdminView: getAdminView(w, r),
 	}
 	return view
 }
 
 func AdminPageIndex(w http.ResponseWriter, r *http.Request) adminPageIndexView {
-	view := adminPageIndexView {
+	view := adminPageIndexView{
 		AdminView: getAdminView(w, r),
 	}
 	return view
 }
 
 func AdminPageCreate(w http.ResponseWriter, r *http.Request) adminPageCreateView {
-	view := adminPageCreateView {
+	view := adminPageCreateView{
 		AdminView: getAdminView(w, r),
 	}
 	return view
 }
 
 func AdminPageEdit(w http.ResponseWriter, r *http.Request) adminPageEditView {
-	view := adminPageEditView {
+	view := adminPageEditView{
 		AdminView: getAdminView(w, r),
 	}
 	return view

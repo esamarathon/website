@@ -11,13 +11,13 @@ import (
 	"github.com/esamarathon/website/models/page"
 	"github.com/esamarathon/website/models/user"
 	"github.com/esamarathon/website/viewmodels"
-	
+
 	"github.com/gorilla/mux"
 )
 
 /*
 * Generic Page handlers
-*/
+ */
 func pageIndex(w http.ResponseWriter, r *http.Request) {
 	p := GetPagination(r)
 	view := viewmodels.AdminPageIndex(w, r)
@@ -60,9 +60,9 @@ func pageCreate(w http.ResponseWriter, r *http.Request) {
 func pageStore(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
-	p := page.Page {
+	p := page.Page{
 		FriendlyName: r.Form.Get("name"),
-		Article: article.Article {
+		Article: article.Article{
 			Title: r.Form.Get("title"),
 			Body:  r.Form.Get("body"),
 		},
@@ -82,10 +82,10 @@ func pageStore(w http.ResponseWriter, r *http.Request) {
 
 	p.FriendlyName = Urlify(p.FriendlyName)
 
-	if 	p.FriendlyName == "admin"    ||
-		p.FriendlyName == "login"    ||
-		p.FriendlyName == "logout"   ||
-		p.FriendlyName == "auth"     ||
+	if p.FriendlyName == "admin" ||
+		p.FriendlyName == "login" ||
+		p.FriendlyName == "logout" ||
+		p.FriendlyName == "auth" ||
 		p.FriendlyName == "schedule" ||
 		p.FriendlyName == "news" {
 
@@ -174,10 +174,10 @@ func pageUpdate(w http.ResponseWriter, r *http.Request) {
 		p.FriendlyName = Urlify(name)
 	}
 
-	if 	p.FriendlyName == "admin"    ||
-		p.FriendlyName == "login"    ||
-		p.FriendlyName == "logout"   ||
-		p.FriendlyName == "auth"     ||
+	if p.FriendlyName == "admin" ||
+		p.FriendlyName == "login" ||
+		p.FriendlyName == "logout" ||
+		p.FriendlyName == "auth" ||
 		p.FriendlyName == "schedule" ||
 		p.FriendlyName == "news" {
 

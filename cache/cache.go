@@ -1,17 +1,23 @@
 package cache
 
 import (
+	"log"
+	"sync"
 	"time"
 
 	gocache "github.com/patrickmn/go-cache"
 )
 
 // Cache is the general app cache object
-var Cache *gocache.Cache
+var cache *gocache.Cache
+var cacheInitializer sync.Once
 
 // Boot initializes the cache
 func Boot() {
-	Cache = gocache.New(5*time.Minute, 10*time.Minute)
+	cacheInitializer.Do(func() {
+		log.Println("Booting cache")
+		cache = gocache.New(5*time.Minute, 10*time.Minute)
+	})
 }
 
 // Duration returns the default duration
@@ -21,16 +27,23 @@ func Duration() time.Duration {
 
 // Get an item from the cache. Returns the item or nil, and a bool indicating
 func Get(key string) (interface{}, bool) {
-	if Cache == nil {
+	if cache == nil {
 		Boot()
 	}
-	return Cache.Get(key)
+	return cache.Get(key)
 }
 
 // Set adds an item to the cache, replacing any existing item.
 func Set(key string, value interface{}, duration time.Duration) {
-	if Cache == nil {
+	if cache == nil {
 		Boot()
 	}
-	Cache.Set(key, value, duration)
+	cache.Set(key, value, duration)
+}
+
+func Clear(key string) {
+	if cache == nil {
+		Boot()
+	}
+	cache.Delete(key)
 }
