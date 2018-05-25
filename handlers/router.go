@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"strings"
 
+	. "github.com/esamarathon/website/handlers/helpers"
+	"github.com/esamarathon/website/handlers/admin"
 	"github.com/esamarathon/website/config"
 	"github.com/rs/cors"
 
@@ -26,7 +28,9 @@ func init() {
 	router.HandleFunc("/logout", HandleLogout).Methods("GET")
 	router.HandleFunc("/sweepstakes", Sweepstakes).Methods("GET")
 
-	AdminRoutes("/admin", router)
+	admin.AdminRoutes("/admin", router)
+
+	router.HandleFunc("/{name}", Page).Methods("GET")
 
 	router.NotFoundHandler = http.HandlerFunc(HandleNotFound)
 }

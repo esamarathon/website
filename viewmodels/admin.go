@@ -6,56 +6,70 @@ import (
 
 	"github.com/esamarathon/website/config"
 	"github.com/esamarathon/website/models/article"
+	"github.com/esamarathon/website/models/page"
 	"github.com/esamarathon/website/models/menu"
 	"github.com/esamarathon/website/models/user"
 	"github.com/pkg/errors"
 )
 
-type adminIndexView struct {
-	User           user.User
-	Livemode       bool
-	ScheduleAPIURL string
-	Frontpage      frontPage
-	Alert          string // Alert message
-	Success        string // Success message
-}
-
-type adminUserIndexView struct {
+type AdminView struct {
 	User    user.User
-	Users   []user.User
 	Alert   string // Alert message
 	Success string // Success message
 }
 
-type adminArticleIndexView struct {
-	User     user.User
-	Articles []article.Article
-	Alert    string // Alert message
-	Success  string // Success message
+type pagination struct {
 	NextPage int
 	PrevPage int
 	CurrPage int
 	LastPage int
 }
 
+type adminIndexView struct {
+	AdminView
+	Livemode       bool
+	ScheduleAPIURL string
+	Frontpage      frontPage
+}
+
+type adminUserIndexView struct {
+	AdminView
+	Users   []user.User
+}
+
+type adminArticleIndexView struct {
+	AdminView
+	pagination
+	Articles []article.Article
+}
+
 type adminArticleCreateView struct {
-	User    user.User
-	Alert   string // Alert message
-	Success string // Success message
+	AdminView
 }
 
 type adminArticleEditView struct {
-	User    user.User
+	AdminView
 	Article article.Article
-	Alert   string // Alert message
-	Success string // Success message
 }
 
 type adminMenuIndexView struct {
+	AdminView
 	Menu    menu.Menu
-	User    user.User
-	Alert   string // Alert message
-	Success string // Success message
+}
+
+type adminPageIndexView struct {
+	AdminView
+	pagination
+	Pages []page.Page
+}
+
+type adminPageCreateView struct {
+	AdminView
+}
+
+type adminPageEditView struct {
+	AdminView
+	Page page.Page
 }
 
 func getUser(r *http.Request) user.User {
@@ -66,14 +80,20 @@ func getUser(r *http.Request) user.User {
 	return u
 }
 
+func getAdminView(w http.ResponseWriter, r *http.Request) AdminView {
+	return AdminView {
+		User:    getUser(r),
+		Alert:   user.GetFlashMessage(w, r, "alert"),
+		Success: user.GetFlashMessage(w, r, "success"),
+	}
+}
+
 func AdminIndex(w http.ResponseWriter, r *http.Request) adminIndexView {
 	view := adminIndexView{
-		User:           getUser(r),
+		AdminView:      getAdminView(w,r),
 		Livemode:       config.Config.LiveMode,
 		ScheduleAPIURL: config.Config.ScheduleAPIURL,
 		Frontpage:      getFrontpage(),
-		Alert:          user.GetFlashMessage(w, r, "alert"),
-		Success:        user.GetFlashMessage(w, r, "success"),
 	}
 
 	return view
@@ -85,10 +105,8 @@ func AdminUserIndex(w http.ResponseWriter, r *http.Request) adminUserIndexView {
 		log.Println(errors.Wrap(err, "admin.user.index"))
 	}
 	view := adminUserIndexView{
-		User:    getUser(r),
+		AdminView: getAdminView(w,r),
 		Users:   users,
-		Alert:   user.GetFlashMessage(w, r, "alert"),
-		Success: user.GetFlashMessage(w, r, "success"),
 	}
 
 	return view
@@ -96,27 +114,21 @@ func AdminUserIndex(w http.ResponseWriter, r *http.Request) adminUserIndexView {
 
 func AdminArticleIndex(w http.ResponseWriter, r *http.Request) adminArticleIndexView {
 	view := adminArticleIndexView{
-		User:    getUser(r),
-		Alert:   user.GetFlashMessage(w, r, "alert"),
-		Success: user.GetFlashMessage(w, r, "success"),
+		AdminView: getAdminView(w,r),
 	}
 	return view
 }
 
 func AdminArticleCreate(w http.ResponseWriter, r *http.Request) adminArticleCreateView {
 	view := adminArticleCreateView{
-		User:    getUser(r),
-		Alert:   user.GetFlashMessage(w, r, "alert"),
-		Success: user.GetFlashMessage(w, r, "success"),
+		AdminView: getAdminView(w,r),
 	}
 	return view
 }
 
 func AdminArticleEdit(w http.ResponseWriter, r *http.Request) adminArticleEditView {
 	view := adminArticleEditView{
-		User:    getUser(r),
-		Alert:   user.GetFlashMessage(w, r, "alert"),
-		Success: user.GetFlashMessage(w, r, "success"),
+		AdminView: getAdminView(w,r),
 	}
 	return view
 }
@@ -124,9 +136,28 @@ func AdminArticleEdit(w http.ResponseWriter, r *http.Request) adminArticleEditVi
 func AdminMenuIndex(w http.ResponseWriter, r *http.Request) adminMenuIndexView {
 	view := adminMenuIndexView{
 		Menu:    menu.Get(),
-		User:    getUser(r),
-		Alert:   user.GetFlashMessage(w, r, "alert"),
-		Success: user.GetFlashMessage(w, r, "success"),
+		AdminView: getAdminView(w,r),
+	}
+	return view
+}
+
+func AdminPageIndex(w http.ResponseWriter, r *http.Request) adminPageIndexView {
+	view := adminPageIndexView {
+		AdminView: getAdminView(w, r),
+	}
+	return view
+}
+
+func AdminPageCreate(w http.ResponseWriter, r *http.Request) adminPageCreateView {
+	view := adminPageCreateView {
+		AdminView: getAdminView(w, r),
+	}
+	return view
+}
+
+func AdminPageEdit(w http.ResponseWriter, r *http.Request) adminPageEditView {
+	view := adminPageEditView {
+		AdminView: getAdminView(w, r),
 	}
 	return view
 }

@@ -1,12 +1,22 @@
-main.content {
+main {
 	max-width: $max-width;
 	@include medium-up {
 		margin: auto;
 	}
 	
+	h1 {
+		margin: $gutter *2 0;
+	}
 
 	article {
 		margin: $gutter * 2;
 	}
 	
+	img {
+		width: 100%;
+
+		&.small {
+			width: 50%;
+		}
+	}
 }
