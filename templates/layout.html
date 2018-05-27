@@ -43,34 +43,13 @@
     <section class="social-bar">
         <h2>Get connected with us</h2>
         <div class="social-container">
-            <a href="http://www.twitter.com/esamarathon" target="_blank" rel="noopener">
-                <img src="/static/img/ico-twitter.svg" alt="Twitter icon">
-                <span>Twitter</span>
-            </a>
+            {{range $i, $e := .Layout.SocialLinks.Items }}
+                <a href="{{$e.Link}}"  target="{{if $e.NewTab }} _blank {{end}}" rel="{{if $e.NewTab }} noopener {{end}}" >
+                    <img src="{{$e.Image}}" alt="{{$e.ImageAlt}}">
+                    <span>{{$e.Title}}</span>
+                </a>
 
-            <a href="https://www.discord.gg/0TZ2NlveujtasAqb" target="_blank" rel="noopener">
-                <img src="/static/img/ico-discord.svg" alt="Discord icon">
-                <span>Discord</span>
-            </a>
-
-            <a href="https://www.youtube.com/user/EuroSpeedAssembly" target="_blank" rel="noopener">
-                <img src="/static/img/ico-youtube.svg" alt="YouTube icon">
-                <span>YouTube</span>
-            </a>
-
-            <a href="https://www.twitch.tv/esamarathon" target="_blank" rel="noopener">
-                <img src="/static/img/ico-twitch.svg" alt="Twitch icon">
-                <span>Twitch</span>
-            </a>
-
-            <a href="https://www.speedrun.com/esa2018/forum" target="_blank" rel="noopener">
-                <img src="/static/img/ico-forum.svg" alt="Forum icon">
-                <span>Forum</span>
-            </a>
-            <a href="https://www.facebook.com/europeanspeedrunnerassembly" target="_blank" rel="noopener">
-                <img src="/static/img/ico-facebook.svg" alt="Facebook icon">
-                <span>Facebook</span>
-            </a>
+            {{ end }}
         </div>
     </section>
     <footer>

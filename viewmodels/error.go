@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/esamarathon/website/config"
-	"github.com/esamarathon/website/models/menu"
 )
 
 type errorView struct {
@@ -16,7 +15,7 @@ type errorView struct {
 // Error returns the viewmodel for errorpages
 func Error() errorView {
 	view := errorView{
-		Layout:        layout{DefaultMeta, menu.Get()},
+		Layout:        DefaultLayout(),
 		CopyrightYear: time.Now().Year(),
 		Livemode:      config.Config.LiveMode,
 	}

@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/esamarathon/website/config"
-	"github.com/esamarathon/website/models/menu"
 )
 
 type loginView struct {
@@ -16,7 +15,7 @@ type loginView struct {
 // Login returns the viewmodel for the loginview
 func Login() loginView {
 	view := loginView{
-		Layout:        layout{DefaultMeta, menu.Get()},
+		Layout:        DefaultLayout(),
 		Livemode:      config.Config.LiveMode,
 		CopyrightYear: time.Now().Year(),
 	}

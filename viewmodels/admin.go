@@ -8,6 +8,7 @@ import (
 	"github.com/esamarathon/website/models/article"
 	"github.com/esamarathon/website/models/menu"
 	"github.com/esamarathon/website/models/page"
+	"github.com/esamarathon/website/models/social"
 	"github.com/esamarathon/website/models/user"
 	"github.com/pkg/errors"
 )
@@ -31,6 +32,7 @@ type adminIndexView struct {
 	ScheduleAPIURL string
 	ShowSchedule   bool
 	Frontpage      frontPage
+	SocialLinks    social.SocialLinks
 }
 
 type adminUserIndexView struct {
@@ -96,6 +98,7 @@ func AdminIndex(w http.ResponseWriter, r *http.Request) adminIndexView {
 		ScheduleAPIURL: config.Config.ScheduleAPIURL,
 		ShowSchedule:   config.Config.ShowSchedule,
 		Frontpage:      getFrontpage(),
+		SocialLinks:    social.Get(),
 	}
 
 	return view

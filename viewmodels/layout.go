@@ -1,6 +1,9 @@
 package viewmodels
 
-import "github.com/esamarathon/website/models/menu"
+import (
+	"github.com/esamarathon/website/models/menu"
+	"github.com/esamarathon/website/models/social"
+)
 
 type meta struct {
 	Title       string `json:"title,omitempty"`
@@ -16,6 +19,15 @@ var DefaultMeta = meta{
 }
 
 type layout struct {
-	Meta meta      `json:"meta,omitempty"`
-	Menu menu.Menu `json:"menu,omitempty"`
+	Meta        meta               `json:"meta,omitempty"`
+	Menu        menu.Menu          `json:"menu,omitempty"`
+	SocialLinks social.SocialLinks `json:"social,omitempty"`
+}
+
+func DefaultLayout() layout {
+	return layout{
+		DefaultMeta,
+		menu.Get(),
+		social.Get(),
+	}
 }
