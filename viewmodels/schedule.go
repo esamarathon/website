@@ -16,6 +16,12 @@ type scheduleView struct {
 	Livemode      bool
 }
 
+type noscheduleView struct {
+	Layout        layout
+	CopyrightYear int
+	Livemode      bool
+}
+
 // Schedule returns the viewmodel for /schedule
 func Schedule() scheduleView {
 	view := scheduleView{
@@ -32,4 +38,12 @@ func Schedule() scheduleView {
 	}
 
 	return view
+}
+
+func NoSchedule() noscheduleView {
+	return noscheduleView{
+		Layout:        layout{DefaultMeta, menu.Get()},
+		Livemode:      config.Config.LiveMode,
+		CopyrightYear: time.Now().Year(),
+	}
 }

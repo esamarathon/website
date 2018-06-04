@@ -2,20 +2,20 @@
 {{define "content"}}
     <section class="splash">
         <div class="splash-logo hide-medium">
-            <img src="/static/img/logo.svg" alt="">
+            <img src="/static/img/logo.svg" alt="ESA logotype">
         </div>
         {{ if .Livemode}}
             <div id="twitch-embed"></div>
         {{ end }}
     </section>
-    <h1></h1>
-    <main>
+    <main class="content">
         <div class="splash-slogan">
-            <img class="" src="/static/img/slogan.svg" alt="">
-            <p><strong>{{ .Frontpage.Title }}</strong> 
-                {{ .Frontpage.Body }}
-            </p>
+            <img class="" src="/static/img/slogan.svg" alt="European Speedrunner Assembly!">
         </div>
+        <article>
+            <h1>{{ .Frontpage.Title }}</h1>
+            {{ .Frontpage.Body }}
+        </article>
     </main>
 
 {{end}}

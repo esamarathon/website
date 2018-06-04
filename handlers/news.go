@@ -2,37 +2,19 @@ package handlers
 
 import (
 	"net/http"
-	"strconv"
 
+	. "github.com/esamarathon/website/handlers/helpers"
 	"github.com/esamarathon/website/models/article"
 	"github.com/esamarathon/website/models/user"
 	"github.com/esamarathon/website/viewmodels"
+
 	"github.com/gorilla/mux"
 )
-
-// Extracts the page query param if present
-func getArticlePage(r *http.Request) int {
-	// Default page number
-	page := "0"
-
-	// If a page is specified we use that instead
-	if query := r.URL.Query()["page"]; len(query) != 0 {
-		page = query[0]
-	}
-	p, err := strconv.Atoi(page)
-
-	// If we failed to get the page number
-	// we just set it to 0 (first page)
-	if err != nil {
-		p = 0
-	}
-	return p
-}
 
 // News renders the news page
 func News(w http.ResponseWriter, r *http.Request) {
 	data := viewmodels.News()
-	p := getArticlePage(r)
+	p := GetPagination(r)
 
 	articles, err := article.Page(p, true)
 	// If we failed to get the articles
@@ -61,7 +43,7 @@ func News(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	renderer.HTML(w, http.StatusOK, "news.html", data)
+	Renderer.HTML(w, http.StatusOK, "news.html", data)
 }
 
 // Article renders the page of a specific article
@@ -97,5 +79,5 @@ func Article(w http.ResponseWriter, r *http.Request) {
 	data.Article = a
 	data.Layout.Meta.Title = a.Title + " - ESA Marathon"
 
-	renderer.HTML(w, http.StatusOK, "article.html", data)
+	Renderer.HTML(w, http.StatusOK, "article.html", data)
 }

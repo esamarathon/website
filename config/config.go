@@ -33,6 +33,7 @@ type config struct {
 	TwitchTokenURL     string
 	TwitchAPIRootURL   string
 	ScheduleAPIURL     string
+	ShowSchedule       bool
 }
 
 // Config describes the env of the application
@@ -65,6 +66,11 @@ func init() {
 	} else {
 		frontpageDataPath = frontpageDataPath + "/templates/frontpage.json"
 	}
+	showSchedule, err := strconv.ParseBool(os.Getenv("SHOW_SCHEDULE"))
+	if err != nil {
+		log.Println("Failed to parse bool .env value (SHOW_SCHEDULE), using default.")
+		showSchedule = true
+	}
 
 	Config = config{
 		Port:               os.Getenv("PORT"),
@@ -86,6 +92,7 @@ func init() {
 		TwitchTokenURL:     os.Getenv("TWITCH_TOKEN_URL"),
 		TwitchAPIRootURL:   os.Getenv("TWITCH_API_ROOT_URL"),
 		ScheduleAPIURL:     os.Getenv("SCHEDULE_API_URL"),
+		ShowSchedule: 		showSchedule,
 	}
 
 	if Config.ScheduleAPIURL == "" {
@@ -126,4 +133,9 @@ func DBConfig() rDB.ConnectOpts {
 // ToggleLiveMode toggles the bool in the config
 func ToggleLiveMode() {
 	Config.LiveMode = !Config.LiveMode
+}
+
+// ToggleShowSchedule toggles the bool in the config
+func ToggleShowSchedule() {
+	Config.ShowSchedule = !Config.ShowSchedule
 }

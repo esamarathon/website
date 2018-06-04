@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/esamarathon/website/config"
+	. "github.com/esamarathon/website/handlers/helpers"
 	"github.com/esamarathon/website/models/user"
 	"github.com/esamarathon/website/viewmodels"
 	"golang.org/x/oauth2"
@@ -58,7 +59,7 @@ func AuthCallback(w http.ResponseWriter, r *http.Request) {
 
 // HandleAuth returns login view
 func HandleAuth(w http.ResponseWriter, r *http.Request) {
-	renderer.HTML(w, http.StatusOK, "login.html", viewmodels.Login())
+	Renderer.HTML(w, http.StatusOK, "login.html", viewmodels.Login())
 }
 
 // HandleLogout deletes the session and redirects to index
