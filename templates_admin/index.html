@@ -97,4 +97,70 @@
                       
         </form>
     </div>
+
+    <div class="panel panel-default">
+        <h2> Social Links </h2>
+        <ul class="list-group">
+            {{ range .SocialLinks.Items }}
+                <li class="list-group-item">
+                    <form action="/admin/social/{{ .ID }}" class="form-inline" method="post">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">Title</div>
+                                    <input type="text" name="title" class="form-control" id="title" placeholder="Title" value="{{ .Title }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">Link</div>
+                                    <input type="text" name="link" class="form-control" id="link" placeholder="Link" value="{{ .Link }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="new_tab"  {{ if (.NewTab)}}checked{{end}} value="true"> Open link in new tab?
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">Image</div>
+                                    <input type="text" name="image" class="form-control col-lg-5" id="image" placeholder="Image" value="{{ .Image }}">
+                                </div>
+                                <img class="admin-social-icon" src="{{ .Image }}">
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">Image Alt-text</div>
+                                    <input type="text" name="imagealt" class="form-control" id="imagealt" placeholder="Image Alt-text" value="{{ .ImageAlt }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2 text-right">
+                            <input type="submit" value="Update" class="btn btn-primary">
+                        </div>
+                    </div>
+                    </form>
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+    </div>
 {{end}}

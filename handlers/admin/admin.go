@@ -8,6 +8,7 @@ import (
 
 	"github.com/esamarathon/website/cache"
 	"github.com/esamarathon/website/config"
+	"github.com/esamarathon/website/models/social"
 	"github.com/esamarathon/website/models/user"
 	"github.com/esamarathon/website/viewmodels"
 
@@ -43,6 +44,8 @@ func AdminRoutes(base string, router *mux.Router) {
 
 	router.HandleFunc(base+"/menu", requireAuth(menuIndex)).Methods("GET")
 	router.HandleFunc(base+"/menu/{id}", requireAuth(menuUpdate)).Methods("POST")
+
+	router.HandleFunc(base+"/social/{id}", requireAuth(socialUpdate)).Methods("POST")
 }
 
 // Initiates a renderer for the admin views
@@ -55,6 +58,13 @@ var adminRenderer = grender.New(grender.Options{
 *	Admin Index routes
  */
 func adminIndex(w http.ResponseWriter, r *http.Request) {
+	if !social.IsStored() {
+		s := social.Get()
+		err := s.Insert()
+		if len(err) > 0 {
+			user.SetFlashMessage(w, r, "alert", "Couldn't get data from DB. There might be connection issues or the table might not exist!")
+		}
+	}
 	adminRenderer.HTML(w, http.StatusOK, "index.html", viewmodels.AdminIndex(w, r))
 }
 
@@ -127,4 +137,35 @@ func updateFront(w http.ResponseWriter, r *http.Request) {
 	// Set flaash and redirect back
 	user.SetFlashMessage(w, r, "success", "The frontpage has been updated!")
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
+}
+
+func socialUpdate(w http.ResponseWriter, r *http.Request) {
+
+	id := mux.Vars(r)["id"]
+	si, err := social.Find(id)
+	if err != nil {
+		user.SetFlashMessage(w, r, "alert", "Couldn't find the social item you wanted to update")
+		http.Redirect(w, r, "/admin", http.StatusSeeOther)
+		return
+	}
+
+	r.ParseForm()
+	si.Title = r.Form.Get("title")
+	si.Link = r.Form.Get("link")
+	si.Image = r.Form.Get("image")
+	si.ImageAlt = r.Form.Get("imagealt")
+	if r.Form.Get("new_tab") == "true" {
+		si.NewTab = true
+	} else {
+		si.NewTab = false
+	}
+	err = si.Update()
+	if err != nil {
+		user.SetFlashMessage(w, r, "alert", "Something went wrong while trying to update")
+		http.Redirect(w, r, "/admin", http.StatusSeeOther)
+		return
+	}
+
+	user.SetFlashMessage(w, r, "success", "The social link was updated")
+	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }

@@ -5,7 +5,6 @@ import (
 
 	"github.com/esamarathon/website/cache"
 	"github.com/esamarathon/website/config"
-	"github.com/esamarathon/website/models/menu"
 )
 
 type scheduleView struct {
@@ -25,7 +24,7 @@ type noscheduleView struct {
 // Schedule returns the viewmodel for /schedule
 func Schedule() scheduleView {
 	view := scheduleView{
-		Layout:        layout{DefaultMeta, menu.Get()},
+		Layout:        DefaultLayout(),
 		Livemode:      config.Config.LiveMode,
 		CopyrightYear: time.Now().Year(),
 	}
@@ -42,7 +41,7 @@ func Schedule() scheduleView {
 
 func NoSchedule() noscheduleView {
 	return noscheduleView{
-		Layout:        layout{DefaultMeta, menu.Get()},
+		Layout:        DefaultLayout(),
 		Livemode:      config.Config.LiveMode,
 		CopyrightYear: time.Now().Year(),
 	}

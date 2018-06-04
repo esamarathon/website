@@ -10,7 +10,6 @@ import (
 
 	"github.com/esamarathon/website/cache"
 	"github.com/esamarathon/website/config"
-	"github.com/esamarathon/website/models/menu"
 	"github.com/pkg/errors"
 	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
@@ -31,7 +30,7 @@ type frontPage struct {
 func Index() indexView {
 	// Convert from markdown to html
 	view := indexView{
-		Layout:        layout{DefaultMeta, menu.Get()},
+		Layout:        DefaultLayout(),
 		Livemode:      config.Config.LiveMode,
 		CopyrightYear: time.Now().Year(),
 	}
