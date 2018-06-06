@@ -6,15 +6,15 @@ section.sponsors {
 
     background-color: $blue-darker;
 
-    h2 {
+    h2, h3 {
       font-weight: 100;
-      font-size: 1.125rem;
+
       color: $orange;
       text-transform: uppercase;
       letter-spacing: 1px;
       display: block;
       text-align: center;
-      margin-bottom: $gutter * 2;
+
       font-family: $condensed;
       &:after {
          content: '';
@@ -24,19 +24,31 @@ section.sponsors {
          margin: auto;
          margin-top: $gutter;
       }
-   }
+	}
+
+	h2 {
+		font-size: 1.125rem;	
+		margin-bottom: $gutter * 2;
+	}
+
+	h3 {
+		font-size: 1.1rem;
+	}
+
+
+	h3:last-child {
+		margin-top: 3rem;
+	}
 
 	.sponsor-container {
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 		flex-wrap: wrap;
-		margin: 0 auto;
+		margin: 0 auto 2rem;
 		max-width: 60rem;
 
-		&:last-child {
-			margin-top: 3rem;
-		}
+
 
 		.sponsor {
 			padding: 0.2rem;
