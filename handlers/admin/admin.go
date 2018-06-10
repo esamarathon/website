@@ -2,11 +2,9 @@ package admin
 
 import (
 	"net/http"
-	"strings"
 
 	"github.com/dannyvankooten/grender"
 
-	"github.com/esamarathon/website/cache"
 	"github.com/esamarathon/website/config"
 	"github.com/esamarathon/website/models/social"
 	"github.com/esamarathon/website/models/user"
@@ -22,7 +20,7 @@ func AdminRoutes(base string, router *mux.Router) {
 	router.HandleFunc(base, requireAuth(adminIndex)).Methods("GET", "POST")
 	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
 	router.HandleFunc(base+"/toggleSchedule", requireAuth(toggleShowSchedule)).Methods("POST")
-	router.HandleFunc(base+"/schedule", requireAuth(updateSchedule)).Methods("POST")
+	//router.HandleFunc(base+"/schedule", requireAuth(updateSchedule)).Methods("POST")
 	router.HandleFunc(base+"/front", requireAuth(updateFront)).Methods("POST")
 	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
 	router.HandleFunc(base+"/user", requireAuth(userStore)).Methods("POST")
@@ -44,6 +42,11 @@ func AdminRoutes(base string, router *mux.Router) {
 
 	router.HandleFunc(base+"/menu", requireAuth(menuIndex)).Methods("GET")
 	router.HandleFunc(base+"/menu/{id}", requireAuth(menuUpdate)).Methods("POST")
+
+	router.HandleFunc(base+"/schedule", requireAuth(scheduleIndex)).Methods("GET")
+	router.HandleFunc(base+"/schedule/create", requireAuth(scheduleCreate)).Methods("POST")
+	router.HandleFunc(base+"/schedule/{id}", requireAuth(scheduleUpdate)).Methods("POST")
+	router.HandleFunc(base+"/schedule/{id}/delete", requireAuth(scheduleDelete)).Methods("POST")
 
 	router.HandleFunc(base+"/social/{id}", requireAuth(socialUpdate)).Methods("POST")
 }
@@ -71,48 +74,6 @@ func adminIndex(w http.ResponseWriter, r *http.Request) {
 // Toggles the stream on the frontpage
 func toggleLivemode(w http.ResponseWriter, r *http.Request) {
 	config.ToggleLiveMode()
-	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
-}
-
-func toggleShowSchedule(w http.ResponseWriter, r *http.Request) {
-	config.ToggleShowSchedule()
-	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
-}
-
-// updateSchedule parses a form and updates the ScheduleAPIURL
-// if the new URL seems valid
-func updateSchedule(w http.ResponseWriter, r *http.Request) {
-	// Parse form and get the submitted URL
-	r.ParseForm()
-
-	URL := r.Form.Get("url")
-
-	// Validate URL
-	if !strings.Contains(URL, "https://horaro.org/-/api/v1/schedules/") {
-		user.SetFlashMessage(w, r, "alert", "Not a valid Horaro API URL. Not updating. Correct format is \"https://horaro.org/-/api/v1/schedules/\"")
-		http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
-		return
-	}
-
-	// Attempt to get the resource
-	resp, err := http.Get(URL)
-	if err != nil {
-		user.SetFlashMessage(w, r, "alert", "Request to resource failed, not updating.")
-		http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
-		return
-	}
-
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		user.SetFlashMessage(w, r, "alert", "Request to resource failed, not updating.")
-		http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
-		return
-	}
-	cache.Clear("schedule")
-
-	// URL seems fine, updating
-	config.Config.ScheduleAPIURL = URL
-	user.SetFlashMessage(w, r, "success", "Schedule URL has been updated!")
 	http.Redirect(w, r, "/admin", http.StatusTemporaryRedirect)
 }
 

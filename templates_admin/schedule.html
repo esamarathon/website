@@ -1,0 +1,102 @@
+{{/* extends "layout.html" */}}
+{{ define "content" }}
+<div class="row">
+	<div class="col-sm-12">
+		<h1>
+			Schedule
+		</h1>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<strong>Update the schedules</strong>
+	</div>
+	<ul class="list-group">
+		{{ range .Schedules }}
+			<li class="list-group-item">
+				<div class="row">
+					<form action="/admin/schedule/{{ .ID }}" class="form-inline" method="post">
+					<div class="col-xs-12 col-sm-3">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">Title</div>
+								<input type="text" name="title" class="form-control" id="title" placeholder="Title" value="{{ .Title }}">
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-5">
+						<div class="form-group" style="width: 100%">
+							<div class="input-group" style="width: 100%">
+								<div class="input-group-addon">URL</div>
+								<input type="text" name="url" class="form-control" id="url" placeholder="Link" value="{{ .Url }}">
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-2">
+						<div class="form-group" style="width: 100%">
+							<div class="input-group" style="width: 100%">
+								<div class="input-group-addon">Order</div>
+								<input type="number" name="order" class="form-control" id="order" placeholder="0" value="{{ .Order }}">
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xs-12 col-sm-2 col-md-1 text-right">
+						<input type="submit" value="Update" class="btn btn-primary">
+					</div>
+					</form>
+					
+					<div class="col-xs-12 col-sm-2 col-md-1 text-right">
+						<form action="/admin/schedule/{{ .ID }}/delete" method="post">
+							<input type="submit" value="Delete" class="btn btn-danger">
+						</form>
+					</div>
+
+				</div>
+
+			</li>
+		{{ end }}
+
+		<li class="list-group-item">
+				<div class="row">
+					<form action="/admin/schedule/create" class="form-inline" method="post">
+						<div class="col-xs-12 col-sm-3">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-addon">Title</div>
+									<input type="text" name="title" class="form-control" id="title" placeholder="Title">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-5">
+							<div class="form-group" style="width: 100%">
+								<div class="input-group" style="width: 100%">
+									<div class="input-group-addon">URL</div>
+									<input type="text" name="url" class="form-control" id="url" placeholder="https://horaro.org/<api-url-here>">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-2">
+							<div class="form-group" style="width: 100%">
+								<div class="input-group" style="width: 100%">
+									<div class="input-group-addon">Order</div>
+									<input type="number" name="order" class="form-control" id="order" placeholder="99">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-2 col-md-1 text-right">
+							<input type="submit" value="Create" class="btn btn-success">
+						</div>
+					</form>
+				</div>
+
+			</li>
+	</ul>
+</div>
+
+
+{{ end }}

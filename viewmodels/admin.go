@@ -8,6 +8,7 @@ import (
 	"github.com/esamarathon/website/models/article"
 	"github.com/esamarathon/website/models/menu"
 	"github.com/esamarathon/website/models/page"
+	"github.com/esamarathon/website/models/schedule"
 	"github.com/esamarathon/website/models/social"
 	"github.com/esamarathon/website/models/user"
 	"github.com/pkg/errors"
@@ -73,6 +74,11 @@ type adminPageCreateView struct {
 type adminPageEditView struct {
 	AdminView
 	Page page.Page
+}
+
+type adminScheduleView struct {
+	AdminView
+	Schedules []schedule.ScheduleRef
 }
 
 func getUser(r *http.Request) user.User {
@@ -162,6 +168,13 @@ func AdminPageCreate(w http.ResponseWriter, r *http.Request) adminPageCreateView
 
 func AdminPageEdit(w http.ResponseWriter, r *http.Request) adminPageEditView {
 	view := adminPageEditView{
+		AdminView: getAdminView(w, r),
+	}
+	return view
+}
+
+func AdminSchedules(w http.ResponseWriter, r *http.Request) adminScheduleView {
+	view := adminScheduleView{
 		AdminView: getAdminView(w, r),
 	}
 	return view
