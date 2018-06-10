@@ -29,11 +29,9 @@ type pagination struct {
 
 type adminIndexView struct {
 	AdminView
-	Livemode       bool
-	ScheduleAPIURL string
-	ShowSchedule   bool
-	Frontpage      frontPage
-	SocialLinks    social.SocialLinks
+	Livemode    bool
+	Frontpage   frontPage
+	SocialLinks social.SocialLinks
 }
 
 type adminUserIndexView struct {
@@ -99,12 +97,10 @@ func getAdminView(w http.ResponseWriter, r *http.Request) AdminView {
 
 func AdminIndex(w http.ResponseWriter, r *http.Request) adminIndexView {
 	view := adminIndexView{
-		AdminView:      getAdminView(w, r),
-		Livemode:       config.Config.LiveMode,
-		ScheduleAPIURL: config.Config.ScheduleAPIURL,
-		ShowSchedule:   config.Config.ShowSchedule,
-		Frontpage:      getFrontpage(),
-		SocialLinks:    social.Get(),
+		AdminView:   getAdminView(w, r),
+		Livemode:    config.Config.LiveMode,
+		Frontpage:   getFrontpage(),
+		SocialLinks: social.Get(),
 	}
 
 	return view

@@ -2,7 +2,6 @@ package admin
 
 import (
 	"github.com/esamarathon/website/cache"
-	"github.com/esamarathon/website/config"
 	"github.com/esamarathon/website/models/schedule"
 	"github.com/esamarathon/website/models/user"
 	"github.com/esamarathon/website/viewmodels"
@@ -32,11 +31,6 @@ func scheduleIndex(w http.ResponseWriter, r *http.Request) {
 	viewmodel.Schedules = scheds
 
 	adminRenderer.HTML(w, http.StatusOK, "schedule.html", viewmodel)
-}
-
-func toggleShowSchedule(w http.ResponseWriter, r *http.Request) {
-	config.ToggleShowSchedule()
-	http.Redirect(w, r, scheduleBaseRoute, http.StatusTemporaryRedirect)
 }
 
 func scheduleCreate(w http.ResponseWriter, r *http.Request) {

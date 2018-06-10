@@ -32,8 +32,6 @@ type config struct {
 	TwitchRedirectURL  string
 	TwitchTokenURL     string
 	TwitchAPIRootURL   string
-	ScheduleAPIURL     string
-	ShowSchedule       bool
 }
 
 // Config describes the env of the application
@@ -66,11 +64,6 @@ func init() {
 	} else {
 		frontpageDataPath = frontpageDataPath + "/templates/frontpage.json"
 	}
-	showSchedule, err := strconv.ParseBool(os.Getenv("SHOW_SCHEDULE"))
-	if err != nil {
-		log.Println("Failed to parse bool .env value (SHOW_SCHEDULE), using default.")
-		showSchedule = true
-	}
 
 	Config = config{
 		Port:               os.Getenv("PORT"),
@@ -91,13 +84,6 @@ func init() {
 		TwitchRedirectURL:  os.Getenv("TWITCH_REDIRECT_URL"),
 		TwitchTokenURL:     os.Getenv("TWITCH_TOKEN_URL"),
 		TwitchAPIRootURL:   os.Getenv("TWITCH_API_ROOT_URL"),
-		ScheduleAPIURL:     os.Getenv("SCHEDULE_API_URL"),
-		ShowSchedule: 		showSchedule,
-	}
-
-	if Config.ScheduleAPIURL == "" {
-		log.Println("No Schedule API URL defined, utilizing backup")
-		Config.ScheduleAPIURL = "https://horaro.org/-/api/v1/schedules/4311u8b52b04si7a1e"
 	}
 
 	buildTwitchAuthConfig()
@@ -133,9 +119,4 @@ func DBConfig() rDB.ConnectOpts {
 // ToggleLiveMode toggles the bool in the config
 func ToggleLiveMode() {
 	Config.LiveMode = !Config.LiveMode
-}
-
-// ToggleShowSchedule toggles the bool in the config
-func ToggleShowSchedule() {
-	Config.ShowSchedule = !Config.ShowSchedule
 }

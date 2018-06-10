@@ -19,8 +19,6 @@ func AdminRoutes(base string, router *mux.Router) {
 	requireAuth := middleware.AuthMiddleware
 	router.HandleFunc(base, requireAuth(adminIndex)).Methods("GET", "POST")
 	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
-	router.HandleFunc(base+"/toggleSchedule", requireAuth(toggleShowSchedule)).Methods("POST")
-	//router.HandleFunc(base+"/schedule", requireAuth(updateSchedule)).Methods("POST")
 	router.HandleFunc(base+"/front", requireAuth(updateFront)).Methods("POST")
 	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
 	router.HandleFunc(base+"/user", requireAuth(userStore)).Methods("POST")
