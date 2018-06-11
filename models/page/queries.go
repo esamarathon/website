@@ -126,11 +126,11 @@ func PageCount(published bool) (pageCount int, err error) {
 
 func (p *Page) Create() error {
 	data := map[string]interface{}{
-		"title":      p.Title,
-		"body":       p.Body,
-		"published":  p.Published,
-		"created_at": time.Now(),
-		"updated_at": time.Now(),
+		"title":         p.Title,
+		"body":          p.Body,
+		"published":     p.Published,
+		"created_at":    time.Now(),
+		"updated_at":    time.Now(),
 		"friendly_name": p.FriendlyName,
 	}
 
@@ -141,11 +141,11 @@ func (p *Page) Create() error {
 // Update updates an article entry in the database
 func (a *Page) Update() error {
 	data := map[string]interface{}{
-		"title":      a.Title,
-		"body":       a.Body,
-		"published":  a.Published,
-		"created_at": a.CreatedAt,
-		"updated_at": time.Now(),
+		"title":         a.Title,
+		"body":          a.Body,
+		"published":     a.Published,
+		"created_at":    a.CreatedAt,
+		"updated_at":    time.Now(),
 		"friendly_name": a.FriendlyName,
 	}
 	return db.Update(table, a.ID, data)

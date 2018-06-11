@@ -31,44 +31,6 @@
     <hr>
 
     <div class="row">
-        <h1>Toggle Schedule</h1>
-        <p class="lead">Toggling schedule will display a message that the schedule has not been released yet instead of showing the schedule.</p>
-
-        <div class="col-sm-4 col-md-2">
-            <p>
-                <strong>Current status is <i>{{if .ShowSchedule }} enabled {{else}} disabled {{end}}</i></strong>
-            </p>
-        </div>
-        <div class="col-sm-4">
-            <p>
-                <form action="/admin/toggleSchedule" method="POST">
-                <button type="submit" 
-                    class="btn {{if .ShowSchedule }} btn-warning {{else}} btn-primary {{end}} btn-xs">
-                    {{if .ShowSchedule }} Disable {{else}} Enable {{end}}
-                </button>
-                </form>
-            </p>
-        </div>
-
-        <form action="/admin/schedule" method="POST">
-            <div class="col-sm-12">
-                <label for="url">Horaro Schedule URL</label>
-                <p>Refreshing this will also flush the cache for the schedule</p>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <input type="text" class="form-control" name="url" placeholder="Horaro API URL" value="{{ .ScheduleAPIURL }}">
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <input type="submit" value="Update URL" class="btn btn-primary" />
-            </div>                    
-        </form>
-    </div>
-
-    <hr>
-
-    <div class="row">
         <form action="/admin/front" method="POST">
             <div class="col-sm-12">
                 <label>Frontpage</label>

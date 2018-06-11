@@ -5,11 +5,12 @@ import (
 
 	"github.com/esamarathon/website/cache"
 	"github.com/esamarathon/website/config"
+	"github.com/esamarathon/website/models/schedule"
 )
 
 type scheduleView struct {
 	Layout        layout
-	Schedule      interface{}
+	Schedules     []schedule.Schedule
 	Cached        bool
 	CopyrightYear int
 	Livemode      bool
@@ -30,10 +31,10 @@ func Schedule() scheduleView {
 	}
 
 	// Attempt to find a cached schedule
-	schedule, found := cache.Get("schedule")
+	schedules, found := cache.Get("schedules")
 	view.Cached = found
 	if view.Cached {
-		view.Schedule = schedule
+		view.Schedules = schedules.([]schedule.Schedule)
 	}
 
 	return view

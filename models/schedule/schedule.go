@@ -1,9 +1,21 @@
 package schedule
 
-import "html/template"
+import (
+	"html/template"
+)
+
+const table = "schedules"
+
+type ScheduleRef struct {
+	ID    string `json:"_id,omitempty" gorethink:"id,omitempty"`
+	Url   string `json: "url,omitempty" gorethink:"url,omitempty"`
+	Title string `json: "title, omitempty" gorethink:"title,omitempty"`
+	Order int    `json: "order, omitempty" gorethink:"order,omitempty"`
+}
 
 // Schedule describes the structure of a parsed schedule
 type Schedule struct {
+	ID          string   `json:"id,omitempty"`
 	Name        string   `json:"name,omitempty"`
 	Description string   `json:"description,omitempty"`
 	Updated     string   `json:"updated,omitempty"`

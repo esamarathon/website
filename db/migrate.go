@@ -11,6 +11,7 @@ var tables = []string{
 	"menu_items",
 	"pages",
 	"social_items",
+	"schedules",
 }
 
 var row interface{}
