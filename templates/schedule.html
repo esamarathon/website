@@ -2,7 +2,7 @@
 {{define "content"}}
     <section id="selector">
         {{range .Schedules }}
-            <a href="#{{ .ID }}" class="button center">{{ .Name }}</a>
+            <a href="#{{ .ID }}" class="col-sm-4 button center">{{ .Name }}</a>
         {{ end }}
     </section>
 
@@ -30,4 +30,5 @@
             </table>
         </section>
     {{ end }}
+    <a href="#selector" id="back-top" class="button button-primary">Back to top</a>
 {{end}}
