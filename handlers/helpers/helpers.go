@@ -34,8 +34,14 @@ func GetPagination(r *http.Request) int {
 }
 
 func Urlify(s string) string {
-	s = strings.ToLower(s);
+	s = strings.ToLower(s)
 	s = strings.Replace(s, " ", "-", -1)
 	s = url.PathEscape(s)
 	return s
+}
+
+func CSP(fn http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header("Content-Security-Policy", "default-src 'self'; script-src 'sha256-4kSj415Ktl8nD2hH1J/vYCiFDzN8b/SnwBz3WA4H0IY=' 'https://pagead2.googlesyndication.com'; img-src *")
+	}
 }

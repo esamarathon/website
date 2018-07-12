@@ -18,20 +18,20 @@ var router = mux.NewRouter()
 
 func init() {
 	router.PathPrefix("/static").Handler(handleStatic("public", "/static"))
-	router.HandleFunc("/", Index).Methods("GET")
-	router.HandleFunc("/schedule", Schedule).Methods("GET")
-	router.HandleFunc("/news", News).Methods("GET")
-	router.HandleFunc("/news/{id}", Article).Methods("GET")
-	router.HandleFunc("/auth", AuthRedirect).Methods("GET")
-	router.HandleFunc("/auth/callback", AuthCallback).Methods("GET")
-	router.HandleFunc("/login", HandleAuth).Methods("GET")
-	router.HandleFunc("/logout", HandleLogout).Methods("GET")
+	router.HandleFunc("/", CSP(Index)).Methods("GET")
+	router.HandleFunc("/schedule", CSP(Schedule)).Methods("GET")
+	router.HandleFunc("/news", CSP(News)).Methods("GET")
+	router.HandleFunc("/news/{id}", CSP(Article)).Methods("GET")
+	router.HandleFunc("/auth", CSP(AuthRedirect)).Methods("GET")
+	router.HandleFunc("/auth/callback", CSP(AuthCallback)).Methods("GET")
+	router.HandleFunc("/login", CSP(HandleAuth)).Methods("GET")
+	router.HandleFunc("/logout", CSP(HandleLogout)).Methods("GET")
 
 	admin.AdminRoutes("/admin", router)
 
-	router.HandleFunc("/{name}", Page).Methods("GET")
+	router.HandleFunc("/{name}", CSP(Page)).Methods("GET")
 
-	router.NotFoundHandler = http.HandlerFunc(HandleNotFound)
+	router.NotFoundHandler = http.HandlerFunc(CSP(HandleNotFound))
 }
 
 func handleStatic(dir, prefix string) http.HandlerFunc {

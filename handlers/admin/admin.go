@@ -17,36 +17,36 @@ import (
 // AdminRoutes adds the admin routes to the router
 func AdminRoutes(base string, router *mux.Router) {
 	requireAuth := middleware.AuthMiddleware
-	router.HandleFunc(base, requireAuth(adminIndex)).Methods("GET", "POST")
-	router.HandleFunc(base+"/toggle", requireAuth(toggleLivemode)).Methods("GET")
-	router.HandleFunc(base+"/front", requireAuth(updateFront)).Methods("POST")
-	router.HandleFunc(base+"/user", requireAuth(userIndex)).Methods("GET")
-	router.HandleFunc(base+"/user", requireAuth(userStore)).Methods("POST")
-	router.HandleFunc(base+"/user/{id}/delete", requireAuth(deleteUser)).Methods("GET")
+	router.HandleFunc(base, CSP(requireAuth(adminIndex))).Methods("GET", "POST")
+	router.HandleFunc(base+"/toggle", CSP(requireAuth(toggleLivemode))).Methods("GET")
+	router.HandleFunc(base+"/front", CSP(requireAuth(updateFront))).Methods("POST")
+	router.HandleFunc(base+"/user", CSP(requireAuth(userIndex))).Methods("GET")
+	router.HandleFunc(base+"/user", CSP(requireAuth(userStore))).Methods("POST")
+	router.HandleFunc(base+"/user/{id}/delete", CSP(requireAuth(deleteUser))).Methods("GET")
 
-	router.HandleFunc(base+"/article", requireAuth(articleIndex)).Methods("GET")
-	router.HandleFunc(base+"/article/create", requireAuth(articleCreate)).Methods("GET")
-	router.HandleFunc(base+"/article/create", requireAuth(articleStore)).Methods("POST")
-	router.HandleFunc(base+"/article/{id}", requireAuth(articleEdit)).Methods("GET")
-	router.HandleFunc(base+"/article/{id}", requireAuth(articleUpdate)).Methods("POST")
-	router.HandleFunc(base+"/article/{id}/delete", requireAuth(articleDelete)).Methods("GET")
+	router.HandleFunc(base+"/article", CSP(requireAuth(articleIndex))).Methods("GET")
+	router.HandleFunc(base+"/article/create", CSP(requireAuth(articleCreate))).Methods("GET")
+	router.HandleFunc(base+"/article/create", CSP(requireAuth(articleStore))).Methods("POST")
+	router.HandleFunc(base+"/article/{id}", CSP(requireAuth(articleEdit))).Methods("GET")
+	router.HandleFunc(base+"/article/{id}", CSP(requireAuth(articleUpdate))).Methods("POST")
+	router.HandleFunc(base+"/article/{id}/delete", CSP(requireAuth(articleDelete))).Methods("GET")
 
-	router.HandleFunc(base+"/page", requireAuth(pageIndex)).Methods("GET")
-	router.HandleFunc(base+"/page/create", requireAuth(pageCreate)).Methods("GET")
-	router.HandleFunc(base+"/page/create", requireAuth(pageStore)).Methods("POST")
-	router.HandleFunc(base+"/page/{id}", requireAuth(pageEdit)).Methods("GET")
-	router.HandleFunc(base+"/page/{id}", requireAuth(pageUpdate)).Methods("POST")
-	router.HandleFunc(base+"/page/{id}/delete", requireAuth(pageDelete)).Methods("GET")
+	router.HandleFunc(base+"/page", CSP(requireAuth(pageIndex))).Methods("GET")
+	router.HandleFunc(base+"/page/create", CSP(requireAuth(pageCreate))).Methods("GET")
+	router.HandleFunc(base+"/page/create", CSP(requireAuth(pageStore))).Methods("POST")
+	router.HandleFunc(base+"/page/{id}", CSP(requireAuth(pageEdit))).Methods("GET")
+	router.HandleFunc(base+"/page/{id}", CSP(requireAuth(pageUpdate))).Methods("POST")
+	router.HandleFunc(base+"/page/{id}/delete", CSP(requireAuth(pageDelete))).Methods("GET")
 
-	router.HandleFunc(base+"/menu", requireAuth(menuIndex)).Methods("GET")
-	router.HandleFunc(base+"/menu/{id}", requireAuth(menuUpdate)).Methods("POST")
+	router.HandleFunc(base+"/menu", CSP(requireAuth(menuIndex))).Methods("GET")
+	router.HandleFunc(base+"/menu/{id}", CSP(requireAuth(menuUpdate))).Methods("POST")
 
-	router.HandleFunc(base+"/schedule", requireAuth(scheduleIndex)).Methods("GET")
-	router.HandleFunc(base+"/schedule/create", requireAuth(scheduleCreate)).Methods("POST")
-	router.HandleFunc(base+"/schedule/{id}", requireAuth(scheduleUpdate)).Methods("POST")
-	router.HandleFunc(base+"/schedule/{id}/delete", requireAuth(scheduleDelete)).Methods("POST")
+	router.HandleFunc(base+"/schedule", CSP(requireAuth(scheduleIndex))).Methods("GET")
+	router.HandleFunc(base+"/schedule/create", CSP(requireAuth(scheduleCreate))).Methods("POST")
+	router.HandleFunc(base+"/schedule/{id}", CSP(requireAuth(scheduleUpdate))).Methods("POST")
+	router.HandleFunc(base+"/schedule/{id}/delete", CSP(requireAuth(scheduleDelete))).Methods("POST")
 
-	router.HandleFunc(base+"/social/{id}", requireAuth(socialUpdate)).Methods("POST")
+	router.HandleFunc(base+"/social/{id}", CSP(requireAuth(socialUpdate))).Methods("POST")
 }
 
 // Initiates a renderer for the admin views
