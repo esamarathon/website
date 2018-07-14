@@ -64,6 +64,7 @@ body {
        bottom: 0;
        z-index: 2;
        pointer-events: none;
+       color: $white;
        @include medium-up {
           opacity: 1;
        }
