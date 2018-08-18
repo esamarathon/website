@@ -27,9 +27,10 @@
          display: block;
          width: 50%;
          max-width: 15rem;
-         margin: $gutter  auto;
+         //margin: $gutter  auto;
+         margin: 0 auto;
          @include medium-up {
-            margin: $gutter * 2 auto $gutter * 3;
+            //margin: $gutter * 2 auto $gutter * 3;
             max-width: 20rem;
          }
       }
