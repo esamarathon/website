@@ -13,6 +13,15 @@
 .row {
    @extend %clearfix;
 }
+
+.flex {
+  display:flex;
+
+  &.flex-column {
+    flex-direction: column;
+  }
+}
+
 [class*='column-'] {
    float: left;
    padding: 1em;

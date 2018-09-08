@@ -21,7 +21,6 @@ main {
     }
 
     p, li {
-        color: white;
         line-height: 1.6;
         letter-spacing: .5px;
         font-weight: 100;
@@ -96,4 +95,8 @@ main {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.center-content {
+    text-align: center;
 }
