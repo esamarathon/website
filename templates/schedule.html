@@ -1,10 +1,12 @@
 {{/* extends "layout.html" */}}
 {{define "content"}}
-    <section id="selector">
-        {{range .Schedules }}
-            <a href="#{{ .ID }}" class="col-sm-4 button center">{{ .Name }}</a>
-        {{ end }}
-    </section>
+    {{ if gt (len .Schedules) 1 }}
+        <section id="selector">
+            {{range .Schedules }}
+                <a href="#{{ .ID }}" class="col-sm-4 button center">{{ .Name }}</a>
+            {{ end }}
+        </section>
+    {{ end }}
 
     {{range .Schedules }}
         <h2 class="schedule-title" id="{{ .ID }}"">{{ .Name }}</h2>
