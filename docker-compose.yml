@@ -14,3 +14,4 @@ services:
       - "3001:3001"
     volumes:
       - "./templates:/go/src/github.com/esamarathon/website/templates"
+      - "/home/planks/uploaded_files:/go/src/github.com/esamarathon/website/public/assets/uploads/planks"
