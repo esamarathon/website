@@ -1,4 +1,4 @@
-FROM node:9.8.0-alpine AS builder
+FROM node:lts-alpine AS builder
 
 COPY . app
 WORKDIR app
