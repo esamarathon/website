@@ -1,6 +1,6 @@
 #back-top {
   position: fixed;
-  bottom: 45px;
+  bottom: 60px;
   right: 20px;
   z-index:3;
 }
@@ -54,7 +54,7 @@ p.schedule-information {
 
 section.schedule {
    max-width: $max-width;
-   margin: auto;
+   margin: 2rem auto;
    table {
       overflow-y: scroll;
       margin: auto;
