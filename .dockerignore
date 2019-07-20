@@ -2,7 +2,6 @@ node_modules/
 rethink/
 docker-compose.yml
 templates/frontpage.json
-.env
 yarn-error.log
 .runner/
 public/style/*.css
@@ -11,3 +10,6 @@ templates_minified/
 .vscode
 public/img/sponsors/originals
 public/img/Miawoo
+.env
+Dockerfile
+.dockerignore
