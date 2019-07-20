@@ -13,6 +13,19 @@
 .row {
    @extend %clearfix;
 }
+
+.flex {
+  display:flex;
+
+  &.flex-column {
+    flex-direction: column;
+  }
+
+  &.flex-wrap {
+    flex-wrap: wrap;
+  }
+}
+
 [class*='column-'] {
    float: left;
    padding: 1em;

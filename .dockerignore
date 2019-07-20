@@ -1,0 +1,15 @@
+node_modules/
+rethink/
+docker-compose.yml
+templates/frontpage.json
+yarn-error.log
+.runner/
+public/style/*.css
+public/js/*.js
+templates_minified/
+.vscode
+public/img/sponsors/originals
+public/img/Miawoo
+.env
+Dockerfile
+.dockerignore

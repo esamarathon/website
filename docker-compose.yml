@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 
 services:
   db:
@@ -7,10 +7,15 @@ services:
       - "8080:8080"
       - "28015:28015"
     volumes:
-      - "./rethink:/data"
+      - "./rethink:/data:Z"
   app:
-    image: "esa"
+    image: "esamarathon/website"
+    build: .
+    depends_on:
+      - db
     ports:
       - "3001:3001"
     volumes:
-      - "./templates:/go/src/github.com/esamarathon/website/templates"
+      - "./.env:/app/.env"
+      - "./templates:/app/templates"
+      - "/home/planks/uploaded_files:/app/public/assets/uploads/planks"

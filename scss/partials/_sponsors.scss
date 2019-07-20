@@ -1,0 +1,76 @@
+section.sponsors {
+    //margin: auto;
+    width: 100%;
+    padding: 3rem 1rem;
+    position: relative;
+
+    background-color: $blue-darker;
+
+    h2, h3 {
+      font-weight: 100;
+
+      color: $orange;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      text-align: center;
+
+      font-family: $condensed;
+      &:after {
+         content: '';
+         display: block;
+         max-width: 3rem;
+         border-top: 3px $orange solid;
+         margin: auto;
+         margin-top: $gutter;
+      }
+	}
+
+	h2 {
+		font-size: 1.125rem;	
+		margin-bottom: $gutter * 2;
+	}
+
+	h3 {
+		font-size: 1.1rem;
+	}
+
+
+	h3:last-child {
+		margin-top: 3rem;
+	}
+
+	.sponsor-container {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		flex-wrap: wrap;
+		margin: 0 auto 2rem;
+		max-width: 60rem;
+
+
+
+		.sponsor {
+			padding: 0.2rem;
+			margin: 0.5rem;
+			border-radius: 0.5rem;
+			background-color: white;
+			
+			img {
+				width: 6rem;
+			}
+
+			&.platinum img {
+				width: 10rem;
+			}
+
+			&.gold img {
+				width: 8rem;
+			}
+
+			&.silver img {
+				width: 6rem;
+			}
+		}
+	}
+}

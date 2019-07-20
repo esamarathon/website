@@ -1,25 +1,36 @@
 {{/* extends "layout.html" */}}
 {{define "content"}}
-    <h2 class="schedule-title">{{ .Schedule.Name }}</h2>
-    <p class="schedule-information">All times rendered in your local timezone</p>
-    <section class="schedule">
-        <table style="color:white;">
-            <thead>
-                <th>Scheduled</th>
-                <th>Game</th>
-                <th>Estimate</th>
-                <th>Player(s)</th>
-                <th>Platform</th>
-                <th>Category</th>
-                <th>Note</th>
-            </thead>
-            <tbody>
-                {{ range .Schedule.Entries }}
-                    <tr>
-                        {{template "schedule-entry" .}}
-                    </tr>
-                {{ end }}
-            </tbody>
-        </table>
-    </section>
+    {{ if gt (len .Schedules) 1 }}
+        <section id="selector">
+            {{range .Schedules }}
+                <a href="#{{ .ID }}" class="col-sm-4 button center">{{ .Name }}</a>
+            {{ end }}
+        </section>
+    {{ end }}
+
+    {{range .Schedules }}
+        <h2 class="schedule-title" id="{{ .ID }}"">{{ .Name }}</h2>
+        <p class="schedule-information">All times rendered in your local timezone</p>
+        <section class="schedule">
+            <table style="color:white;">
+                <thead>
+                    <th>Scheduled</th>
+                    <th>Game</th>
+                    <th>Estimate</th>
+                    <th>Player(s)</th>
+                    <th>Platform</th>
+                    <th>Category</th>
+                    <th>Note</th>
+                </thead>
+                <tbody>
+                    {{ range .Entries }}
+                        <tr>
+                            {{template "schedule-entry" .}}
+                        </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </section>
+    {{ end }}
+    <a href="#selector" id="back-top" class="button button-primary">Back to top</a>
 {{end}}

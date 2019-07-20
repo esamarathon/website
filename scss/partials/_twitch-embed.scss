@@ -6,7 +6,6 @@
    z-index: 3;
    margin: $gutter * 2 auto;
    max-width: 80rem;
-   opacity: 0;
    
    @include medium-up {
       margin: 0 auto $gutter * 4;

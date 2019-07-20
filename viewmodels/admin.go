@@ -8,6 +8,8 @@ import (
 	"github.com/esamarathon/website/models/article"
 	"github.com/esamarathon/website/models/menu"
 	"github.com/esamarathon/website/models/page"
+	"github.com/esamarathon/website/models/schedule"
+	"github.com/esamarathon/website/models/social"
 	"github.com/esamarathon/website/models/user"
 	"github.com/pkg/errors"
 )
@@ -27,10 +29,9 @@ type pagination struct {
 
 type adminIndexView struct {
 	AdminView
-	Livemode       bool
-	ScheduleAPIURL string
-	ShowSchedule   bool
-	Frontpage      frontPage
+	Livemode    bool
+	Frontpage   frontPage
+	SocialLinks social.SocialLinks
 }
 
 type adminUserIndexView struct {
@@ -73,6 +74,11 @@ type adminPageEditView struct {
 	Page page.Page
 }
 
+type adminScheduleView struct {
+	AdminView
+	Schedules []schedule.ScheduleRef
+}
+
 func getUser(r *http.Request) user.User {
 	u, userErr := user.FromSession(r)
 	if userErr != nil {
@@ -91,11 +97,10 @@ func getAdminView(w http.ResponseWriter, r *http.Request) AdminView {
 
 func AdminIndex(w http.ResponseWriter, r *http.Request) adminIndexView {
 	view := adminIndexView{
-		AdminView:      getAdminView(w, r),
-		Livemode:       config.Config.LiveMode,
-		ScheduleAPIURL: config.Config.ScheduleAPIURL,
-		ShowSchedule:   config.Config.ShowSchedule,
-		Frontpage:      getFrontpage(),
+		AdminView:   getAdminView(w, r),
+		Livemode:    config.Config.LiveMode,
+		Frontpage:   getFrontpage(),
+		SocialLinks: social.Get(),
 	}
 
 	return view
@@ -159,6 +164,13 @@ func AdminPageCreate(w http.ResponseWriter, r *http.Request) adminPageCreateView
 
 func AdminPageEdit(w http.ResponseWriter, r *http.Request) adminPageEditView {
 	view := adminPageEditView{
+		AdminView: getAdminView(w, r),
+	}
+	return view
+}
+
+func AdminSchedules(w http.ResponseWriter, r *http.Request) adminScheduleView {
+	view := adminScheduleView{
 		AdminView: getAdminView(w, r),
 	}
 	return view

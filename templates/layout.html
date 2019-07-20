@@ -15,7 +15,13 @@
     <link rel="mask-icon" href="/static/assets/favicon/safari-pinned-tab.svg" color="#603cba">
     <meta name="theme-color" content="#FFBA00">
 
-    <link rel="stylesheet" href="/static/style/app.css">
+    <link rel="stylesheet" href="/static/style/app.css?v=1.7">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js">
+    </script>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({
+google_ad_client: "ca-pub-1125692619955117",
+enable_page_level_ads: true
+});</script>
 </head>
 <body>
     <header>
@@ -33,48 +39,95 @@
                 {{ end }}
 
                 {{ if eq $i 2 }}
-                    <img class="logo" src="/static/img/logo.svg" alt="European Speedrunner Assemble">
+                    <img class="logo" src="/static/img/logos/logo-borderless.svg" alt="European Speedrunner Assemble">
                 {{ end }}
             {{ end }}
             <span class="close"></span>
         </nav>
     </header>
     {{template "content" .}}
+
+    
+    <section class="sponsors">
+        <h2>Partners</h2>
+        <h3>Platinum partners</h3>
+        <div class="sponsor-container">
+            <div class="sponsor platinum">
+                <img src="/static/img/sponsors/twitch.png" 
+                    alt="Twitch"
+                    class="white">
+            </div>
+
+            <div class="sponsor platinum">
+                <img src="/static/img/sponsors/malmostad.png" 
+                alt="Malmö Stad">
+            </div>
+
+            <div class="sponsor platinum">
+                <img src="/static/img/sponsors/viewsonic_elite.png" 
+                    alt="ViewSonic">
+            </div>
+        </div>
+<!--
+        <h3>Gold partners</h3>
+        <div class="sponsor-container">
+
+        </div>
+-->
+        <h3>Other partners</h3>
+        <div class="sponsor-container">
+            <div class="sponsor">
+                <img src="/static/img/sponsors/vaxjo.png" 
+                    alt="Växjö Stad"
+                    class="order-7">
+            </div>
+            <div class="sponsor">
+                <img src="/static/img/sponsors/wd_black.png"
+                    alt="WD_Black"
+                    class="order-7">
+            </div>
+            <div class="sponsor">
+                <img src="/static/img/sponsors/yetee.png"
+                    alt="The Yetee"
+                    class="order-7">
+            </div>
+        </div>
+
+        <h3>Charity partners</h3>
+        <div class="sponsor-container">
+            <div class="sponsor platinum">
+                <img src="/static/img/sponsors/movember.png" 
+                    alt="Movember Foundation">
+            </div>
+            <div class="sponsor platinum">
+                <img src="/static/img/sponsors/alzheimer.png"
+                    alt="Alzheimerfonden">
+            </div>
+        </div>
+    </section>
+
+
     <section class="social-bar">
         <h2>Get connected with us</h2>
         <div class="social-container">
-            <a href="http://www.twitter.com/esamarathon" target="_blank" rel="noopener">
-                <img src="/static/img/ico-twitter.svg" alt="Twitter icon">
-                <span>Twitter</span>
-            </a>
+            {{range $i, $e := .Layout.SocialLinks.Items }}
+                <a href="{{$e.Link}}"  target="{{if $e.NewTab }} _blank {{end}}" rel="{{if $e.NewTab }} noopener {{end}}" >
+                    <img src="{{$e.Image}}" alt="{{$e.ImageAlt}}">
+                    <span>{{$e.Title}}</span>
+                </a>
 
-            <a href="https://www.discord.gg/0TZ2NlveujtasAqb" target="_blank" rel="noopener">
-                <img src="/static/img/ico-discord.svg" alt="Discord icon">
-                <span>Discord</span>
-            </a>
-
-            <a href="https://www.youtube.com/user/EuroSpeedAssembly" target="_blank" rel="noopener">
-                <img src="/static/img/ico-youtube.svg" alt="YouTube icon">
-                <span>YouTube</span>
-            </a>
-
-            <a href="https://www.twitch.tv/esamarathon" target="_blank" rel="noopener">
-                <img src="/static/img/ico-twitch.svg" alt="Twitch icon">
-                <span>Twitch</span>
-            </a>
-
-            <a href="https://www.speedrun.com/esa2018/forum" target="_blank" rel="noopener">
-                <img src="/static/img/ico-forum.svg" alt="Forum icon">
-                <span>Forum</span>
-            </a>
-            <a href="https://www.facebook.com/europeanspeedrunnerassembly" target="_blank" rel="noopener">
-                <img src="/static/img/ico-facebook.svg" alt="Facebook icon">
-                <span>Facebook</span>
-            </a>
+            {{ end }}
         </div>
     </section>
     <footer>
         © {{ .CopyrightYear }} ESA – European Speedrunner Assembly
+        <div>
+            <ul class="menu flex">
+                <li><a href="/rules">Code of Conduct</a></li>
+                <li><a href="/press">Press</a></li>
+                <li><a href="/privacy">Privacy Policy</a></li>
+            </ul>
+        </div>
     </footer>
 </body>
 

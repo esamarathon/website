@@ -25,13 +25,14 @@
 .error-titles {
    padding-top: $gutter * 4;
    .error-title{
-     color:white;
      font-size:2rem;
      position:relative;
      max-width:30rem;
      margin:0 auto;
      display: block;
      text-align: center;
+     padding-top: 0;
+     padding-bottom: $gutter*8;
      &:after,
      &:before {
         position:absolute;

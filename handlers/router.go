@@ -26,7 +26,6 @@ func init() {
 	router.HandleFunc("/auth/callback", AuthCallback).Methods("GET")
 	router.HandleFunc("/login", HandleAuth).Methods("GET")
 	router.HandleFunc("/logout", HandleLogout).Methods("GET")
-	router.HandleFunc("/sweepstakes", Sweepstakes).Methods("GET")
 
 	admin.AdminRoutes("/admin", router)
 

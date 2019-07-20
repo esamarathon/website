@@ -5,7 +5,6 @@ import (
 
 	"github.com/esamarathon/website/config"
 	"github.com/esamarathon/website/models/article"
-	"github.com/esamarathon/website/models/menu"
 )
 
 type articleView struct {
@@ -18,7 +17,7 @@ type articleView struct {
 // Article returns the viewmodel for /news/{id}
 func Article() articleView {
 	view := articleView{
-		Layout:        layout{DefaultMeta, menu.Get()},
+		Layout:        DefaultLayout(),
 		CopyrightYear: time.Now().Year(),
 		Livemode:      config.Config.LiveMode,
 	}

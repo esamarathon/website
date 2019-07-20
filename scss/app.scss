@@ -1,13 +1,16 @@
 @import 'partials/colors';
 @import 'partials/settings';
-//@import 'partials/grid';
+@import 'partials/grid';
 @import 'partials/fonts';
+
+@import 'partials/global';
 
 @import 'partials/header';
 @import 'partials/page';
 @import 'partials/splash-screen';
 @import 'partials/twitch-embed';
 @import 'partials/footer';
+@import 'partials/sponsors';
 @import 'partials/social';
 @import 'partials/error-title';
 @import 'partials/schedule';

@@ -5,12 +5,12 @@ import (
 
 	"github.com/esamarathon/website/cache"
 	"github.com/esamarathon/website/config"
-	"github.com/esamarathon/website/models/menu"
+	"github.com/esamarathon/website/models/schedule"
 )
 
 type scheduleView struct {
 	Layout        layout
-	Schedule      interface{}
+	Schedules     []schedule.Schedule
 	Cached        bool
 	CopyrightYear int
 	Livemode      bool
@@ -25,16 +25,16 @@ type noscheduleView struct {
 // Schedule returns the viewmodel for /schedule
 func Schedule() scheduleView {
 	view := scheduleView{
-		Layout:        layout{DefaultMeta, menu.Get()},
+		Layout:        DefaultLayout(),
 		Livemode:      config.Config.LiveMode,
 		CopyrightYear: time.Now().Year(),
 	}
 
 	// Attempt to find a cached schedule
-	schedule, found := cache.Get("schedule")
+	schedules, found := cache.Get("schedules")
 	view.Cached = found
 	if view.Cached {
-		view.Schedule = schedule
+		view.Schedules = schedules.([]schedule.Schedule)
 	}
 
 	return view
@@ -42,7 +42,7 @@ func Schedule() scheduleView {
 
 func NoSchedule() noscheduleView {
 	return noscheduleView{
-		Layout:        layout{DefaultMeta, menu.Get()},
+		Layout:        DefaultLayout(),
 		Livemode:      config.Config.LiveMode,
 		CopyrightYear: time.Now().Year(),
 	}
