@@ -29,9 +29,9 @@ func init() {
 	router.HandleFunc("/logout", HandleLogout).Methods("GET")
 
 	admin.AdminRoutes("/admin", router)
-	router.HandleFunc("/api/news", api.News).Methods("GET")
-	//apiRouter := router.PathPrefix("/api").Subrouter()
-	//api.RegisterRoutes(apiRouter)
+
+	apiRouter := router.PathPrefix("/api").Subrouter()
+	api.RegisterRoutes(apiRouter)
 
 	router.HandleFunc("/{name}", Page).Methods("GET")
 

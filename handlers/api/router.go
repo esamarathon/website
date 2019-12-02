@@ -8,5 +8,5 @@ import (
 Registers the API routes to
 */
 func RegisterRoutes(router *mux.Router) {
-	router.HandleFunc("/news", News).Metod("GET")
+	router.HandleFunc("/news", News).Methods("GET")
 }

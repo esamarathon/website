@@ -2,18 +2,33 @@ package api
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/esamarathon/website/handlers/helpers"
 	"github.com/esamarathon/website/models/article"
 )
 
+// News serves a JSON document of all published news articles.
+// The amount returned can be controlled with the "limit" HTTP GET parameter.
 func News(w http.ResponseWriter, r *http.Request) {
-	articles := article.All()
+	articles, err := article.AllPublished()
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 
-	amount, ok := parseInt(r.URL.Query()["amount"])
+	limitStrings, ok := r.URL.Query()["limit"]
 
-	if limit > 0 {
-		articles = articles[0:limit]
+	if ok {
+		limit, err := strconv.Atoi(limitStrings[0])
+		if err != nil {
+			http.Error(w, "Invalid limit parameter. Must be not set or positive integer.", http.StatusBadRequest)
+			return
+		}
+
+		if limit > 0 {
+			articles = articles[0:limit]
+		}
 	}
 
 	// Reduce body to a teaser
@@ -24,17 +39,4 @@ func News(w http.ResponseWriter, r *http.Request) {
 	}
 
 	helpers.Renderer.JSON(w, http.StatusOK, articles)
-}
-
-func parseInt(s string, ok bool) (int, bool) {
-	if !ok {
-		return -1, false
-	}
-
-	var i, err := strconv.Atoi()
-	if err != nil {
-		return -1, false
-	}
-
-	return i, true
 }
