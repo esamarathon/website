@@ -8,6 +8,7 @@ import (
 
 	"github.com/esamarathon/website/config"
 	"github.com/esamarathon/website/handlers/admin"
+	"github.com/esamarathon/website/handlers/api"
 	. "github.com/esamarathon/website/handlers/helpers"
 	"github.com/rs/cors"
 
@@ -28,6 +29,9 @@ func init() {
 	router.HandleFunc("/logout", HandleLogout).Methods("GET")
 
 	admin.AdminRoutes("/admin", router)
+	router.HandleFunc("/api/news", api.News).Methods("GET")
+	//apiRouter := router.PathPrefix("/api").Subrouter()
+	//api.RegisterRoutes(apiRouter)
 
 	router.HandleFunc("/{name}", Page).Methods("GET")
 
