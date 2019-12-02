@@ -40,6 +40,25 @@ func All() ([]Article, error) {
 	return a, nil
 }
 
+// AllPublished returns all published news articles.
+func AllPublished() ([]Article, error) {
+	filter := map[string]interface{}{
+		"published": true,
+	}
+
+	rows, err := db.GetByFilterOrdered(table, "created_at", true, filter)
+	var a []Article
+	if err != nil {
+		return a, errors.Wrap(err, "article.All")
+	}
+
+	if err = rows.All(&a); err != nil {
+		return a, errors.Wrap(err, "article.All")
+	}
+
+	return a, nil
+}
+
 // Page returns the articles of a given page
 func Page(page int, published bool) ([]Article, error) {
 	var rows *r.Cursor
