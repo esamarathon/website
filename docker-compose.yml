@@ -11,6 +11,8 @@ services:
   app:
     image: "esamarathon/website"
     build: .
+    environment:
+      - DB_HOST=db:28015
     depends_on:
       - db
     ports:

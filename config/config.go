@@ -44,7 +44,7 @@ var (
 func init() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Couldn't loading .env file")
+		log.Println("Couldn't load .env file. Continuing without it.")
 	}
 
 	articlesPerPage, err := strconv.Atoi(os.Getenv("ARTICLES_PER_PAGE"))
