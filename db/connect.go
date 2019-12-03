@@ -115,6 +115,22 @@ func GetByFilter(table string, filter map[string]interface{}) (*r.Cursor, error)
 	return cursor, err
 }
 
+// GetByFilterOrdered: apply filter by an map[string]interface{} and sort teh result
+// example: map[string]interface{}{"id": "something", "published": true}
+func GetByFilterOrdered(table string, index string, desc bool, filter map[string]interface{}) (*r.Cursor, error) {
+	order := r.Asc(index)
+	if desc {
+		order = r.Desc(index)
+	}
+
+	cursor, err := r.Table(table).Filter(filter).OrderBy(order).Run(Session)
+	if err != nil {
+		return nil, errors.Wrap(err, "db.GetOneByIDFiltered")
+	}
+
+	return cursor, err
+}
+
 func GetCount(table string) (int, error) {
 	cursor, err := r.Table(table).Count().Run(Session)
 	if err != nil {
