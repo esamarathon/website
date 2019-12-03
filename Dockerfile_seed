@@ -1,0 +1,11 @@
+FROM golang:1.13.0-alpine AS builder
+
+WORKDIR /go/src/github.com/esamarathon/website/
+ENV CGO_ENABLED=0
+COPY . .
+RUN go build cmd/dbinit.go
+
+FROM scratch as runtime
+WORKDIR /app
+COPY --from=builder /go/src/github.com/esamarathon/website/dbinit /app/
+CMD ["./dbinit"]

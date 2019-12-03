@@ -16,8 +16,7 @@ var (
 func main() {
 	flag.Parse()
 	if err := godotenv.Load(); err != nil {
-		log.Println("Error loading .env file")
-		return
+		log.Println("Error loading .env file. Continuing without one.")
 	}
 
 	if err := db.Connect(); err != nil {

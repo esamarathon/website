@@ -29,15 +29,15 @@ func users() error {
 	var users = []user.User{
 		{
 			ID:       "1",
-			Username: "korkn",
+			Username: "theexcellentninja",
 		},
 		{
 			ID:       "2",
-			Username: "egreb__",
+			Username: "edenalsda",
 		},
 		{
 			ID:       "3",
-			Username: "morganbro",
+			Username: "ontwoplanks",
 		},
 	}
 
