@@ -1,24 +1,30 @@
-FROM node:8-slim AS builder
+FROM node:8-slim AS npm-builder
 WORKDIR /app
-COPY . /app
-RUN yarn && npm run gulp
+COPY package.json package-lock.json gulpfile.js ./
+RUN npm ci
+COPY scss scss
+COPY scripts scripts
+COPY templates templates
+COPY templates_admin templates_admin
+RUN npm run gulp
 
-FROM golang:1.10.0-alpine AS golang
-
-RUN apk add --no-cache ca-certificates && mkdir -p /go/src/github.com/esamarathon/website/public
+FROM golang:1.13.0-alpine AS golang
+RUN apk add --no-cache ca-certificates
 WORKDIR /go/src/github.com/esamarathon/website
-COPY --from=builder /app .
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
 ENV CGO_ENABLED=0
 RUN go build .
 
 FROM alpine:latest as runtime
 WORKDIR /app
 RUN apk add --no-cache ca-certificates
+COPY public public
 COPY --from=golang /go/src/github.com/esamarathon/website/website /app/
-COPY --from=builder /app/templates_minified /app/templates_minified/
-COPY --from=builder /app/templates_admin /app/templates_admin/
-COPY --from=builder /app/public /app/public/
-
+COPY --from=npm-builder /app/templates_minified /app/templates_minified/
+COPY --from=npm-builder /app/templates_admin /app/templates_admin/
+COPY --from=npm-builder /app/public /app/public/
 EXPOSE 3001
 
 CMD ["./website"]
