@@ -2,6 +2,7 @@ package horaro
 
 import (
 	"encoding/json"
+	"errors"
 	"html/template"
 	"math"
 	"net/http"
@@ -18,6 +19,9 @@ type scheduleResponse struct {
 func GetSchedule(url string) (*schedule.Schedule, error) {
 	// Request the schedule JSON-resource
 	resp, err := http.Get(url)
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New("Unsuccessful attempt at fetching schedule from Horaro.")
+	}
 
 	var s scheduleResponse
 
@@ -30,6 +34,14 @@ func GetSchedule(url string) (*schedule.Schedule, error) {
 
 	if err = json.NewDecoder(resp.Body).Decode(&s); err != nil {
 		return nil, err
+	}
+
+	if s.Schedule == nil {
+		return nil, errors.New("No schedule in Horaro response.")
+	}
+
+	if len(s.Schedule.Columns) == 0 {
+		return nil, errors.New("No columns in Horaro schedule.")
 	}
 
 	// Get all the indexes for the columns in order to identify them
