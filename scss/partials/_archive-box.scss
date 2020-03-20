@@ -1,0 +1,13 @@
+.archive-box {
+    display: grid;
+    grid-template-columns: 3rem auto;
+    grid-gap: 1rem;
+    align-items: center;
+    background: #A00;
+    padding: 1rem;
+    max-width: 600px;
+
+    p {
+        font-weight: 400;
+    }
+}

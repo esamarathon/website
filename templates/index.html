@@ -1,13 +1,10 @@
 {{/* extends "layout.html" */}}
 {{define "content"}}
+    {{ if .Livemode}}
     <section class="splash">
-        <div class="splash-logo hide-medium">
-            <img src="/static/img/logos/logo.svg" alt="ESA logotype">
-        </div>
-        {{ if .Livemode}}
             <div id="twitch-embed"></div>
-        {{ end }}
     </section>
+    {{ end }}
     <main class="content">
         <div class="splash-slogan">
             <img class="" src="/static/img/logos/esa-big-logo-merged.svg" alt="European Speedrunner Assembly!">
