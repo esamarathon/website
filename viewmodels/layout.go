@@ -15,7 +15,7 @@ type meta struct {
 var DefaultMeta = meta{
 	"ESA Marathon",
 	"Welcome to European Speedrunner Assembly!",
-	"http://www.esamarathon.com/static/img/og-image.png",
+	"/static/img/og-image.png",
 }
 
 type layout struct {
