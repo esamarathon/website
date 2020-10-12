@@ -1,3 +1,15 @@
+.cookie-warning {
+   z-index: 5;
+   position: fixed;
+   position: sticky;
+   bottom: 0;
+   left: 0;
+   width: 100%;
+   text-align: center;
+   background: $blue-darker;
+   padding: $gutter;
+}
+
 footer {
    background: $blue-darker;
    color: $white;
@@ -6,10 +18,6 @@ footer {
    text-align: center;
    font-size: .8rem;
    padding: $gutter;
-   position: fixed;
-   bottom: 0;
-   left: 0;
-   width: 100%;
 
    .menu {
       list-style: none;

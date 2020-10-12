@@ -94,10 +94,12 @@ var cookieConsent = window.localStorage.getItem("cookie-consent")
 if (!cookieConsent) {
     // Get the footer
     var footer = document.querySelector('footer')
-    // Append warning to footer
-    footer.innerHTML = '<p class="cookie-warning"><strong>This page utilizes cookies to ensure you get the best experience on our website <span class="small button">Ok!</span><strong></p>' + footer.innerHTML
-    // Get the warning element
-    var cookieWarning = document.querySelector('.cookie-warning')
+    // Create cookie warning element
+    var cookieWarning = document.createElement('div')
+    cookieWarning.className += 'cookie-warning'
+    cookieWarning.innerHTML = '<p><strong>This page utilizes cookies to ensure you get the best experience on our website <span class="small button">Ok!</span><strong></p>'
+    // Insert the warning before the footer element
+    footer.parentNode.insertBefore(cookieWarning, footer)
     // Add an eventlistener to the button
     cookieWarning.querySelector('.button').addEventListener('click', function () {
         // On click we store the consent
